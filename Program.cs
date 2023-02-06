@@ -14,14 +14,14 @@ internal abstract class Program
             .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}][{SourceContext}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
 
-        var directoriesInWorkingDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory()).Where(ContainsCsProj);
+        var directoriesInWorkingDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory()).Where(Utilities.ContainsCsProj);
         var checks = new List<IRunCheck>
         {
             new HasNET7(logger),
             new HintPathCounter(logger)
         };
 
-        var serviceScores = directoriesInWorkingDirectory.ToDictionary(RootDirectoryToProjectNameFromCsproj, serviceRootDirectory =>
+        var serviceScores = directoriesInWorkingDirectory.ToDictionary(Utilities.RootDirectoryToProjectNameFromCsproj, serviceRootDirectory =>
         {
             var scoreByCheck = checks.ToDictionary(check => check.GetType().Name, check => check.Run(serviceRootDirectory));
             scoreByCheck.Add("Average", (int)Math.Round((decimal)scoreByCheck.Values.Sum() / checks.Count));
@@ -31,21 +31,5 @@ internal abstract class Program
         var runInfo = new RunInfo(checks.Select(check => check.GetType().Name), serviceScores);
 
         File.WriteAllText("result.md", new MarkdownVisualizer(logger).ToMarkdown(runInfo));
-    }
-
-    private static bool ContainsCsProj(string directory)
-    {
-        return Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly).Any();
-    }
-
-    private static string RootDirectoryToProjectNameFromCsproj(string serviceRootDirectory)
-    { 
-        var csprojFiles = Directory.GetFiles(serviceRootDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
-        if (!csprojFiles.Any())
-        {
-            throw new FileNotFoundException("No csproj found to determine project name");
-        }
-
-        return Path.GetFileName(csprojFiles.First());
     }
 }
