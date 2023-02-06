@@ -1,9 +1,17 @@
 using System.Xml.Linq;
+using Serilog.Core;
 
 namespace ScorecardGenerator.Checks;
 
 internal class HintPathCounter : IRunCheck
 {
+    private readonly Logger _logger;
+
+    public HintPathCounter(Logger logger)
+    {
+        _logger = logger;
+    }
+
     public int Run(string serviceRootDirectory)
     {
         var allowedCount = 10;

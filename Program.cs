@@ -1,51 +1,41 @@
-﻿using ScorecardGenerator.Checks;
+﻿using ScorecardGenerator.Calculation;
+using ScorecardGenerator.Checks;
+using ScorecardGenerator.Visualizer;
+using Serilog;
 
 namespace ScorecardGenerator;
 
 internal abstract class Program
 {
-    static void Main(string[] args)
+    private static void Main()
     {
+        var logger = new LoggerConfiguration()
+            .MinimumLevel.Verbose()
+            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}][{SourceContext}] {Message:lj}{NewLine}{Exception}")
+            .CreateLogger();
+
         var directoriesInWorkingDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory()).Where(ContainsCsProj);
         var checks = new List<IRunCheck>
         {
-            new HasNET7(),
-            new HintPathCounter()
+            new HasNET7(logger),
+            new HintPathCounter(logger)
         };
-
-        var headers = $"| ServiceName | {string.Join(" | ", checks.Select(check => check.GetType().Name))} | Average |";
-        var divider = $"| --- | {string.Join(" | ", checks.Select(check => "---"))} | --- |";
 
         var serviceScores = directoriesInWorkingDirectory.ToDictionary(RootDirectoryToProjectNameFromCsproj, serviceRootDirectory =>
         {
             var scoreByCheck = checks.ToDictionary(check => check.GetType().Name, check => check.Run(serviceRootDirectory));
-            scoreByCheck.Add("Average", (int)Math.Round((decimal)scoreByCheck.Values.Sum() / (decimal)checks.Count));
+            scoreByCheck.Add("Average", (int)Math.Round((decimal)scoreByCheck.Values.Sum() / checks.Count));
             return scoreByCheck;
-        }).Select(ToProjectRow);
-        
-        File.WriteAllText("result.md", string.Join(Environment.NewLine, serviceScores.Prepend(divider).Prepend(headers)));
+        });
+
+        var runInfo = new RunInfo(checks.Select(check => check.GetType().Name), serviceScores);
+
+        File.WriteAllText("result.md", new MarkdownVisualizer(logger).ToMarkdown(runInfo));
     }
 
     private static bool ContainsCsProj(string directory)
     {
         return Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly).Any();
-    }
-
-    private static string ToProjectRow(KeyValuePair<string, Dictionary<string, int>> arg)
-    {
-        return $"| {arg.Key} | {string.Join(" | ", arg.Value.Values.Select(ColorizeNumber))} |";
-    }
-
-    private static string ColorizeNumber(int arg)
-    {
-        var color = arg switch
-        {
-            >= 90 => "green",
-            >= 80 => "yellow",
-            >= 70 => "orange",
-            _ => "red"
-        };
-        return $"<span style=\"color:{color}\">{arg}</span>";
     }
 
     private static string RootDirectoryToProjectNameFromCsproj(string serviceRootDirectory)

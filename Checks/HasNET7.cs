@@ -1,10 +1,18 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Serilog.Core;
 
 namespace ScorecardGenerator.Checks;
 
 internal class HasNET7 : IRunCheck
 {
+    private readonly Logger _logger;
+
+    public HasNET7(Logger logger)
+    {
+        _logger = logger;
+    }
+
     public int Run(string serviceRootDirectory)
     {
         var csprojFiles = Directory.GetFiles(serviceRootDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
