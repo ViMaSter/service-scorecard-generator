@@ -33,7 +33,19 @@ internal abstract class Program
 
     private static string ToProjectRow(KeyValuePair<string, Dictionary<string, int>> arg)
     {
-        return $"| {arg.Key} | {string.Join(" | ", arg.Value.Values)} |";
+        return $"| {arg.Key} | {string.Join(" | ", arg.Value.Values.Select(ColorizeNumber))} |";
+    }
+
+    private static string ColorizeNumber(int arg)
+    {
+        var color = arg switch
+        {
+            >= 90 => "green",
+            >= 80 => "yellow",
+            >= 70 => "orange",
+            _ => "red"
+        };
+        return $"<span style=\"color:{color}\">{arg}</span>";
     }
 
     private static string RootDirectoryToProjectNameFromCsproj(string serviceRootDirectory)
