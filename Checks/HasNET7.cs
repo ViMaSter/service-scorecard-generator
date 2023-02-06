@@ -3,7 +3,7 @@ using System.Xml.XPath;
 
 namespace ScorecardGenerator.Checks;
 
-internal class HasNet7 : IRunCheck
+internal class HasNET7 : IRunCheck
 {
     public int Run(string serviceRootDirectory)
     {
