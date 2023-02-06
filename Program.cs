@@ -9,7 +9,7 @@ internal abstract class Program
         var directoriesInWorkingDirectory = Directory.GetDirectories(Directory.GetCurrentDirectory()).Where(ContainsCsProj);
         var checks = new List<IRunCheck>
         {
-            new HasNet7(),
+            new HasNET7(),
             new HintPathCounter()
         };
 
