@@ -27,7 +27,7 @@ jobs:
         path: test-data
 
     - name: Run binary inside "test-data"
-      run: ../../app/bin/Release/net7.0/ScorecardGenerator --azurePAT ${{ secrets.AZURE_PAT }}
+      run: ../app/bin/Release/net7.0/ScorecardGenerator --azurePAT ${{ secrets.AZURE_PAT }}
       working-directory: test-data
       
     - uses: actions/upload-artifact@v2
