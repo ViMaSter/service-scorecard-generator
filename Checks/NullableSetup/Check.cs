@@ -27,9 +27,10 @@ internal class Check : BaseCheck
             return 0;
         }
 
+        const string expectedValue = "enable";
         if (nullable.ToLower() != "enable")
         {
-            Logger.Information("Expected: <Nullable> should be set to 'enable'. Actual: '{Content}'", nullable);
+            Logger.Information("Expected: <Nullable> should be set to '{Expected}'. Actual: '{Actual}'", expectedValue, nullable);
             return 0;
         }
 

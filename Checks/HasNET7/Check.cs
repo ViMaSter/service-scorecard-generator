@@ -27,9 +27,10 @@ internal class Check : BaseCheck
             return 0;
         }
 
-        if (!targetFramework.StartsWith("net7"))
+        const string expectedValue = "net7";
+        if (!targetFramework.StartsWith(expectedValue))
         {
-            Logger.Information("Expected: <TargetFramework> should contain 'net7'. Actual: '{Content}'", targetFramework);
+            Logger.Information("Expected: <TargetFramework> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, targetFramework);
             return 0;
         }
 
