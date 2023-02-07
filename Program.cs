@@ -45,7 +45,7 @@ internal abstract class Program
             var goldScoreByCheck = checks.Gold.ToDictionary(check => check.GetType().Name, check => check.Run(serviceRootDirectory));
             var silverScoreByCheck = checks.Silver.ToDictionary(check => check.GetType().Name, check => check.Run(serviceRootDirectory));
             var bronzeScoreByCheck = checks.Bronze.ToDictionary(check => check.GetType().Name, check => check.Run(serviceRootDirectory));
-            var totalScore = new decimal[]
+            var totalScore = new[]
             {
                 (decimal)goldScoreByCheck.Values.Sum()   * ServiceInfo.GoldWeight,
                 (decimal)silverScoreByCheck.Values.Sum() * ServiceInfo.SilverWeight,
