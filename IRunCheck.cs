@@ -2,5 +2,5 @@ namespace ScorecardGenerator;
 
 internal interface IRunCheck
 {
-    int Run(string serviceRootDirectory);
+    int Run(string workingDirectory, string relativePathToServiceRoot);
 }

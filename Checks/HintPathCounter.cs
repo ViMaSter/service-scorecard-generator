@@ -12,10 +12,10 @@ internal class HintPathCounter : IRunCheck
         _logger = logger;
     }
 
-    public int Run(string serviceRootDirectory)
+    public int Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var allowedCount = 10;
-        var csprojFiles = Directory.GetFiles(serviceRootDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
+        var csprojFiles = Directory.GetFiles(Path.Join(workingDirectory, relativePathToServiceRoot), "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
         {
             return 0;
