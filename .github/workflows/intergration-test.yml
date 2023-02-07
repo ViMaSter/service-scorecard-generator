@@ -16,6 +16,9 @@ jobs:
         path: app
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+      working-directory: app
 
     # setup testdata
     - uses: actions/checkout@v2
@@ -24,7 +27,7 @@ jobs:
         path: testdata
 
     - name: Run binary inside "testdata"
-      run: dotnet run --project ../../app/ScorecardGenerator.csproj
+      run: ../../app/bin/Release/net7.0/ScorecardGenerator
       working-directory: testdata/src
     - uses: actions/upload-artifact@v2
       with:
