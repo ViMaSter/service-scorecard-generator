@@ -39,7 +39,8 @@ internal class GenerateScorecard
             },
             new List<BaseCheck>()
             {
-              new ScorecardGenerator.Checks.NullableSetup.Check(_logger)  
+                new ScorecardGenerator.Checks.NullableSetup.Check(_logger),
+                new ScorecardGenerator.Checks.WarningsAsError.Check(_logger)  
             },
             new List<BaseCheck>()
             {
