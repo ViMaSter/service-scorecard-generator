@@ -8,6 +8,8 @@ internal class Check : BaseCheck
     public Check(ILogger logger) : base(logger)
     {
     }
+    
+    const int PenaltyPerHintPath = 10;
 
     protected override int Run(string workingDirectory, string relativePathToServiceRoot)
     {
@@ -32,7 +34,8 @@ internal class Check : BaseCheck
         {
             currentCount = 0;
         }
-
-        return currentCount * 10;
+        
+        Logger.Information("Deducting {Penalty} points per HintPath. Current count: {CurrentCount}", PenaltyPerHintPath, hintPaths.Count());
+        return currentCount * PenaltyPerHintPath;
     }
 }

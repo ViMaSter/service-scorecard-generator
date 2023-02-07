@@ -29,6 +29,7 @@ internal class Check : BaseCheck
 
         if (!targetFramework.StartsWith("net7"))
         {
+            Logger.Information("Expected: <TargetFramework> should contain 'net7'. Actual: {Content}", targetFramework);
             return 0;
         }
 

@@ -15,6 +15,8 @@ internal class Check : BaseCheck
         _azurePAT = azurePAT;
     }
 
+    const int PenaltyPerActivePullRequest = 20;
+
     protected override int Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var serviceRootDirectory = Path.Join(workingDirectory, relativePathToServiceRoot);
@@ -125,11 +127,11 @@ internal class Check : BaseCheck
             {
                 continue;
             }
-            Logger.Information("Found open PR #{PRNumber} in {ServiceRootDirectory}", pr.pullRequestId, serviceRootDirectory);
+            Logger.Information("Found open PR #{PRNumber} for {ServiceRootDirectory}; deducting {Penalty} points", pr.pullRequestId, serviceRootDirectory, PenaltyPerActivePullRequest);
             relevantPullRequestIDs.Add(pr.pullRequestId);
         }
 
         var openPRsCount = relevantPullRequestIDs.Count;
-        return Math.Max(0, 100 - openPRsCount * 20);
+        return Math.Max(0, 100 - openPRsCount * PenaltyPerActivePullRequest);
     }
 }
