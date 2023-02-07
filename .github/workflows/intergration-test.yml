@@ -24,12 +24,13 @@ jobs:
     - uses: actions/checkout@v2
       with:
         repository: thangchung/magazine-website-akka
-        path: testdata
+        path: test-data
 
-    - name: Run binary inside "testdata"
-      run: ../../app/bin/Release/net7.0/ScorecardGenerator --azurePAT
-      working-directory: testdata/src
+    - name: Run binary inside "test-data"
+      run: ../../app/bin/Release/net7.0/ScorecardGenerator --azurePAT ${{ secrets.AZURE_PAT }}
+      working-directory: test-data
+      
     - uses: actions/upload-artifact@v2
       with:
         name: result.md
-        path: testdata/src/result.md
+        path: test-data/result.md
