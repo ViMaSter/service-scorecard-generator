@@ -1,3 +1,5 @@
+using ScorecardGenerator.Checks;
+
 namespace ScorecardGenerator;
 
 internal abstract class Utilities
@@ -16,5 +18,10 @@ internal abstract class Utilities
         }
 
         return Path.GetFileName(csprojFiles.First());
+    }
+
+    public static string GetNameFromCheckClass(BaseCheck check)
+    {
+        return check.GetType().FullName!.Split(".")[^2];
     }
 }

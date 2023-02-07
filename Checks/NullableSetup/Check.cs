@@ -2,7 +2,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Serilog;
 
-namespace ScorecardGenerator.Checks.HasNET7;
+namespace ScorecardGenerator.Checks.NullableSetup;
 
 internal class Check : BaseCheck
 {
@@ -20,16 +20,16 @@ internal class Check : BaseCheck
             return 0;
         }
         var csproj = XDocument.Load(csprojFiles.First());
-        var targetFramework = csproj.XPathSelectElement("/Project/PropertyGroup/TargetFramework")?.Value;
-        if (string.IsNullOrEmpty(targetFramework))
+        var nullable = csproj.XPathSelectElement("/Project/PropertyGroup/Nullable")?.Value;
+        if (string.IsNullOrEmpty(nullable))
         {
-            Logger.Warning("No <TargetFramework> element found in {CsProj}", csprojFiles.First());
+            Logger.Warning("No <Nullable> element found in {CsProj}", csprojFiles.First());
             return 0;
         }
 
-        if (!targetFramework.StartsWith("net7"))
+        if (nullable.ToLower() != "enable")
         {
-            Logger.Information("Expected: <TargetFramework> should contain 'net7'. Actual: '{Content}'", targetFramework);
+            Logger.Information("Expected: <Nullable> should be set to 'enable'. Actual: '{Content}'", nullable);
             return 0;
         }
 

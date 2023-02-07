@@ -35,24 +35,29 @@ internal class GenerateScorecard
             new List<BaseCheck>()
             {
                 new ScorecardGenerator.Checks.HasNET7.Check(_logger),
-                new ScorecardGenerator.Checks.HintPathCounter.Check(_logger),
                 new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT)
             },
-            new List<BaseCheck>(),
             new List<BaseCheck>()
+            {
+              new ScorecardGenerator.Checks.NullableSetup.Check(_logger)  
+            },
+            new List<BaseCheck>()
+            {
+                new ScorecardGenerator.Checks.HintPathCounter.Check(_logger),
+            }
         );
         var listByGroup = new Dictionary<string, IList<string>>
         {
-            { nameof(checks.Gold), checks.Gold.Select(check => check.GetType().Name).ToList() },
-            { nameof(checks.Silver), checks.Silver.Select(check => check.GetType().Name).ToList() },
-            { nameof(checks.Bronze), checks.Bronze.Select(check => check.GetType().Name).ToList() },
+            { nameof(checks.Gold), checks.Gold.Select(Utilities.GetNameFromCheckClass).ToList() },
+            { nameof(checks.Silver), checks.Silver.Select(Utilities.GetNameFromCheckClass).ToList() },
+            { nameof(checks.Bronze), checks.Bronze.Select(Utilities.GetNameFromCheckClass).ToList() },
         };
         
         var scoreForServiceByCheck = _directoriesInWorkingDirectory.ToDictionary(Utilities.RootDirectoryToProjectNameFromCsproj, serviceRootDirectory =>
         {
-            var goldScoreByCheck = checks.Gold.ToDictionary(check => check.GetType().FullName!.Split(".")[^2], check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
-            var silverScoreByCheck = checks.Silver.ToDictionary(check => check.GetType().FullName!.Split(".")[^2], check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
-            var bronzeScoreByCheck = checks.Bronze.ToDictionary(check => check.GetType().FullName!.Split(".")[^2], check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var goldScoreByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var silverScoreByCheck = checks.Silver.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var bronzeScoreByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
             var totalScore = new[]
             {
                 (decimal)goldScoreByCheck.Values.Sum()   * Checks.GoldWeight,
