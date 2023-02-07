@@ -1,14 +1,15 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Serilog;
 using Serilog.Core;
 
 namespace ScorecardGenerator.Checks;
 
 internal class HasNET7 : IRunCheck
 {
-    private readonly Logger _logger;
+    private readonly ILogger _logger;
 
-    public HasNET7(Logger logger)
+    public HasNET7(ILogger logger)
     {
         _logger = logger;
     }

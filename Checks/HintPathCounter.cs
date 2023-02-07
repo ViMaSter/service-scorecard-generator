@@ -1,13 +1,13 @@
 using System.Xml.Linq;
-using Serilog.Core;
+using Serilog;
 
 namespace ScorecardGenerator.Checks;
 
 internal class HintPathCounter : IRunCheck
 {
-    private readonly Logger _logger;
+    private readonly ILogger _logger;
 
-    public HintPathCounter(Logger logger)
+    public HintPathCounter(ILogger logger)
     {
         _logger = logger;
     }
