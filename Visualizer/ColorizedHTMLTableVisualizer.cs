@@ -8,7 +8,7 @@ internal class ColorizedHTMLTableVisualizer
 
     public ColorizedHTMLTableVisualizer(ILogger logger)
     {
-        _logger = logger;
+        _logger = logger.ForContext<ColorizedHTMLTableVisualizer>();
     }
 
     private static string ColorizeNumber(int arg)
