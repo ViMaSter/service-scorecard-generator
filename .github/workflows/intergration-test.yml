@@ -34,3 +34,11 @@ jobs:
       with:
         name: result.md
         path: test-data/result.md
+      
+    - name: Validate result.md
+      run: |
+        if [ $(wc -l < test-data/result.md) -lt 12 ]; then
+          echo "result.md appears to be invalid (less than 12 lines)
+          exit 1
+        fi
+      working-directory: test-data
