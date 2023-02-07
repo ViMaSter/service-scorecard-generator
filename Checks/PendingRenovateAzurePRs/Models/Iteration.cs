@@ -1,17 +1,13 @@
 // ReSharper disable InconsistentNaming - Used for deserialization
 // ReSharper disable NotAccessedPositionalProperty.Global - Used for deserialization
 // ReSharper disable ClassNeverInstantiated.Global - Used for deserialization
-namespace ScorecardGenerator.Checks.PendingRenovatePRs.Models;
+namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 
-public record Changes(
-    ChangeEntries[] changeEntries
+public record Iteration(
+    IterationValue[] value,
+    int count
 );
 
-public record ChangeEntries(
-    Item item
-);
-
-public record Item(
-    string objectId,
-    string path
+public record IterationValue(
+    int id
 );

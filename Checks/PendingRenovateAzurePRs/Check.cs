@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
-using ScorecardGenerator.Checks.PendingRenovatePRs.Models;
+using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 using Serilog;
 
-namespace ScorecardGenerator.Checks.PendingRenovatePRs;
+namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
 internal class Check : BaseCheck
 {
