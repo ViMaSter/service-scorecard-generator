@@ -6,28 +6,22 @@ on:
   pull_request:
     branches: [ main ]
     
-# build matrix
-matrix:
-  include:
-
-
-
 jobs:
   build:
-    strategy:
-      matrix:
-      - suffix: dev-azure-1
-        url: https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1
-      - suffix: dev-azure-2
-        url: https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService12
-      - suffix: visualstudio-1
-        url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService1
-      - suffix: visualstudio-2
-        url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService2
-        
     runs-on: ubuntu-latest
+    depends-on: []
+    
+    strategy:
+      matrix: 
+        data: [
+          { suffix: dev-azure-1,    url: https://:${ { secrets.AZURE_PAT } }@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1 },
+          { suffix: dev-azure-2,    url: https://:${ { secrets.AZURE_PAT } }@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService12 },
+          { suffix: visualstudio-1, url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService1 },
+          { suffix: visualstudio-2, url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService2 },
+        ]
+        
     steps:
-    # setup this repository
+      # setup this repository
     - uses: actions/checkout@v2
       with:
         path: app
@@ -37,13 +31,16 @@ jobs:
       run: dotnet build --configuration Release
       working-directory: app
 
-    - run: git clone ${{ matrix.url }} test-data
-    
+      # setup test data
+    - run: git clone ${{ matrix.data.url }} test-data
+      
+      # generate scorecard
     - name: Run binary inside "test-data"
       run: ../app/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }}
       working-directory: test-data
       
+      # upload result
     - uses: actions/upload-artifact@v2
       with:
-        name: result-${{ matrix.suffix }}.md
+        name: result-${{ matrix.data.suffix }}.md
         path: test-data/result.md
