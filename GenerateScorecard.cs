@@ -54,7 +54,7 @@ internal class GenerateScorecard
             { nameof(checks.Bronze), checks.Bronze.Select(Utilities.GetNameFromCheckClass).ToList() },
         };
         
-        var scoreForServiceByCheck = _directoriesInWorkingDirectory.ToDictionary(Utilities.RootDirectoryToProjectNameFromCsproj, serviceRootDirectory =>
+        var scoreForServiceByCheck = _directoriesInWorkingDirectory.ToDictionary(entry=>Utilities.RootDirectoryToProjectNameFromCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
         {
             
             var goldScoreByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
