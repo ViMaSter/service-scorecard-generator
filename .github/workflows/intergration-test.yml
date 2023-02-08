@@ -14,8 +14,8 @@ jobs:
     strategy:
       matrix: 
         data: [
-          { suffix: "dev-azure-1",    url: "https://:${ { secrets.AZURE_PAT } }@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1" },
-          { suffix: "dev-azure-2",    url: "https://:${ { secrets.AZURE_PAT } }@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService12" },
+          { suffix: "dev-azure-1",    url: "https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1" },
+          { suffix: "dev-azure-2",    url: "https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService12" },
           { suffix: "visualstudio-1", url: "https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService1" },
           { suffix: "visualstudio-2", url: "https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService2" },
         ]
