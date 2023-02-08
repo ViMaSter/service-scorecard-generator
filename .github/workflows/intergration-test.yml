@@ -32,7 +32,6 @@ jobs:
       working-directory: app
 
       # setup test data (replace "PAT"  in matrix.data.url with secrets.AZURE_PAT)
-    - name: Clone test data
     - run: |
         URL=$(${{ matrix.data.url }} | sed "s/PAT/${{ secrets.AZURE_PAT }}/g")
         git clone $URL test-data
