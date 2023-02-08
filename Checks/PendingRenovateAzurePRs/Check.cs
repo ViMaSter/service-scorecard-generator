@@ -52,7 +52,7 @@ internal class Check : BaseCheck
                 }
                 else
                 {
-                    organization = line.Split('.')[0];
+                    organization = line.Split('.')[0].Split("/")[1];
                     var pathSplit = line.Split('/');
                     var gitIndex = Array.IndexOf(pathSplit, "_git");
                     project = pathSplit[gitIndex - 1];
