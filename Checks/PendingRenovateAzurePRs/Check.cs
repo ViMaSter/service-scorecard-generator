@@ -13,9 +13,23 @@ internal class Check : BaseCheck
     public Check(ILogger logger, string azurePAT) : base(logger)
     {
         _azurePAT = azurePAT;
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT}")));
     }
 
     const int PenaltyPerActivePullRequest = 20;
+
+    private static readonly Dictionary<string, HttpResponseMessage> Data = new Dictionary<string, HttpResponseMessage>();
+    private static readonly HttpClient Client = new HttpClient();
+
+    private static HttpResponseMessage GetHTTPRequest(string url)
+    {
+        if (Data.TryGetValue(url, out HttpResponseMessage value))
+        {
+            return value;
+        }
+        Data[url] = Client.GetAsync(url).Result;
+        return Data[url];
+    }
 
     protected override int Run(string workingDirectory, string relativePathToServiceRoot)
     {
@@ -52,7 +66,7 @@ internal class Check : BaseCheck
                 }
                 else
                 {
-                    organization = line.Split('.')[0].Split("/")[1];
+                    organization = line.Split('.')[0].Split("/")[2];
                     var pathSplit = line.Split('/');
                     var gitIndex = Array.IndexOf(pathSplit, "_git");
                     project = pathSplit[gitIndex - 1];
@@ -83,10 +97,8 @@ internal class Check : BaseCheck
 
         var azureInfo = azureInfoFromGit.First();
 
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT}")));
         var projectPullRequestsURL = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
-        var allProjectPullRequests = client.GetAsync(projectPullRequestsURL).Result;
+        var allProjectPullRequests = GetHTTPRequest(projectPullRequestsURL);
         if (!allProjectPullRequests.IsSuccessStatusCode)
         {
             Logger.Error("Couldn't fetch open PRs for {ServiceRootDirectory}; check verbose output for response", serviceRootDirectory);
@@ -107,7 +119,7 @@ internal class Check : BaseCheck
 
             var path = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations?api-version=7.0";
 
-            var iterations = client.GetAsync(path).Result;
+            var iterations = GetHTTPRequest(path);
             if (!iterations.IsSuccessStatusCode)
             {
                 Logger.Error("Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
@@ -121,7 +133,7 @@ internal class Check : BaseCheck
             foreach (var iteration in iterationsList)
             {
                 var url = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0";
-                var filesChanged = client.GetAsync(url).Result;
+                var filesChanged = GetHTTPRequest(url);
                 if (!filesChanged.IsSuccessStatusCode)
                 {
                     Logger.Error("Couldn't fetch file changes for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
@@ -135,7 +147,8 @@ internal class Check : BaseCheck
                 allFilesChanged.AddRange(filesChangedList.Select(fc => fc.item.path));
             }
 
-            if (!allFilesChanged.Any(fc => fc.Contains(relativePathToServiceRoot)))
+            var changedFilesInsideRepository = "/"+string.Join("/", relativePathToServiceRoot.Replace("\\", "/").Split("/").Skip(2));
+            if (!allFilesChanged.Any(fc => fc.StartsWith(changedFilesInsideRepository)))
             {
                 continue;
             }

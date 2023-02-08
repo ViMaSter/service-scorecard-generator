@@ -17,7 +17,7 @@ internal abstract class Utilities
             throw new FileNotFoundException("No csproj found to determine project name");
         }
 
-        return Path.GetFileName(csprojFiles.First());
+        return csprojFiles.First();
     }
 
     public static string GetNameFromCheckClass(BaseCheck check)
