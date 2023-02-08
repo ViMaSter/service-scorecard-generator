@@ -85,11 +85,13 @@ internal class Check : BaseCheck
 
         var client = new HttpClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT}")));
-        var allProjectPullRequests = client.GetAsync($"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active").Result;
+        var projectPullRequestsURL = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
+        var allProjectPullRequests = client.GetAsync(projectPullRequestsURL).Result;
         if (!allProjectPullRequests.IsSuccessStatusCode)
         {
             Logger.Error("Couldn't fetch open PRs for {ServiceRootDirectory}; check verbose output for response", serviceRootDirectory);
             Logger.Verbose("response: {Response}", allProjectPullRequests);
+            Logger.Verbose("url: {Url}", projectPullRequestsURL);
             return 0;
         }
 
@@ -110,6 +112,7 @@ internal class Check : BaseCheck
             {
                 Logger.Error("Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
                 Logger.Verbose("response: {Response}", iterations);
+                Logger.Verbose("path: {Path}", path);
                 return 0;
             }
 
@@ -117,11 +120,13 @@ internal class Check : BaseCheck
             var iterationsList = Newtonsoft.Json.JsonConvert.DeserializeObject<Iteration>(iterationsJSON)!.value;
             foreach (var iteration in iterationsList)
             {
-                var filesChanged = client.GetAsync($"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0").Result;
+                var url = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0";
+                var filesChanged = client.GetAsync(url).Result;
                 if (!filesChanged.IsSuccessStatusCode)
                 {
                     Logger.Error("Couldn't fetch file changes for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
                     Logger.Verbose("response: {Response}", filesChanged);
+                    Logger.Verbose("url: {Url}", url);
                     return 0;
                 }
 
