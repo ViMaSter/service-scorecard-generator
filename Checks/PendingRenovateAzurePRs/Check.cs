@@ -40,24 +40,31 @@ internal class Check : BaseCheck
         {
             line = line.Replace("\t", " ").Replace("  ", " ").Split(" ")[1];
             string organization, project, repo;
-            if (line.Contains("dev.azure"))
+            if (line.Contains("http"))
+            {
+                if (line.Contains("dev.azure"))
+                {
+                    var pathSplit = line.Split('/');
+                    var gitIndex = Array.IndexOf(pathSplit, "_git");
+                    organization = pathSplit[gitIndex - 2];
+                    project = pathSplit[gitIndex - 1];
+                    repo = pathSplit[gitIndex + 1];
+                }
+                else
+                {
+                    organization = line.Split('.')[0];
+                    var pathSplit = line.Split('/');
+                    var gitIndex = Array.IndexOf(pathSplit, "_git");
+                    project = pathSplit[gitIndex - 1];
+                    repo = pathSplit[gitIndex + 1];
+                }
+            }
+            else
             {
                 var parts = line.Split("/");
                 organization = parts[^3];
                 project = parts[^2];
                 repo = parts[^1];
-            }
-            else
-            {
-                organization = line.Split('.')[0];
-                // split path by /
-                var pathSplit = line.Split('/');
-                // get index of "_git" entry in pathSplit array
-                var gitIndex = Array.IndexOf(pathSplit, "_git");
-                // get previous group as project
-                project = pathSplit[gitIndex - 1];
-                // get next group as repo
-                repo = pathSplit[gitIndex + 1];
             }
 
             return new { organization, project, repo };
