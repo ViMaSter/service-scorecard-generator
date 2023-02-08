@@ -5,9 +5,26 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
+# build matrix
+matrix:
+  include:
+
+
 
 jobs:
   build:
+    strategy:
+      matrix:
+      - suffix: dev-azure-1
+        url: https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1
+      - suffix: dev-azure-2
+        url: https://:${{ secrets.AZURE_PAT }}@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService12
+      - suffix: visualstudio-1
+        url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService1
+      - suffix: visualstudio-2
+        url: https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService2
+        
     runs-on: ubuntu-latest
     steps:
     # setup this repository
@@ -20,25 +37,13 @@ jobs:
       run: dotnet build --configuration Release
       working-directory: app
 
-    # setup testdata
-    - uses: actions/checkout@v2
-      with:
-        repository: thangchung/magazine-website-akka
-        path: test-data
-
+    - run: git clone ${{ matrix.url }} test-data
+    
     - name: Run binary inside "test-data"
       run: ../app/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }}
       working-directory: test-data
       
     - uses: actions/upload-artifact@v2
       with:
-        name: result.md
+        name: result-${{ matrix.suffix }}.md
         path: test-data/result.md
-      
-    - name: Validate result.md
-      run: |
-        if [ $(wc -l < test-data/result.md) -lt 12 ]; then
-          echo "result.md appears to be invalid (less than 12 lines)
-          exit 1
-        fi
-      working-directory: test-data

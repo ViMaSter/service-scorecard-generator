@@ -40,7 +40,7 @@ internal class Check : BaseCheck
         {
             line = line.Replace("\t", " ").Replace("  ", " ").Split(" ")[1];
             string organization, project, repo;
-            if (line.Contains('@'))
+            if (line.Contains("dev.azure"))
             {
                 var parts = line.Split("/");
                 organization = parts[^3];
