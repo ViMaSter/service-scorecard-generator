@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
 using ScorecardGenerator.Visualizer;
@@ -28,7 +29,7 @@ internal class GenerateScorecard
             .Where(directory => Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly).Any());
     }
     
-    public void Execute(string azurePAT)
+    public void Execute(string azurePAT, string? excludePath = null)
     {
         var checks = new Checks
         (
@@ -54,7 +55,7 @@ internal class GenerateScorecard
             { nameof(checks.Bronze), checks.Bronze.Select(Utilities.GetNameFromCheckClass).ToList() },
         };
         
-        var scoreForServiceByCheck = _directoriesInWorkingDirectory.ToDictionary(entry=>Utilities.RootDirectoryToProjectNameFromCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
+        var scoreForServiceByCheck = _directoriesInWorkingDirectory.Where(DoesntMatchExcludePath(excludePath)).ToImmutableSortedDictionary(entry=>Utilities.RootDirectoryToProjectNameFromCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
         {
             
             var goldScoreByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
@@ -79,5 +80,14 @@ internal class GenerateScorecard
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
         File.WriteAllText("result.md", new ColorizedHTMLTableVisualizer(_logger).ToMarkdown(runInfo));
+    }
+
+    private Func<string, bool> DoesntMatchExcludePath(string? excludePath)
+    {
+        if (string.IsNullOrEmpty(excludePath))
+        {
+            return _ => true;
+        }
+        return path => !path.Contains(excludePath);
     }
 }
