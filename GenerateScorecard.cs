@@ -28,7 +28,7 @@ internal class GenerateScorecard
             .Where(directory => Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly).Any());
     }
     
-    public void Execute(string azurePAT, string? excludePath = null)
+    public void Execute(string azurePAT, string outputPath, string? excludePath = null)
     {
         var checks = new Checks
         (
@@ -76,7 +76,7 @@ internal class GenerateScorecard
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
-        IVisualizer visualizer = new AzureWikiTableVisualizer(_logger);
+        IVisualizer visualizer = new AzureWikiTableVisualizer(_logger, outputPath);
         visualizer.Visualize(runInfo);
     }
 
