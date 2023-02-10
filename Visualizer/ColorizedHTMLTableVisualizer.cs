@@ -42,7 +42,7 @@ internal class ColorizedHTMLTableVisualizer
         
         _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
         
-        return $"{generationInfo}<table>{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>";
+        return $"{generationInfo}{Environment.NewLine}{Environment.NewLine}<table>{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>";
     }
 
     private record TableContent(string Content, int Colspan = 1)
