@@ -8,5 +8,5 @@ This check returns **100 points by default**.
 Clear any `<HintPath>` elements present in the scanned project file.
 
 ## Why this check exists
-`<HintPath>` entries become relevant, if libraries can't resolve using the NuGet package registry.
+`<HintPath>` entries become relevant, if libraries can't resolve using the NuGet package registry.  
 Packages should resolve globally across local systems and build pipeline alike.

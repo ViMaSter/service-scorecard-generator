@@ -8,4 +8,4 @@ The scanned `.csproj` needs to contain `<TargetFramework>net7</TargetFramework>`
 
 ## Why this check exists
 Keeping up-to-date with releases is important for security and performance reasons.  
-Less differences between services also means less effort for maintenance and less risk of bugs, ultimately allowing more time for new features.
+Less supported runtimes per language also means less effort for maintenance and less risk of bugs, ultimately allowing more time for new features.
