@@ -24,7 +24,6 @@ internal class GenerateScorecard
     public GenerateScorecard(ILogger logger)
     {
         _logger = logger;
-        // find all directories in working directory that contain a csproj file
         _directoriesInWorkingDirectory = Directory.EnumerateDirectories(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
             .Where(directory => Directory.GetFiles(directory, "*.csproj", SearchOption.TopDirectoryOnly).Any());
     }
@@ -47,16 +46,15 @@ internal class GenerateScorecard
                 new ScorecardGenerator.Checks.HintPathCounter.Check(_logger),
             }
         );
-        var listByGroup = new Dictionary<string, IList<string>>
+        var listByGroup = new Dictionary<string, IList<CheckInfo>>
         {
-            { nameof(checks.Gold), checks.Gold.Select(Utilities.GetNameFromCheckClass).ToList() },
-            { nameof(checks.Silver), checks.Silver.Select(Utilities.GetNameFromCheckClass).ToList() },
-            { nameof(checks.Bronze), checks.Bronze.Select(Utilities.GetNameFromCheckClass).ToList() },
+            { nameof(checks.Gold), checks.Gold.Select(GenerateCheckRunInfo).ToList() },
+            { nameof(checks.Silver), checks.Silver.Select(GenerateCheckRunInfo).ToList() },
+            { nameof(checks.Bronze), checks.Bronze.Select(GenerateCheckRunInfo).ToList() },
         };
         
         var scoreForServiceByCheck = _directoriesInWorkingDirectory.Where(DoesntMatchExcludePath(excludePath)).ToImmutableSortedDictionary(entry=>Utilities.RootDirectoryToProjectNameFromCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
         {
-            
             var goldScoreByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
             var silverScoreByCheck = checks.Silver.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
             var bronzeScoreByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
@@ -78,7 +76,13 @@ internal class GenerateScorecard
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
-        File.WriteAllText("result.md", new AzureWikiTableVisualizer(_logger).ToMarkdown(runInfo));
+        IVisualizer visualizer = new AzureWikiTableVisualizer(_logger);
+        visualizer.Visualize(runInfo);
+    }
+
+    private CheckInfo GenerateCheckRunInfo(BaseCheck check)
+    {
+        return new CheckInfo(Utilities.GetNameFromCheckClass(check), check.InfoPageContent);
     }
 
     private Func<string, bool> DoesntMatchExcludePath(string? excludePath)
@@ -90,3 +94,5 @@ internal class GenerateScorecard
         return path => !path.Contains(excludePath);
     }
 }
+
+public record CheckInfo(string Name, string InfoPageContent);
