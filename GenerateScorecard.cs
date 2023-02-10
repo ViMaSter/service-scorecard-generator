@@ -79,7 +79,7 @@ internal class GenerateScorecard
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
-        File.WriteAllText("result.md", new ColorizedHTMLTableVisualizer(_logger).ToMarkdown(runInfo));
+        File.WriteAllText("result.md", new AzureWikiTableVisualizer(_logger).ToMarkdown(runInfo));
     }
 
     private Func<string, bool> DoesntMatchExcludePath(string? excludePath)
