@@ -16,7 +16,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Checks\HintPathCounter\info.md" />
-      <EmbeddedResource Include="Checks\HasNET7\info.md" />
+      <EmbeddedResource Include="Checks\LatestNET\info.md" />
       <EmbeddedResource Include="Checks\NullableSetup\info.md" />
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\info.md" />
     </ItemGroup>

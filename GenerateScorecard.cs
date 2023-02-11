@@ -34,7 +34,7 @@ internal class GenerateScorecard
         (
             new List<BaseCheck>()
             {
-                new ScorecardGenerator.Checks.HasNET7.Check(_logger),
+                new ScorecardGenerator.Checks.LatestNET.Check(_logger),
                 new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT)
             },
             new List<BaseCheck>()
