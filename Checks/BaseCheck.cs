@@ -33,7 +33,7 @@ public abstract class BaseCheck
     
     public IList<Deduction> SetupLoggerAndRun(string workingDirectory, string relativePathToServiceRoot)
     {
-        Logger = Logger.ForContext(Serilog.Core.Constants.SourceContextPropertyName, $"{GetType().FullName!.Split(".")[^2]}::{relativePathToServiceRoot}");
+        Logger = Logger.ForContext(Constants.SourceContextPropertyName, $"{GetType().FullName!.Split(".")[^2]}::{relativePathToServiceRoot}");
         Logger.Information("Running check");
         return Run(workingDirectory, relativePathToServiceRoot);
     }
@@ -63,6 +63,7 @@ public abstract class BaseCheck
             }
             var netStyle = format.ToString();
             
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem - justificationTemplate is inserted to be formatted with propertyValues; while not compile-time constant, it's not an interpolated string
             logger.Warning(justificationTemplate, propertyValues);
             return new Deduction(score, string.Format(netStyle, propertyValues));
         }

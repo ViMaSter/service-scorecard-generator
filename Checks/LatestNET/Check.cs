@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -104,7 +103,7 @@ internal partial class Check : BaseCheck
         }
         
         var offset = 100-(int)Math.Round(((double)currentMajor / _newestMajor) * 100);
-        return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {Current}, latest available is {Latest} ({Current}/{Latest}={Offset}%)", targetFramework, _newestText, currentMajor, _newestMajor, 100-offset) };
+        return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {CurrentText}, latest available is {LatestText} ({CurrentMajor}/{LatestMajor}={Offset}%)", targetFramework, _newestText, currentMajor, _newestMajor, 100-offset) };
     }
 
     [GeneratedRegex("\\d")]

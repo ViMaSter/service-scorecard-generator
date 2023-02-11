@@ -21,7 +21,7 @@ internal class AzureWikiTableVisualizer : IVisualizer
         _dayOfGeneration = $"{DateTime.Now:yyyy-MM-dd}";
     }
     
-    public void Visualize(Calculation.RunInfo runInfo)
+    public void Visualize(RunInfo runInfo)
     {
         CreateDirectoryForDay();
         GenerateCheckPages(runInfo);
@@ -136,6 +136,6 @@ internal class AzureWikiTableVisualizer : IVisualizer
 
     private record TableContent(string Content, int Colspan = 1)
     { 
-        public static implicit operator TableContent(string content) => new TableContent(content);
+        public static implicit operator TableContent(string content) => new(content);
     }
 }

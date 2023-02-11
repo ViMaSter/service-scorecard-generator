@@ -8,22 +8,19 @@ namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
 internal class Check : BaseCheck
 {
-    private readonly string _azurePAT;
-
     public Check(ILogger logger, string azurePAT) : base(logger)
     {
-        _azurePAT = azurePAT;
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT}")));
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT}")));
     }
 
     const int DeductionPerActivePullRequest = 20;
 
-    private static readonly Dictionary<string, HttpResponseMessage> Data = new Dictionary<string, HttpResponseMessage>();
-    private static readonly HttpClient Client = new HttpClient();
+    private static readonly Dictionary<string, HttpResponseMessage> Data = new();
+    private static readonly HttpClient Client = new();
 
     private static HttpResponseMessage GetHTTPRequest(string url)
     {
-        if (Data.TryGetValue(url, out HttpResponseMessage value))
+        if (Data.TryGetValue(url, out var value))
         {
             return value;
         }
@@ -98,7 +95,7 @@ internal class Check : BaseCheck
 
         var projectPullRequestsURL = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
         var allProjectPullRequests = GetHTTPRequest(projectPullRequestsURL);
-        if (!allProjectPullRequests.IsSuccessStatusCode)
+        if (allProjectPullRequests is { IsSuccessStatusCode: false })
         {
             Logger.Verbose("response: {Response}", allProjectPullRequests);
             Logger.Verbose("url: {Url}", projectPullRequestsURL);

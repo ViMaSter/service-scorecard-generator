@@ -12,7 +12,6 @@ internal class Check : BaseCheck
 
     protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
-        var deductions = new List<Deduction>();
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
         var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
