@@ -10,30 +10,27 @@ internal class Check : BaseCheck
     {
     }
 
-    protected override int Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
         var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
         {
-            Logger.Warning("No csproj file found at {Location}", absolutePathToServiceRoot);
-            return 0;
+            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
         }
         var csproj = XDocument.Load(csprojFiles.First());
         var targetFramework = csproj.XPathSelectElement("/Project/PropertyGroup/TargetFramework")?.Value;
         if (string.IsNullOrEmpty(targetFramework))
         {
-            Logger.Warning("No <TargetFramework> element found in {CsProj}", csprojFiles.First());
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "No <TargetFramework> element found in {CsProj}", csprojFiles.First()) };
         }
 
         const string expectedValue = "net7";
         if (!targetFramework.StartsWith(expectedValue))
         {
-            Logger.Information("Expected: <TargetFramework> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, targetFramework);
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Expected: <TargetFramework> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, targetFramework) };
         }
 
-        return 100;
+        return new List<Deduction>();
     }
 }

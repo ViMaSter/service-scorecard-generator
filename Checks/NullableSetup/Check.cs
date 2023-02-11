@@ -10,30 +10,28 @@ internal class Check : BaseCheck
     {
     }
 
-    protected override int Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
+        var deductions = new List<Deduction>();
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
         var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
         {
-            Logger.Warning("No csproj file found at {Location}", absolutePathToServiceRoot);
-            return 0;
+            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
         }
         var csproj = XDocument.Load(csprojFiles.First());
         var nullable = csproj.XPathSelectElement("/Project/PropertyGroup/Nullable")?.Value;
         if (string.IsNullOrEmpty(nullable))
         {
-            Logger.Warning("No <Nullable> element found in {CsProj}", csprojFiles.First());
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "No <Nullable> element found in {CsProj}", csprojFiles.First()) };
         }
 
         const string expectedValue = "enable";
         if (nullable.ToLower() != "enable")
         {
-            Logger.Information("Expected: <Nullable> should be set to '{Expected}'. Actual: '{Actual}'", expectedValue, nullable);
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Expected: <Nullable> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, nullable) };
         }
 
-        return 100;
+        return new List<Deduction>();
     }
 }

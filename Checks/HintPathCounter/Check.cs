@@ -9,33 +9,24 @@ internal class Check : BaseCheck
     {
     }
     
-    const int PenaltyPerHintPath = 10;
+    const int DeductionPerHintPath = 10;
 
-    protected override int Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override List<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         const int allowedCount = 10;
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
         var csprojFiles = Directory.GetFiles(Path.Join(workingDirectory, relativePathToServiceRoot), "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
         {
-            Logger.Warning("No csproj file found at {Location}", absolutePathToServiceRoot);
-            return 0;
+            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
         }
         var csproj = XDocument.Load(csprojFiles.First());
         if (csproj.Root == null)
         {
-            Logger.Warning("Couldn't parse {CsProj}", csprojFiles.First());
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't parse {CsProj}", csprojFiles.First()) };
         }
 
         var hintPaths = csproj.Root.Descendants("HintPath");
-        var currentCount = allowedCount - hintPaths.Count();
-        if (currentCount < 0)
-        {
-            currentCount = 0;
-        }
-        
-        Logger.Information("Deducting {Penalty} points per HintPath. Current count: {CurrentCount}", PenaltyPerHintPath, hintPaths.Count());
-        return currentCount * PenaltyPerHintPath;
+        return hintPaths.Select(hintPath => Deduction.Create(Logger, DeductionPerHintPath, "HintPath: {HintPath}", hintPath.Value)).ToList();
     }
 }

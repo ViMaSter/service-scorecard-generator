@@ -16,7 +16,7 @@ internal class Check : BaseCheck
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT}")));
     }
 
-    const int PenaltyPerActivePullRequest = 20;
+    const int DeductionPerActivePullRequest = 20;
 
     private static readonly Dictionary<string, HttpResponseMessage> Data = new Dictionary<string, HttpResponseMessage>();
     private static readonly HttpClient Client = new HttpClient();
@@ -31,7 +31,7 @@ internal class Check : BaseCheck
         return Data[url];
     }
 
-    protected override int Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var serviceRootDirectory = Path.Join(workingDirectory, relativePathToServiceRoot);
         // use git command to find all remotes
@@ -86,8 +86,7 @@ internal class Check : BaseCheck
 
         if (!azureInfoFromGit.Any())
         {
-            Logger.Error("No Azure DevOps remotes found for {ServiceRootDirectory}; can't check for open pull requests", serviceRootDirectory);
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "No Azure DevOps remotes found for {ServiceRootDirectory}; can't check for open pull requests", serviceRootDirectory) };
         }
 
         if (azureInfoFromGit.Count > 1)
@@ -101,18 +100,16 @@ internal class Check : BaseCheck
         var allProjectPullRequests = GetHTTPRequest(projectPullRequestsURL);
         if (!allProjectPullRequests.IsSuccessStatusCode)
         {
-            Logger.Error("Couldn't fetch open PRs for {ServiceRootDirectory}; check verbose output for response", serviceRootDirectory);
             Logger.Verbose("response: {Response}", allProjectPullRequests);
             Logger.Verbose("url: {Url}", projectPullRequestsURL);
-            return 0;
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch open PRs for {ServiceRootDirectory}; check verbose output for response", serviceRootDirectory) };
         }
 
         var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
         var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<PullRequest>(pullRequestJSON)!.value;
         var renovatePullRequests = pullRequests.Where(pr => pr.repository.name == azureInfo.repo && pr.sourceRefName.Contains("renovate")).ToList();
 
-        // get all files changed in each PR
-        var relevantPullRequestIDs = new List<int>();
+        var deductionsPerPR = new List<Deduction>();
         foreach (var pr in renovatePullRequests)
         {
             var allFilesChanged = new List<string>();
@@ -125,7 +122,7 @@ internal class Check : BaseCheck
                 Logger.Error("Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
                 Logger.Verbose("response: {Response}", iterations);
                 Logger.Verbose("path: {Path}", path);
-                return 0;
+                return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory) };
             }
 
             var iterationsJSON = iterations.Content.ReadAsStringAsync().Result;
@@ -136,10 +133,9 @@ internal class Check : BaseCheck
                 var filesChanged = GetHTTPRequest(url);
                 if (!filesChanged.IsSuccessStatusCode)
                 {
-                    Logger.Error("Couldn't fetch file changes for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
                     Logger.Verbose("response: {Response}", filesChanged);
                     Logger.Verbose("url: {Url}", url);
-                    return 0;
+                    return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch file changes for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory) };
                 }
 
                 var filesChangedJSON = filesChanged.Content.ReadAsStringAsync().Result;
@@ -152,11 +148,9 @@ internal class Check : BaseCheck
             {
                 continue;
             }
-            Logger.Information("Found open PR #{PRNumber} for {ServiceRootDirectory}; deducting {Penalty} points", pr.pullRequestId, serviceRootDirectory, PenaltyPerActivePullRequest);
-            relevantPullRequestIDs.Add(pr.pullRequestId);
+            deductionsPerPR.Add(Deduction.Create(Logger, DeductionPerActivePullRequest, "Found open PR #{PRNumber} for {ServiceRootDirectory}", pr.pullRequestId, serviceRootDirectory));
         }
 
-        var openPRsCount = relevantPullRequestIDs.Count;
-        return Math.Max(0, 100 - openPRsCount * PenaltyPerActivePullRequest);
+        return deductionsPerPR;
     }
 }

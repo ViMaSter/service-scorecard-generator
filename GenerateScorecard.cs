@@ -55,23 +55,23 @@ internal class GenerateScorecard
         
         var scoreForServiceByCheck = _directoriesInWorkingDirectory.Where(DoesntMatchExcludePath(excludePath)).ToImmutableSortedDictionary(entry=>Utilities.RootDirectoryToProjectNameFromCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
         {
-            var goldScoreByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
-            var silverScoreByCheck = checks.Silver.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
-            var bronzeScoreByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var goldDeductionsByCheck = checks.Gold.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var silverDeductionsByCheck = checks.Silver.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
+            var bronzeDeductionsByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
             var totalScore = new[]
             {
-                (decimal)goldScoreByCheck.Values.Sum()   * Checks.GoldWeight,
-                (decimal)silverScoreByCheck.Values.Sum() * Checks.SilverWeight,
-                (decimal)bronzeScoreByCheck.Values.Sum() * Checks.BronzeWeight
+                (decimal)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GoldWeight,
+                (decimal)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SilverWeight,
+                (decimal)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BronzeWeight
             }.Sum();
 
-            var totalChecks = goldScoreByCheck.Count * Checks.GoldWeight + silverScoreByCheck.Count * Checks.SilverWeight + bronzeScoreByCheck.Count * Checks.BronzeWeight;
+            var totalChecks = goldDeductionsByCheck.Count * Checks.GoldWeight + silverDeductionsByCheck.Count * Checks.SilverWeight + bronzeDeductionsByCheck.Count * Checks.BronzeWeight;
             var average = (int)Math.Round(totalScore / totalChecks);
-            var scoreByCheck = goldScoreByCheck
-                                                    .Concat(silverScoreByCheck)
-                                                    .Concat(bronzeScoreByCheck)
+            var deductionsByCheck = goldDeductionsByCheck
+                                                    .Concat(silverDeductionsByCheck)
+                                                    .Concat(bronzeDeductionsByCheck)
                                                     .ToDictionary(a => a.Key, a => a.Value);
-            return new RunInfo.ServiceScorecard(scoreByCheck, average);
+            return new RunInfo.ServiceScorecard(deductionsByCheck, average);
         });
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);

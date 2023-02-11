@@ -2,6 +2,16 @@ using ScorecardGenerator.Checks;
 
 namespace ScorecardGenerator;
 
+static class DeductionExtensions
+{
+    public static int CalculateFinalScore(this IList<BaseCheck.Deduction> deductions)
+    {
+        var scoreAfterDeductions = deductions.Aggregate(100, (current, deduction) => current - deduction.Score);
+
+        return Math.Max(0, scoreAfterDeductions);
+    }
+}
+
 internal abstract class Utilities
 {
     public static bool ContainsCsProj(string directory)

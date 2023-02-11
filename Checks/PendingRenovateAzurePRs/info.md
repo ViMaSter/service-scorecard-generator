@@ -4,7 +4,7 @@
 This check represents outdated package inside the scanned project.
 The scanned project starts at **100 points**.
 The check looks for open Pull Requests on Azure DevOps that include the scanned project file and relate to [Renovate](https://github.com/renovatebot/renovate).
-Each open Pull Request represents a not-yet integrated package update and results in a **20 point penalty**.
+Each open Pull Request represents a not-yet integrated package update and results in a **20 point deduction**.
 
 ## How to achieve 100 points
 Resolve all open Pull Requests on Azure DevOps that include the scanned project file and relate to [Renovate](https://github.com/renovatebot/renovate).
