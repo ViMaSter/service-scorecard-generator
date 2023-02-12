@@ -14,7 +14,6 @@ public abstract class TestWithNeighboringFixture
         var assembly = Assembly.GetExecutingAssembly();
         var resourceStream = assembly.GetManifestResourceStream(resourceName+".csproj.xml");
         
-        // create a temp directory and write the resource to it
         WorkingDirectory = Path.GetTempPath();
         RelativePathToServiceRoot = Guid.NewGuid().ToString();
         var tempDirectory = Path.Join(WorkingDirectory, RelativePathToServiceRoot);

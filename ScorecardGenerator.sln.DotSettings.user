@@ -13,6 +13,7 @@
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableDisabled.Returns90Points&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableEnabled.Returns100Points&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableDisabled.Returns0Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer.Example.Returns0Points&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.cs&lt;/ProjectFile&gt;
     &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.csproj&lt;/ProjectFile&gt;

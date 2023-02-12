@@ -5,7 +5,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Visualizer;
 
-internal class AzureWikiTableVisualizer : IVisualizer
+public class AzureWikiTableVisualizer : IVisualizer
 {
     private readonly ILogger _logger;
     private readonly string _outputPath;
