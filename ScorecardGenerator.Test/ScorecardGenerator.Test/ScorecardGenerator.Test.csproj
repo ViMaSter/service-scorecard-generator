@@ -17,20 +17,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Checks\HintPathCounter\HasElevenHintPaths.csproj" />
-      <EmbeddedResource Include="Checks\HintPathCounter\HasNoHintPath.csproj" />
-      <EmbeddedResource Include="Checks\HintPathCounter\HasTwoHintPaths.csproj" />
-      <EmbeddedResource Include="Checks\LatestNET\NETCore31.csproj" />
-      <EmbeddedResource Include="Checks\LatestNET\NET6.csproj" />
-      <EmbeddedResource Include="Checks\LatestNET\NET7.csproj" />
-      <EmbeddedResource Include="Checks\LatestNET\NETFramework471.csproj" />
-      <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj" />
-      <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj" />
-      <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj" />
+      <EmbeddedResource Include="Checks\HintPathCounter\HasElevenHintPaths.csproj.xml" />
+      <EmbeddedResource Include="Checks\HintPathCounter\HasNoHintPath.csproj.xml" />
+      <EmbeddedResource Include="Checks\HintPathCounter\HasTwoHintPaths.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NETCore31.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NET6.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NET7.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NETFramework471.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />
+        <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj.xml" />
+      <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\ScorecardGenerator\ScorecardGenerator.csproj" />
+        <ProjectReference Include="..\..\ScorecardGenerator\ScorecardGenerator.csproj" />
     </ItemGroup>
 
 </Project>

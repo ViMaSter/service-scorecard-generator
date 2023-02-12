@@ -12,7 +12,7 @@ public abstract class TestWithNeighboringFixture
     {
         var resourceName = GetType().FullName;
         var assembly = Assembly.GetExecutingAssembly();
-        var resourceStream = assembly.GetManifestResourceStream(resourceName+".csproj");
+        var resourceStream = assembly.GetManifestResourceStream(resourceName+".csproj.xml");
         
         // create a temp directory and write the resource to it
         WorkingDirectory = Path.GetTempPath();
