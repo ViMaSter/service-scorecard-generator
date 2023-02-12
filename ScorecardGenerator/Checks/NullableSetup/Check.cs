@@ -4,7 +4,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Checks.NullableSetup;
 
-internal class Check : BaseCheck
+public class Check : BaseCheck
 {
     public Check(ILogger logger) : base(logger)
     {

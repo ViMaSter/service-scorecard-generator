@@ -5,7 +5,7 @@ namespace ScorecardGenerator.Test.Checks.LatestNET;
 public class NET6 : TestWithNeighboringFixture
 {
     [Test]
-    public void Returns100Points()
+    public void Returns86Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.LatestNET.Check(logger);

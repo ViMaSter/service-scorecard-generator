@@ -5,7 +5,7 @@ namespace ScorecardGenerator.Test.Checks.LatestNET;
 public class NotYetReleased : TestWithNeighboringFixture
 {
     [Test]
-    public void Returns100Points()
+    public void Returns95Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.LatestNET.Check(logger);
