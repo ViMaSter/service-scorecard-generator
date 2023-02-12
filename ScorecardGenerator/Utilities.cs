@@ -2,7 +2,7 @@ using ScorecardGenerator.Checks;
 
 namespace ScorecardGenerator;
 
-static class DeductionExtensions
+public static class DeductionExtensions
 {
     public static int CalculateFinalScore(this IList<BaseCheck.Deduction> deductions)
     {

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScorecardGenerator", "ScorecardGenerator.csproj", "{CE4067CD-7948-4626-B821-978017BCCAAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScorecardGenerator", "ScorecardGenerator/ScorecardGenerator.csproj", "{CE4067CD-7948-4626-B821-978017BCCAAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScorecardGenerator.Test", "ScorecardGenerator.Test\ScorecardGenerator.Test\ScorecardGenerator.Test.csproj", "{9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{CE4067CD-7948-4626-B821-978017BCCAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE4067CD-7948-4626-B821-978017BCCAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE4067CD-7948-4626-B821-978017BCCAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

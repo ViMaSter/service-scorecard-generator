@@ -25,7 +25,7 @@ public abstract class BaseCheck
         var exists = Assembly.GetExecutingAssembly().GetManifestResourceNames().Contains(embeddedPathToInfoMD);
         if (!exists)
         {
-            throw new NotImplementedException($"Check {GetType().Namespace} implementing BaseCheck must have an `{markdownFileName}` file with Build Action 'Embedded Resource' next to it");
+            throw new FileNotFoundException($"Check {GetType().Namespace} implementing BaseCheck must have an `{markdownFileName}` file with Build Action 'Embedded Resource' next to it");
         }
         var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedPathToInfoMD);
         using var reader = new StreamReader(stream!);

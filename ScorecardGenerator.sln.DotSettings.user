@@ -1,0 +1,12 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/vimaster/Library/Caches/JetBrains/Rider2022.3/resharper-host/temp/Rider/vAny/CoverageData/_ScorecardGenerator.-1550194268/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e1b4629_002Dac2b_002D4607_002Da11e_002D59d09ec3fce8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:HintPathCounter/f:HasNoHintPath.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:HintPathCounter/f:HasTwoHintPaths.cs&lt;/ProjectFile&gt;
+    &lt;TestAncestor&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Tests.Test1&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.HintPathCounter.HasNoHintPath.Returns100Points&lt;/TestId&gt;
+    &lt;/TestAncestor&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -3,7 +3,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Checks.HintPathCounter;
 
-internal class Check : BaseCheck
+public class Check : BaseCheck
 {
     public Check(ILogger logger) : base(logger)
     {
