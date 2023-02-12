@@ -12,9 +12,9 @@ public static class DeductionExtensions
     }
 }
 
-internal abstract class Utilities
+public abstract class Utilities
 {
-    public static string RootDirectoryToProjectNameFromCsproj(string serviceRootDirectory)
+    public static string RootDirectoryToAbsolutePathToFirstCsproj(string serviceRootDirectory)
     { 
         var csprojFiles = Directory.GetFiles(serviceRootDirectory, "*.csproj", SearchOption.TopDirectoryOnly);
         if (!csprojFiles.Any())
@@ -22,7 +22,7 @@ internal abstract class Utilities
             throw new FileNotFoundException("No csproj found to determine project name");
         }
 
-        return csprojFiles.First();
+        return csprojFiles.Order().First();
     }
 
     public static string GetNameFromCheckClass(BaseCheck check)
