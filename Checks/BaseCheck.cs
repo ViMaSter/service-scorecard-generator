@@ -20,11 +20,12 @@ public abstract class BaseCheck
 
     private string GenerateInfoPage()
     {
-        var embeddedPathToInfoMD = $"{GetType().Namespace}.info.md";
+        const string markdownFileName = "README.md";
+        var embeddedPathToInfoMD = $"{GetType().Namespace}.{markdownFileName}";
         var exists = Assembly.GetExecutingAssembly().GetManifestResourceNames().Contains(embeddedPathToInfoMD);
         if (!exists)
         {
-            throw new NotImplementedException($"Check {GetType().Namespace} implementing BaseCheck must have an `info.md` file with Build Action 'Embedded Resource' next to it");
+            throw new NotImplementedException($"Check {GetType().Namespace} implementing BaseCheck must have an `{markdownFileName}` file with Build Action 'Embedded Resource' next to it");
         }
         var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedPathToInfoMD);
         using var reader = new StreamReader(stream!);
