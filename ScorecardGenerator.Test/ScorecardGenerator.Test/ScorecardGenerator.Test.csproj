@@ -19,6 +19,11 @@
     <ItemGroup>
       <EmbeddedResource Include="Checks\HintPathCounter\HasNoHintPath.csproj" />
       <EmbeddedResource Include="Checks\HintPathCounter\HasTwoHintPaths.csproj" />
+      <EmbeddedResource Include="Checks\LatestNET\NETCore31.csproj" />
+      <EmbeddedResource Include="Checks\LatestNET\NET6.csproj" />
+      <EmbeddedResource Include="Checks\LatestNET\NET7.csproj" />
+      <EmbeddedResource Include="Checks\LatestNET\NETFramework471.csproj" />
+      <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj" />
     </ItemGroup>
 
     <ItemGroup>

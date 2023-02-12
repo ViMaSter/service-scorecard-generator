@@ -5,7 +5,8 @@ using Newtonsoft.Json;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.LatestNET;
-internal partial class Check : BaseCheck
+
+public partial class Check : BaseCheck
 {
     private record ReleaseData(
         [JsonProperty("releases-index")]

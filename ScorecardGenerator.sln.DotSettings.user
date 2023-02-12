@@ -7,6 +7,16 @@
     &lt;TestAncestor&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Tests.Test1&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.HintPathCounter.HasNoHintPath.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.LatestNET.NETCore31.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.LatestNET.NotYetReleased.Returns100Points&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET7.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET7.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETCore3Point1.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETCore3Point1.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETFramework471.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETFramework471.csproj&lt;/ProjectFile&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
