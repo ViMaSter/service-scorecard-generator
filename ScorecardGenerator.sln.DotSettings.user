@@ -1,0 +1,32 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/vimaster/Library/Caches/JetBrains/Rider2022.3/resharper-host/temp/Rider/vAny/CoverageData/_ScorecardGenerator.-1550194268/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e1b4629_002Dac2b_002D4607_002Da11e_002D59d09ec3fce8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:HintPathCounter/f:HasNoHintPath.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:HintPathCounter/f:HasTwoHintPaths.cs&lt;/ProjectFile&gt;
+    &lt;TestAncestor&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Tests.Test1&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.HintPathCounter.HasNoHintPath.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.LatestNET.NETCore31.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.LatestNET.NotYetReleased.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.LatestNET.NETCore31&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableDisabled.Returns90Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableEnabled.Returns100Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.NullableSetup.NullableDisabled.Returns0Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer.Example.Returns0Points&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.GetNameFromCheckClass.Test&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.RootDirectoryToProjectNameFromCsproj.WorksWithTwoCsProjFiles&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.RootDirectoryToAbsolutePathToFirstCsproj.WorksWithTwoCsProjFiles&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.RootDirectoryToAbsolutePathToFirstCsproj.ThrowsWithEmptyDirectory&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.GetNameFromCheckClass.WorksForLatestNET&lt;/TestId&gt;
+    &lt;/TestAncestor&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET7.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET7.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETCore3Point1.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETCore3Point1.csproj&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETFramework471.cs&lt;/ProjectFile&gt;
+    &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NETFramework471.csproj&lt;/ProjectFile&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

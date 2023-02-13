@@ -38,11 +38,11 @@ jobs:
       
       # generate scorecard
     - name: Run binary inside "test-data"
-      run: ../app/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }}
+      run: ../app/ScorecardGenerator/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki
       working-directory: test-data
       
       # upload result
     - uses: actions/upload-artifact@v2
       with:
-        name: result-${{ matrix.data.suffix }}.md
-        path: test-data/result.md
+        name: output-${{ matrix.data.suffix }}
+        path: test-data/wiki/*
