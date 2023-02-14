@@ -7,7 +7,6 @@ public abstract class TestWithNeighboringDirectoryFixture
     protected string WorkingDirectory { get; private set; } = "";
     protected string RelativePathToServiceRoot { get; private set; } = "";
     private string TargetWorkingDirectory { get; set; } = "";
-    public string Today = DateTime.Now.ToString("yyyy-MM-dd");
 
     [OneTimeSetUp]
     public void BeforeAll()
@@ -23,13 +22,13 @@ public abstract class TestWithNeighboringDirectoryFixture
         {
             var resourceStream = assembly.GetManifestResourceStream(matchingResource);
             var parts = matchingResource.Replace(resourceName, "").Trim('.').Split(".").Select(part=>part.Replace("_", "-")).ToList();
-            var directory = string.Join(Path.DirectorySeparatorChar, parts.SkipLast(2).Prepend(tempDirectory)).Replace("yyyy-mm-dd", Today);
+            var directory = string.Join(Path.DirectorySeparatorChar, parts.SkipLast(2).Prepend(tempDirectory));
             if (!string.IsNullOrEmpty(directory))
             {
                 Directory.CreateDirectory(directory);
             }
             var pats = Path.Join(directory, string.Join(".", parts.TakeLast(2)));
-            using var fileStream = File.Create(pats.Replace("yyyy-mm-dd", Today));
+            using var fileStream = File.Create(pats);
             resourceStream!.CopyTo(fileStream);
         }
     }
