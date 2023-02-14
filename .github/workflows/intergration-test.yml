@@ -21,7 +21,6 @@ jobs:
         ]
         
     steps:
-      # setup this repository
     - uses: actions/checkout@v2
       with:
         path: app
@@ -31,17 +30,14 @@ jobs:
       run: dotnet build --configuration Release
       working-directory: app
 
-      # setup test data (replace "PAT"  in matrix.data.url with secrets.AZURE_PAT)
     - run: |
         URL=$(echo "${{ matrix.data.url }}" | sed "s/PAT/${{ secrets.AZURE_PAT }}/g")
         git clone $URL test-data
       
-      # generate scorecard
     - name: Run binary inside "test-data"
       run: ../app/ScorecardGenerator/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki
       working-directory: test-data
       
-      # upload result
     - uses: actions/upload-artifact@v2
       with:
         name: output-${{ matrix.data.suffix }}
