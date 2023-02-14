@@ -78,12 +78,8 @@ public abstract class BaseCheck
             logger.Warning(justificationTemplate, propertyValues);
             return new Deduction(score, string.Format(netStyle, propertyValues));
         }
-        
-        public string Justification { get; }
 
-        public int? Score { get; }
-        public bool IsDisqualification => Score == null;
-
+        [MessageTemplateFormatMethod(nameof(justificationTemplate))]
         public static Deduction CreateDisqualification(ILogger logger, string justificationTemplate, params object[] propertyValues)
         {
             var parser = new MessageTemplateParser();
@@ -103,5 +99,10 @@ public abstract class BaseCheck
             logger.Warning(justificationTemplate, propertyValues);
             return new Deduction(null, string.Format(netStyle, propertyValues));
         }
+        
+        public string Justification { get; }
+
+        public int? Score { get; }
+        public bool IsDisqualification => Score == null;
     }
 }
