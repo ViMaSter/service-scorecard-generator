@@ -11,7 +11,7 @@ public class Check : BaseCheck
     protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        if (relativePathToServiceRoot.Contains(".Test")
+        if (relativePathToServiceRoot.Contains(".Test"))
         {
             return new List<Deduction>();
         }
