@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.BuiltForAKS;
@@ -8,16 +10,26 @@ public class Check : BaseCheck
     {
     }
 
-    private readonly string[] _disqualificationKeywords = { "Test", "Common", "Shared" };
-    
     protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        var disqualificationMatch = _disqualificationKeywords.FirstOrDefault(keyword => relativePathToServiceRoot.Contains($".{keyword}"));
-        if (!string.IsNullOrEmpty(disqualificationMatch))
+        var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
+        if (!csprojFiles.Any())
         {
-            return new List<Deduction>() {Deduction.CreateDisqualification(Logger, "Skipping projects containing '.{match}' in filename", disqualificationMatch)};
+            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
         }
+        var csproj = XDocument.Load(csprojFiles.First());
+        var usedSDK = csproj.Root?.Attribute("Sdk")?.Value;
+        if (string.IsNullOrEmpty(usedSDK))
+        {
+            return new List<Deduction> { Deduction.CreateDisqualification(Logger, "No Sdk attribute found in {CsProj}", csprojFiles.First()) };
+        }
+        
+        if (usedSDK != "Microsoft.NET.Sdk.Web")
+        {
+            return new List<Deduction> { Deduction.CreateDisqualification(Logger, "Only projects using 'Microsoft.NET.Sdk.Web' are considered deployable") };
+        }
+        
         var pipelineFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.yml", SearchOption.TopDirectoryOnly);
         if (!pipelineFiles.Any())
         {
