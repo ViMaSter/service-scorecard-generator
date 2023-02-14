@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\ScorecardGenerator\ScorecardGenerator.csproj" />
+        <ProjectReference Include="..\ScorecardGenerator\ScorecardGenerator.csproj" />
     </ItemGroup>
 
 </Project>
