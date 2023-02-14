@@ -2,7 +2,7 @@
 
 ## About
 This check returns **100 points** if the scanned service has a **pipeline** that deploys the project **to Azure**.  
-This check also returns **100 points** if the scanned service's directory contains `.Test`.  
+This check also returns **100 points** if the scanned service's directory contains `.Test` or `.Common`.  
 
 **NOTE: This check ignores files ending in `.yaml` by design. Files need to end in `.yml`.**
 
