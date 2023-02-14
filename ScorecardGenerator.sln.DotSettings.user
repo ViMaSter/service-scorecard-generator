@@ -19,6 +19,9 @@
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.RootDirectoryToAbsolutePathToFirstCsproj.WorksWithTwoCsProjFiles&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.RootDirectoryToAbsolutePathToFirstCsproj.ThrowsWithEmptyDirectory&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Utilities.GetNameFromCheckClass.WorksForLatestNET&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.BuiltForAKS.HandlesAllScenarios.Returns100PointForAzurePipelinesYML&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Checks.BuiltForAKS.HandlesAllScenarios&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E::net7.0::ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer.Example&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.cs&lt;/ProjectFile&gt;
     &lt;ProjectFile&gt;9BDF94BF-27EE-4CDE-A421-2E8B6E65D97E/d:Checks/d:LatestNET/f:NET6.csproj&lt;/ProjectFile&gt;

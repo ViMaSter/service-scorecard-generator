@@ -123,7 +123,7 @@ public class AzureWikiTableVisualizer : IVisualizer
     private static string FormatJustifiedScore(IList<BaseCheck.Deduction> checkValue)
     {
         var finalScore = checkValue.CalculateFinalScore();
-        var justifications = string.Join("&#10;", checkValue.Select(deduction => $"-{deduction.Score} points: {deduction.Justification}"));
+        var justifications = string.Join("&#10;", checkValue.Select(deduction => deduction.ToString()));
         return $"<span title=\"{justifications}\" style=\"{StyleOfNumber(finalScore)}\">{finalScore}{(finalScore != 100 ? QuestionMark : "")}</span>";
     }
 

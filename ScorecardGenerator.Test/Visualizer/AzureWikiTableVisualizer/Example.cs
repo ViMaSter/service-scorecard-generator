@@ -8,7 +8,7 @@ namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;
 public class Example : TestWithNeighboringDirectoryFixture
 {
     [Test]
-    public void Returns0Points()
+    public void DeterministicallyRendersServiceInfo()
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var tempPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());

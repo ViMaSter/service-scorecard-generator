@@ -5,7 +5,7 @@
 # Service Scorecard for YYYY-MM-DD
 
 Hover over columns to show full service paths and score justifications.  
-Information on how to reach 100 points for each score can be found in the sub-pages of this page.
+Information on how to reach 100 points for each check can be found in the child pages:
 [[_TOSP_]]
 
 

@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Checks\BuiltForAKS\README.md" />
       <EmbeddedResource Include="Checks\HintPathCounter\README.md" />
       <EmbeddedResource Include="Checks\LatestNET\README.md" />
       <EmbeddedResource Include="Checks\NullableSetup\README.md" />

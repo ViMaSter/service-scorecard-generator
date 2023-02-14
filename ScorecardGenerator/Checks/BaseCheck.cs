@@ -47,7 +47,12 @@ public abstract class BaseCheck
             this.Score = score;
             this.Justification = justification;
         }
-        
+
+        public override string ToString()
+        {
+            return $"-{Score} points: {Justification}";
+        }
+
         [MessageTemplateFormatMethod(nameof(justificationTemplate))]
         public static Deduction Create(ILogger logger, int score, string justificationTemplate, params object[] propertyValues)
         {
