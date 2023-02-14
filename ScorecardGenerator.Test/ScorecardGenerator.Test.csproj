@@ -27,8 +27,8 @@
       <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service Scorecard.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service Scorecard\Checks\Check.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard\Checks\Check.md" />
     </ItemGroup>
 
     <ItemGroup>
