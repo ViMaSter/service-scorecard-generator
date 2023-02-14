@@ -66,7 +66,7 @@ internal class GenerateScorecard
                 (decimal)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BronzeWeight
             }.Sum();
 
-            var totalChecks = goldDeductionsByCheck.Count * Checks.GoldWeight + silverDeductionsByCheck.Count * Checks.SilverWeight + bronzeDeductionsByCheck.Count * Checks.BronzeWeight;
+            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.GoldWeight + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.SilverWeight + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.BronzeWeight;
             var average = (int)Math.Round(totalScore / totalChecks);
             var deductionsByCheck = goldDeductionsByCheck
                                                     .Concat(silverDeductionsByCheck)
@@ -79,6 +79,11 @@ internal class GenerateScorecard
 
         IVisualizer visualizer = new AzureWikiTableVisualizer(_logger, outputPath);
         visualizer.Visualize(runInfo);
+    }
+
+    private bool ThatDontHaveDisqualification(KeyValuePair<string, IList<BaseCheck.Deduction>> arg)
+    {
+        return !arg.Value.Any(deduction => deduction.IsDisqualification);
     }
 
     private CheckInfo GenerateCheckRunInfo(BaseCheck check)

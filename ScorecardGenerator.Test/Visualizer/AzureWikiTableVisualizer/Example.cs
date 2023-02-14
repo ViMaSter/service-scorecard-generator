@@ -16,7 +16,7 @@ public class Example : TestWithNeighboringDirectoryFixture
         var visualizer = new ScorecardGenerator.Visualizer.AzureWikiTableVisualizer(logger, tempPath);
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
-            { "Gold", new List<CheckInfo> { new("Check", "PageContent") } },
+            { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
             { "Silver", new List<CheckInfo>() },
             { "Bronze", new List<CheckInfo>() }
         };
@@ -25,7 +25,8 @@ public class Example : TestWithNeighboringDirectoryFixture
         {
             {"service", new RunInfo.ServiceScorecard(new Dictionary<string, IList<BaseCheck.Deduction>>
             {
-                {"check", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value")}} 
+                {"Check", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}} 
             }, 10)}
         }.ToImmutableSortedDictionary();
         

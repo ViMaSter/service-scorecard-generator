@@ -4,9 +4,13 @@ namespace ScorecardGenerator;
 
 public static class DeductionExtensions
 {
-    public static int CalculateFinalScore(this IList<BaseCheck.Deduction> deductions)
+    public static int? CalculateFinalScore(this IList<BaseCheck.Deduction> deductions)
     {
-        var scoreAfterDeductions = deductions.Aggregate(100, (current, deduction) => current - deduction.Score);
+        if (deductions.Any(deduction => deduction.IsDisqualification))
+        {
+            return null;
+        }
+        var scoreAfterDeductions = deductions.Aggregate(100, (current, deduction) => current - deduction.Score!.Value);
 
         return Math.Max(0, scoreAfterDeductions);
     }

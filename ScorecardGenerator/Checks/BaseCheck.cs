@@ -42,14 +42,19 @@ public abstract class BaseCheck
 
     public class Deduction
     {
-        private Deduction(int score, string justification)
+        private Deduction(int? score, string justification)
         {
-            this.Score = score;
-            this.Justification = justification;
+            Score = score;
+            Justification = justification;
         }
 
         public override string ToString()
         {
+            if (IsDisqualification)
+            {
+                return $"disqualified: {Justification}";
+            }
+            
             return $"-{Score} points: {Justification}";
         }
 
@@ -76,6 +81,27 @@ public abstract class BaseCheck
         
         public string Justification { get; }
 
-        public int Score { get; }
+        public int? Score { get; }
+        public bool IsDisqualification => Score == null;
+
+        public static Deduction CreateDisqualification(ILogger logger, string justificationTemplate, params object[] propertyValues)
+        {
+            var parser = new MessageTemplateParser();
+            var template = parser.Parse(justificationTemplate);
+            var format = new StringBuilder();
+            var index = 0;
+            foreach (var tok in template.Tokens)
+            {
+                if (tok is TextToken)
+                    format.Append(tok);
+                else
+                    format.Append("{" + index++ + "}");
+            }
+            var netStyle = format.ToString();
+            
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem - justificationTemplate is inserted to be formatted with propertyValues; while not compile-time constant, it's not an interpolated string
+            logger.Warning(justificationTemplate, propertyValues);
+            return new Deduction(null, string.Format(netStyle, propertyValues));
+        }
     }
 }

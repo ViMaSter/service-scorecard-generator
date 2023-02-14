@@ -8,16 +8,15 @@ public class Check : BaseCheck
     {
     }
 
+    private readonly string[] _disqualificationKeywords = { "Test", "Common", "Shared" };
+    
     protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        if (relativePathToServiceRoot.Contains(".Test"))
+        var disqualificationMatch = _disqualificationKeywords.FirstOrDefault(keyword => relativePathToServiceRoot.Contains($".{keyword}"));
+        if (!string.IsNullOrEmpty(disqualificationMatch))
         {
-            return new List<Deduction>();
-        }
-        if (relativePathToServiceRoot.Contains(".Common"))
-        {
-            return new List<Deduction>();
+            return new List<Deduction>() {Deduction.CreateDisqualification(Logger, "Skipping projects containing '.{match}' in filename", disqualificationMatch)};
         }
         var pipelineFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.yml", SearchOption.TopDirectoryOnly);
         if (!pipelineFiles.Any())
