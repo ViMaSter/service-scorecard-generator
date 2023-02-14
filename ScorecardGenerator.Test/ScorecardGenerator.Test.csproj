@@ -29,6 +29,7 @@
       <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard\Checks\Check.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard\Checks\DisqualifiedCheck.md" />
     </ItemGroup>
 
     <ItemGroup>

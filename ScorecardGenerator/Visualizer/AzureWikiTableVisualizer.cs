@@ -104,11 +104,12 @@ public class AzureWikiTableVisualizer : IVisualizer
         WriteGeneratedOutput($"{FileName}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}<table>{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
     }
 
-    private static string StyleOfNumber(int score)
+    private static string StyleOfNumber(int? score)
     {
         return $"color:{score switch
         {
-            >= 90 => "rgba(var(--palette-accent2),1",
+            null => "var(--status-info-foreground)",
+            >= 90 => "rgba(var(--palette-accent2),1)",
             >= 80 => "rgba(var(--palette-accent3),1)",
             >= 70 => "var(--status-warning-icon-foreground)",
             _ => "rgba(var(--palette-accent1),1)"
@@ -124,7 +125,7 @@ public class AzureWikiTableVisualizer : IVisualizer
     {
         var finalScore = checkValue.CalculateFinalScore();
         var justifications = string.Join("&#10;", checkValue.Select(deduction => deduction.ToString()));
-        return $"<span title=\"{justifications}\" style=\"{StyleOfNumber(finalScore)}\">{finalScore}{(finalScore != 100 ? QuestionMark : "")}</span>";
+        return $"<span title=\"{justifications}\" style=\"{StyleOfNumber(finalScore)}\">{(finalScore == null ? "n/a" : finalScore)}{(finalScore != 100 ? QuestionMark : "")}</span>";
     }
 
     private record TableContent(string Content, int Colspan = 1)
