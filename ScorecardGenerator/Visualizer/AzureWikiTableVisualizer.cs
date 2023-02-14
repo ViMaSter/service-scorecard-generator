@@ -101,7 +101,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
 
         var headline = $"# Service Scorecard for {_dayOfGeneration}";
-        WriteGeneratedOutput($"{FileName}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}<table style=\"height: 40vh\">{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
+        WriteGeneratedOutput($"{FileName}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}<table>{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
     }
 
     private static string StyleOfNumber(int score)

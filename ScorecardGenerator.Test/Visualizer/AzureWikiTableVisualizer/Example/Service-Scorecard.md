@@ -10,7 +10,7 @@ Information on how to reach 100 points for each check can be found in the child 
 
 
 
-<table style="height: 40vh">
+<table>
 <tr style=""><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">   </th><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">Gold</th><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">   </th></tr>
 <tr style="background-color: rgba(0, 0, 0, 0.05);"><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">ServiceName</th><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">Check</th><th style="background-color: rgba(var(--palette-neutral-2),1);" colspan="1">Average</th></tr>
 <tr style="background-color: rgba(0, 0, 0, 0.05);"><td style="" colspan="1"><span title="service">service<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td style="" colspan="1"><span title="-10 points: justification: value" style="color:rgba(var(--palette-accent2),1">90<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td style="" colspan="1"><span title style="color:rgba(var(--palette-accent1),1)">10</span></td></tr></table>
