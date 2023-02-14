@@ -40,9 +40,6 @@ public partial class Check : BaseCheck
     {
         int IComparer<Release>.Compare(Release? x, Release? y)
         {
-            if (ReferenceEquals(x, y)) return 0;
-            if (ReferenceEquals(null, y)) return 1;
-            if (ReferenceEquals(null, x)) return -1;
             var xSplit = x.ChannelVersion.Split(".");
             var xMajor = xSplit.Length > 0 ? int.Parse(xSplit[0]) : 0;
             var xMinor = xSplit.Length > 1 ? int.Parse(xSplit[1]) : 0;
