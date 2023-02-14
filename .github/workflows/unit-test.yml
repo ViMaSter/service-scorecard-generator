@@ -1,0 +1,32 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: app
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+      working-directory: app
+  
+    - name: Test with dotnet
+      run: dotnet test --logger trx --results-directory "test-results"
+      working-directory: app
+
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: app/test-results
+      if: ${{ always() }}
