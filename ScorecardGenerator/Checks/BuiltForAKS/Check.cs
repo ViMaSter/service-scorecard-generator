@@ -21,7 +21,7 @@ public class Check : BaseCheck
         var pipelineFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.yml", SearchOption.TopDirectoryOnly);
         if (!pipelineFiles.Any())
         {
-            return new List<Deduction>(new[] { Deduction.Create(Logger, 100, "No .yml file found next to to .csproj file") });
+            return new List<Deduction>(new[] { Deduction.Create(Logger, 100, "No .yml file found inside {ServiceRoot}", relativePathToServiceRoot) });
         }
 
         var firstPath = pipelineFiles.First();
