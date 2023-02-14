@@ -145,7 +145,7 @@ internal class Check : BaseCheck
             {
                 continue;
             }
-            deductionsPerPR.Add(Deduction.Create(Logger, DeductionPerActivePullRequest, "PR #{PRNumber} - {Title}", pr.pullRequestId, pr.title));
+            deductionsPerPR.Add(Deduction.Create(Logger, DeductionPerActivePullRequest, "PR {PRNumber} - {Title}", pr.pullRequestId, pr.title));
         }
 
         return deductionsPerPR;
