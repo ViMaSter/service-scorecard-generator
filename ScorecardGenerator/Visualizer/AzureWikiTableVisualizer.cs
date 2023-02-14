@@ -78,14 +78,6 @@ public class AzureWikiTableVisualizer : IVisualizer
             {
                 style += "background-color: rgba(var(--palette-neutral-2),1);";
             }
-            if (element == "th")
-            {
-                style += "position: sticky; top: -2px;";
-            }
-            if (colorIndex == 2)
-            {
-                style += "top: 2.6em;";
-            }
 
             return $"style=\"{style}\"";
         }
