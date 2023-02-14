@@ -11,6 +11,7 @@ public record PullRequest(
 public record PullRequestValue(
     Repository repository,
     int pullRequestId,
+    string title,
     string sourceRefName
 );
 
