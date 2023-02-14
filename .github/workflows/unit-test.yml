@@ -19,10 +19,21 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
       working-directory: app
-  
-    - name: Test with dotnet
-      run: dotnet test --logger trx --results-directory "test-results"
+
+    - name: Generate coverage report
+      run: dotnet test --collect:"XPlat Code Coverage" --results-directory "test-results"
       working-directory: app
+
+    - name: Move coverage report from GUID folder to test-results
+      run: find test-results -name "coverage.cobertura.xml" -exec mv {} test-results \;
+      working-directory: app
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        files: app/test-results/coverage.cobertura.xml
+        fail_ci_if_error: true
+      if: ${{ always() }}
 
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
@@ -30,3 +41,5 @@ jobs:
         name: test-results
         path: app/test-results
       if: ${{ always() }}
+
+    
