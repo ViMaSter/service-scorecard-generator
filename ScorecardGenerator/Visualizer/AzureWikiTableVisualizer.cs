@@ -52,7 +52,7 @@ public class AzureWikiTableVisualizer : IVisualizer
 
     private void GenerateServiceOverview(RunInfo runInfo)
     {
-        var usageGuide = $"Hover over columns to show full service paths and score justifications.  {Environment.NewLine}Information on how to reach 100 points for each score can be found in the sub-pages of this page.{Environment.NewLine}[[_TOSP_]]{Environment.NewLine}{Environment.NewLine}";
+        var usageGuide = $"Hover over columns to show full service paths and score justifications.  {Environment.NewLine}Information on how to reach 100 points for each check can be found in the child pages:{Environment.NewLine}[[_TOSP_]]{Environment.NewLine}{Environment.NewLine}";
         
         var lastUpdatedAt = DateTime.Now;
         
