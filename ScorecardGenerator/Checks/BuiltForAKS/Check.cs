@@ -11,6 +11,14 @@ public class Check : BaseCheck
     protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
     {
         var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
+        if (relativePathToServiceRoot.Contains(".Test"))
+        {
+            return new List<Deduction>();
+        }
+        if (relativePathToServiceRoot.Contains(".Common"))
+        {
+            return new List<Deduction>();
+        }
         var pipelineFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.yml", SearchOption.TopDirectoryOnly);
         if (!pipelineFiles.Any())
         {
