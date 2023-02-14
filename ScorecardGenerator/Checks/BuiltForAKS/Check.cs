@@ -15,6 +15,10 @@ public class Check : BaseCheck
         {
             return new List<Deduction>();
         }
+        if (relativePathToServiceRoot.Contains(".Common"))
+        {
+            return new List<Deduction>();
+        }
         var pipelineFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.yml", SearchOption.TopDirectoryOnly);
         if (!pipelineFiles.Any())
         {
