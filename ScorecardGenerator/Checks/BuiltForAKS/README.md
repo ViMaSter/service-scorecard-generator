@@ -2,9 +2,9 @@
 
 ## About
 This check returns **100 points** if the scanned service has a **pipeline** that deploys the project **to Azure**.  
-This check also returns **100 points** if the scanned service's directory contains `.Test` or `.Common`.  
+This check is **not applied**, if the scanned service has any other SDK than `Microsoft.NET.Sdk.Web`.  
 
-**NOTE: This check ignores files ending in `.yaml` by design. Files need to end in `.yml`.**
+**NOTE: This check does not parse files ending in `.yaml` by design. Files need to end in `.yml`.**
 
 Applies a **100 point** deduction, if the `.yml` file starts with `onprem-`.  
 Applies a **100 point** deduction, if no `.yml` file exists.  
