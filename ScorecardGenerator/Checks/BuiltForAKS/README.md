@@ -2,7 +2,7 @@
 
 ## About
 This check returns **100 points** if the scanned service has a **pipeline** that deploys the project **to Azure**.  
-This check is **not applied**, if the scanned service has any other SDK than `Microsoft.NET.Sdk.Web`.  
+This check is **not applied**, if `<value>` in `<Project Sdk="<value>">` is set to a value other than `Microsoft.NET.Sdk.Web`.  
 
 **NOTE: This check does not parse files ending in `.yaml` by design. Files need to end in `.yml`.**
 
