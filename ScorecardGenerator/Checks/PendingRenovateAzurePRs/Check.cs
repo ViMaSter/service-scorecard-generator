@@ -6,25 +6,32 @@ using Serilog;
 
 namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
-internal class Check : BaseCheck
+public class Check : BaseCheck
 {
-    public Check(ILogger logger, string azurePAT) : base(logger)
+    public Check(ILogger logger, string azurePAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
     {
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT}")));
+        _client = new HttpClient(overrideMessageHandler ?? new HttpClientHandler())
+        {
+            DefaultRequestHeaders =
+            {
+                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT}")))
+            }
+        }; 
     }
 
-    const int DeductionPerActivePullRequest = 20;
+    private const int DeductionPerActivePullRequest = 20;
 
     private static readonly Dictionary<string, HttpResponseMessage> Data = new();
-    private static readonly HttpClient Client = new();
+    private readonly HttpClient _client;
 
-    private static HttpResponseMessage GetHTTPRequest(string url)
+    private HttpResponseMessage GetHTTPRequest(string url)
     {
         if (Data.TryGetValue(url, out var value))
         {
             return value;
         }
-        Data[url] = Client.GetAsync(url).Result;
+        Data[url] = _client.GetAsync(url).Result;
+        File.WriteAllText(Path.Join(Directory.GetCurrentDirectory(), url.Replace("/", "_")), $"{Data[url].StatusCode}{Environment.NewLine}{Data[url].Content.ReadAsStringAsync().Result}");
         return Data[url];
     }
 

@@ -1,0 +1,14 @@
+{
+  "changeEntries": [
+    {
+      "changeTrackingId": 1,
+      "changeId": 1,
+      "item": {
+        "objectId": "A35E34F96ACD67DFF75B08C3FF8C60662EF26AE0",
+        "originalObjectId": "1C6F4EE24591BABA4A0DA211E040CCAEF3451325",
+        "path": "/src/Cik.Magazine.CategoryService/Cik.Magazine.CategoryService.csproj"
+      },
+      "changeType": "edit"
+    }
+  ]
+}
