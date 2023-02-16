@@ -9,7 +9,11 @@ internal static class DeductionHelper
         if (deductions.Any())
         {
             TestContext.WriteLine($"Occured deductions: {Environment.NewLine}{string.Join(Environment.NewLine, deductions)}");
-        }        
+        }
+        else
+        {
+            TestContext.WriteLine("Passed without deductions.");
+        }
         Assert.That(deductions, Has.Count.EqualTo(expectedCount));
         Assert.That(deductions.CalculateFinalScore(), Is.EqualTo(expectedFinalScore));
     }

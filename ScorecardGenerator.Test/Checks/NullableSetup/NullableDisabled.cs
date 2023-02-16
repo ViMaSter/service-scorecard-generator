@@ -1,3 +1,4 @@
+using ScorecardGenerator.Test.Helper;
 using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.NullableSetup;
@@ -10,7 +11,6 @@ public class NullableDisabled : TestWithNeighboringFixture
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.NullableSetup.Check(logger);
         var deductions = check.SetupLoggerAndRun(WorkingDirectory, RelativePathToServiceRoot);
-        Assert.That(deductions, Has.Count.EqualTo(1));
-        Assert.That(deductions.CalculateFinalScore(), Is.EqualTo(0));
+        deductions.CountAndFinalScore(1, 0);
     }
 }
