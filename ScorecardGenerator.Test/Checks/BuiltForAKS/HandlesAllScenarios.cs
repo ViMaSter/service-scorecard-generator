@@ -1,3 +1,4 @@
+using ScorecardGenerator.Test.Helper;
 using Serilog;
 namespace ScorecardGenerator.Test.Checks.BuiltForAKS;
 
@@ -19,12 +20,7 @@ public class HandlesAllScenarios
             }
             
             var deductions = check.SetupLoggerAndRun(Path.GetTempPath(), randomDirectoryName);
-            if (deductions.Any())
-            {
-                TestContext.WriteLine($"Occured deductions: {Environment.NewLine}{string.Join(Environment.NewLine, deductions)}");
-            }
-            Assert.That(deductions, Has.Count.EqualTo(expectedDeductionCount));
-            Assert.That(deductions.CalculateFinalScore(), Is.EqualTo(expectedFinalScore));
+            deductions.CountAndFinalScore(expectedDeductionCount, expectedFinalScore);
         }
         catch (Exception e)
         {
