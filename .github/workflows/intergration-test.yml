@@ -1,4 +1,4 @@
-name: Generate Scorecard for thangchung/magazine-website-akka
+name: Integration test
 
 on:
   push:
