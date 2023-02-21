@@ -20,6 +20,10 @@
       <EmbeddedResource Include="Checks\HintPathCounter\HasElevenHintPaths.csproj.xml" />
       <EmbeddedResource Include="Checks\HintPathCounter\HasNoHintPath.csproj.xml" />
       <EmbeddedResource Include="Checks\HintPathCounter\HasTwoHintPaths.csproj.xml" />
+      <EmbeddedResource Include="Checks\ImplicitAssemblyInfo\CompleteCsprojFile.csproj.xml" />
+      <EmbeddedResource Include="Checks\ImplicitAssemblyInfo\MissingGenerateAssemblyInfo.csproj.xml" />
+      <EmbeddedResource Include="Checks\ImplicitAssemblyInfo\NoGenerateAssemblyInfo.csproj.xml" />
+      <EmbeddedResource Include="Checks\ImplicitAssemblyInfo\MissingProperties.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NETCore31.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NET6.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NET7.csproj.xml" />

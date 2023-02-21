@@ -64,7 +64,7 @@ public partial class Check : BaseCheck
         var httpClient = new HttpClient();
         var jsonResponse = httpClient.GetStringAsync("https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json").Result;
         var parsed = JsonConvert.DeserializeObject<ReleaseData>(jsonResponse);
-        var latestNonPreviewVersion = parsed!.ReleasesIndex.Where(release => release.SupportPhase != "preview").OrderDescending(new ReleaseComparer()).First();
+        var latestNonPreviewVersion = parsed!.ReleasesIndex.Where(release => !release.LatestRelease.Contains("preview")).OrderDescending(new ReleaseComparer()).First();
         _newestMajor = int.Parse(latestNonPreviewVersion.ChannelVersion.Split(".").First());
         _newestText = latestNonPreviewVersion.ChannelVersion;
     }

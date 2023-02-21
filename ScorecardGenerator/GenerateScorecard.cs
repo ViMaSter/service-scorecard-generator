@@ -40,18 +40,19 @@ internal class GenerateScorecard
             },
             new List<BaseCheck>()
             {
-                new ScorecardGenerator.Checks.NullableSetup.Check(_logger)
+                new ScorecardGenerator.Checks.NullableSetup.Check(_logger),
+                new ScorecardGenerator.Checks.ImplicitAssemblyInfo.Check(_logger)
             },
             new List<BaseCheck>()
             {
-                new ScorecardGenerator.Checks.HintPathCounter.Check(_logger),
+                new ScorecardGenerator.Checks.HintPathCounter.Check(_logger)
             }
         );
         var listByGroup = new Dictionary<string, IList<CheckInfo>>
         {
             { nameof(checks.Gold), checks.Gold.Select(GenerateCheckRunInfo).ToList() },
             { nameof(checks.Silver), checks.Silver.Select(GenerateCheckRunInfo).ToList() },
-            { nameof(checks.Bronze), checks.Bronze.Select(GenerateCheckRunInfo).ToList() },
+            { nameof(checks.Bronze), checks.Bronze.Select(GenerateCheckRunInfo).ToList() }
         };
         
         var scoreForServiceByCheck = _directoriesInWorkingDirectory.Where(DoesntMatchExcludePath(excludePath)).ToImmutableSortedDictionary(entry=>Utilities.RootDirectoryToAbsolutePathToFirstCsproj(entry).Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
