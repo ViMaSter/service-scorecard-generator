@@ -15,7 +15,7 @@ jobs:
       with:
         path: app
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
     - name: Build with dotnet
       run: dotnet build --configuration Release
       working-directory: app
