@@ -35,7 +35,7 @@ jobs:
         git clone $URL test-data
       
     - name: Run binary inside "test-data"
-      run: ../app/ScorecardGenerator/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki
+      run: ../app/ScorecardGenerator/bin/Release/net8.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki
       working-directory: test-data
       
     - uses: actions/upload-artifact@v3

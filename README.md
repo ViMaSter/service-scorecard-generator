@@ -21,7 +21,7 @@ cd /sources
 # run it with an Azure Personal Access Token to scan for open Renovate Pull Requests and output path
 # https://github.com/renovatebot/renovate
 # https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows
-/scoreboard-generator/bin/Release/net7.0/ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki
+/scoreboard-generator/bin/Release/net8.0/ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki
 ```
 
 ## License
