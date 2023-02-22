@@ -26,6 +26,9 @@ jobs:
         path: app
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0'
+        dotnet-quality: 'daily'
     - name: Build with dotnet
       run: dotnet build --configuration Release
       working-directory: app
