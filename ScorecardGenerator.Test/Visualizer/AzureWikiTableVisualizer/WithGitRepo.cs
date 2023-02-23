@@ -5,15 +5,38 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;
 
-public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
+public class WithGitRepo : TestWithNeighboringDirectoryFixture
 {
     [Test]
     public void DeterministicallyRendersServiceInfo()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var tempPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         
-        var visualizer = new ScorecardGenerator.Visualizer.AzureWikiTableVisualizer(logger, tempPath);
+        var source = Path.Join(Directory.GetCurrentDirectory(), "Visualizer", "AzureWikiTableVisualizer", "WithGitRepo");
+
+        var actualOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(actualOutputPath);
+        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = file.Replace(source, "");
+            var destination = Path.Join(actualOutputPath, relativePath);
+            destination = destination.Replace("_git", ".git");
+            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+            File.Copy(file, destination);
+        }
+
+        var expectedOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(expectedOutputPath);
+        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = file.Replace(source, "");
+            var destination = Path.Join(expectedOutputPath, relativePath);
+            destination = destination.Replace("_git", ".git");
+            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+            File.Copy(file, destination);
+        }
+        
+        var visualizer = new ScorecardGenerator.Visualizer.AzureWikiTableVisualizer(logger, actualOutputPath);
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
             { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
@@ -35,7 +58,7 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         }.ToImmutableSortedDictionary();
         
         visualizer.Visualize(new RunInfo(checks, serviceInfo));
-        CompareFilesInsideDirectoriesWithNUnitAsserts(tempPath, Path.Join(WorkingDirectory, RelativePathToServiceRoot));
+        CompareFilesInsideDirectoriesWithNUnitAsserts(actualOutputPath, Path.Join(WorkingDirectory, RelativePathToServiceRoot));
     }
 
     private static void CompareFilesInsideDirectoriesWithNUnitAsserts(string absolutePathToDirectoryActual, string absolutePathToDirectoryExpected)
@@ -43,7 +66,8 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         var actualDirectoryInfo = new DirectoryInfo(absolutePathToDirectoryActual);
         var expectedDirectoryInfo = new DirectoryInfo(absolutePathToDirectoryExpected);
 
-        var actualFiles = actualDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
+        // filter .git and all files in .git
+        var actualFiles = actualDirectoryInfo.GetFiles("*", SearchOption.AllDirectories).Where(file => !file.FullName.Contains(".git") && file.Name != ".DS_Store").ToArray();
         var expectedFiles = expectedDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
 
         Assert.That(actualFiles.Length, Is.EqualTo(expectedFiles.Length));

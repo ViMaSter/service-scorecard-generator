@@ -54,8 +54,22 @@ public class AzureWikiTableVisualizer : IVisualizer
 
     private RunInfo? Get7DaysAgo()
     {
+        if (!Directory.Exists(Path.Join(_outputPath, ".git")))
+        {
+            return null;
+        }
         var path = Path.Join(_outputPath, $"{FileName}.md");
         var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
+        
+        _ = Process.Start(new ProcessStartInfo
+        {
+            FileName = "git",
+            Arguments = "init",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _outputPath
+        })?.StandardOutput.ReadToEnd().Trim();
         var commits = Process.Start(new ProcessStartInfo
         {
             FileName = "git",
@@ -70,8 +84,6 @@ public class AzureWikiTableVisualizer : IVisualizer
             return null;
         }
 
-        var cd = Directory.GetCurrentDirectory();
-        Directory.SetCurrentDirectory(_outputPath);
         var sortedCommits = commits.Split(Environment.NewLine).Select(e =>
         {
             var list = e.Split(" ");
@@ -85,6 +97,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         var commitToUse = sortedCommits.First();
             
         var arguments = $"show {commitToUse.Item2}:{Path.GetFileName(path)} ";
+        string sevenDaysAgoContent = "";
         {
             var process = new Process
             {
@@ -100,28 +113,9 @@ public class AzureWikiTableVisualizer : IVisualizer
             };
             process.Start();
             process.WaitForExit();
-            var a = process.StandardOutput.ReadToEnd();
-            var b = 3;
+            sevenDaysAgoContent = process.StandardOutput.ReadToEnd();
         }
-        Directory.SetCurrentDirectory(cd);
-        var sevenDaysAgoContent = File.ReadAllText(path);
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "git",
-                    Arguments = "checkout master",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                    WorkingDirectory = _outputPath
-                }
-            };
-            process.Start();
-            process.WaitForExit();
-        }
-        /* match content between <!-- and --> via regex */
+
         var lastLineOfFile = sevenDaysAgoContent.Split(Environment.NewLine).Last();
         var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
         var match = regex.Match(lastLineOfFile);
