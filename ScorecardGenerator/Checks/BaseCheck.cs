@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Serilog.Parsing;
@@ -42,6 +43,7 @@ public abstract class BaseCheck
 
     public class Deduction
     {
+        [JsonConstructor]
         private Deduction(int? score, string justification)
         {
             Score = score;
