@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
 using ScorecardGenerator.Visualizer;
@@ -6,6 +7,7 @@ using Serilog;
 
 namespace ScorecardGenerator;
 
+[ExcludeFromCodeCoverage(Justification = "Opinionated execution of tested code")]
 internal class GenerateScorecard
 {
     private record Checks
