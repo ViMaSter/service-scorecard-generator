@@ -21,6 +21,7 @@
       <EmbeddedResource Include="Checks\LatestNET\README.md" />
       <EmbeddedResource Include="Checks\NullableSetup\README.md" />
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\README.md" />
+      <EmbeddedResource Include="Checks\ProperDockerfile\README.md" />
     </ItemGroup>
 
 </Project>

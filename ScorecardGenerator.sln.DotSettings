@@ -13,4 +13,5 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=YML/@EntryIndexedValue">YML</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=onprem/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=pullrequests/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=sonarscanner/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=TOSP/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
