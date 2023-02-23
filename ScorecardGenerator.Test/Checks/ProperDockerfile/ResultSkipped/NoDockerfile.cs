@@ -3,7 +3,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.ProperDockerfile.ResultSkipped;
 
-public class NoDockerfile : TestWithNeighboringFixture
+public class NoDockerfile : TestWithNeighboringCsprojFixture
 {
     [Test]
     public void DisqualifiesCheck()

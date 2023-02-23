@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace ScorecardGenerator.Test.Checks.ProperDockerfile;
 
-public class TestWithNeighboringCsprojAndDockerfileFixture : TestWithNeighboringFixture
+public class TestWithNeighboringCsprojAndDockerfileFixture : TestWithNeighboringCsprojFixture
 {
     [SetUp]
     public void SetupWithDockerfile()
