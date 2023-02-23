@@ -10,7 +10,7 @@ public class NoBuild : TestWithNeighboringCsprojAndDockerfileFixture
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.ProperDockerfile.Check(logger);
-        var deductions = check.SetupLoggerAndRun(WorkingDirectory, RelativePathToServiceRoot);
+        var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(1, 0);
     }
 }

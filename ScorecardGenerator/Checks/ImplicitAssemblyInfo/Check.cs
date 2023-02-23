@@ -21,26 +21,20 @@ public class Check : BaseCheck
     {
     }
 
-    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string absolutePathToProjectFile)
     {
-        var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
-        if (!csprojFiles.Any())
-        {
-            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
-        }
-        var csproj = XDocument.Load(csprojFiles.First());
+        var csproj = XDocument.Load(absolutePathToProjectFile);
 
         var deductions = _requiredProperties
             .ToDictionary(propertyName => propertyName, propertyName => csproj.XPathSelectElement($"/Project/PropertyGroup/{propertyName}"))
             .Where(valueByPropertyName => valueByPropertyName.Value == null)
-            .Select(valueByPropertyName => Deduction.Create(Logger, 20, "No <{ElementName}> element found in {CsProj}", valueByPropertyName.Key, csprojFiles.First()))
+            .Select(valueByPropertyName => Deduction.Create(Logger, 20, "No <{ElementName}> element found in {CsProj}", valueByPropertyName.Key, absolutePathToProjectFile))
             .ToList();
 
         var generateAssemblyInfo = csproj.XPathSelectElement("/Project/PropertyGroup/GenerateAssemblyInfo")?.Value;
         if (string.IsNullOrEmpty(generateAssemblyInfo))
         {
-            deductions.Add(Deduction.Create(Logger, 100, "No <GenerateAssemblyInfo> element found in {CsProj}", csprojFiles.First()));
+            deductions.Add(Deduction.Create(Logger, 100, "No <GenerateAssemblyInfo> element found in {CsProj}", absolutePathToProjectFile));
         }
         else
         {

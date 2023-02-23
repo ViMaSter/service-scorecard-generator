@@ -10,7 +10,7 @@ public class CompleteCsprojFile : TestWithNeighboringCsprojFixture
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.ImplicitAssemblyInfo.Check(logger);
-        var deductions = check.SetupLoggerAndRun(WorkingDirectory, RelativePathToServiceRoot);
+        var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(0, 100);
     }
 }

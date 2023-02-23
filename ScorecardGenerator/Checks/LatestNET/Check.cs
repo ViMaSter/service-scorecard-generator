@@ -79,19 +79,13 @@ public partial class Check : BaseCheck
         _newestText = latestNonPreviewVersion.ChannelVersion;
     }
 
-    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string absolutePathToProjectFile)
     {
-        var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
-        if (!csprojFiles.Any())
-        {
-            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
-        }
-        var csproj = XDocument.Load(csprojFiles.First());
+        var csproj = XDocument.Load(absolutePathToProjectFile);
         var targetFramework = csproj.XPathSelectElement("/Project/PropertyGroup/TargetFramework")?.Value;
         if (string.IsNullOrEmpty(targetFramework))
         {
-            return new List<Deduction> { Deduction.Create(Logger, 100, "No <TargetFramework> element found in {CsProj}", csprojFiles.First()) };
+            return new List<Deduction> { Deduction.Create(Logger, 100, "No <TargetFramework> element found in {CsProj}", absolutePathToProjectFile) };
         }
 
         if (!targetFramework.Contains('.')) // only way to discern .NET Framework is to check for a dot (https://learn.microsoft.com/en-us/dotnet/standard/frameworks#latest-versions)

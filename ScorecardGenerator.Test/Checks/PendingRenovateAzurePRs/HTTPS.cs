@@ -42,7 +42,7 @@ public class HTTPS
             File.WriteAllText(Path.Join(target, relativeDirectory, Path.GetFileName(sourceFilePath)), content);
         }
 
-        var deductions = check.SetupLoggerAndRun(Path.GetTempPath(), subdirectory);
+        var deductions = check.SetupLoggerAndRun(Path.Join(Path.GetTempPath(), subdirectory, "Cik.Magazine.CategoryService.csproj"));
         deductions.CountAndFinalScore(1, 80);
     }
     
@@ -56,7 +56,7 @@ public class HTTPS
         var target = Path.Join(Path.GetTempPath(), subdirectory);
         Directory.CreateDirectory(target);
         
-        var deductions = check.SetupLoggerAndRun(Path.GetTempPath(), subdirectory);
+        var deductions = check.SetupLoggerAndRun(Path.Join(Path.GetTempPath(), subdirectory, "Cik.Magazine.CategoryService.csproj"));
         deductions.CountAndFinalScore(1, 0);
     }
 }

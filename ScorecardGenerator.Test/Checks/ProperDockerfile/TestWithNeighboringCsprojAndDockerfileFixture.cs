@@ -13,9 +13,9 @@ public class TestWithNeighboringCsprojAndDockerfileFixture : TestWithNeighboring
         var assembly = Assembly.GetExecutingAssembly();
         var resourceStream = assembly.GetManifestResourceStream(resourceName+".Dockerfile");
         
-        var tempDirectory = Path.Join(WorkingDirectory, RelativePathToServiceRoot);
-        Directory.CreateDirectory(tempDirectory);
-        var tempFile = Path.Join(tempDirectory, "Dockerfile");
+        var absolutePathToProjectDirectory = Path.GetDirectoryName(AbsolutePathToProjectFile)!;
+        Directory.CreateDirectory(absolutePathToProjectDirectory);
+        var tempFile = Path.Join(absolutePathToProjectDirectory, "Dockerfile");
         using var fileStream = File.Create(tempFile);
         resourceStream!.CopyTo(fileStream);
     }
