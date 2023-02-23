@@ -33,13 +33,13 @@ public abstract class BaseCheck
         return reader.ReadToEnd();
     }
     
-    public IList<Deduction> SetupLoggerAndRun(string workingDirectory, string relativePathToServiceRoot)
+    public IList<Deduction> SetupLoggerAndRun(string absolutePathToProjectFile)
     {
-        Logger = Logger.ForContext(Constants.SourceContextPropertyName, $"{GetType().FullName!.Split(".")[^2]}::{relativePathToServiceRoot}");
+        Logger = Logger.ForContext(Constants.SourceContextPropertyName, $"{GetType().FullName!.Split(".")[^2]}::{absolutePathToProjectFile.Replace(Directory.GetCurrentDirectory(), "")}");
         Logger.Information("Running check");
-        return Run(workingDirectory, relativePathToServiceRoot);
+        return Run(absolutePathToProjectFile);
     }
-    protected abstract IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot);
+    protected abstract IList<Deduction> Run(string absolutePathToProjectFile);
 
     public class Deduction
     {

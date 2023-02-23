@@ -10,19 +10,13 @@ public class Check : BaseCheck
     {
     }
 
-    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string absolutePathToProjectFile)
     {
-        var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        var csprojFiles = Directory.GetFiles(absolutePathToServiceRoot, "*.csproj", SearchOption.TopDirectoryOnly);
-        if (!csprojFiles.Any())
-        {
-            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
-        }
-        var csproj = XDocument.Load(csprojFiles.First());
+        var csproj = XDocument.Load(absolutePathToProjectFile);
         var nullable = csproj.XPathSelectElement("/Project/PropertyGroup/Nullable")?.Value;
         if (string.IsNullOrEmpty(nullable))
         {
-            return new List<Deduction> { Deduction.Create(Logger, 100, "No <Nullable> element found in {CsProj}", csprojFiles.First()) };
+            return new List<Deduction> { Deduction.Create(Logger, 100, "No <Nullable> element found in {CsProj}", absolutePathToProjectFile) };
         }
 
         const string expectedValue = "enable";

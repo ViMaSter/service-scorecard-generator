@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 using Serilog;
@@ -35,10 +36,9 @@ public class Check : BaseCheck
         return Data[url];
     }
 
-    protected override IList<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override IList<Deduction> Run(string absolutePathToProjectFile)
     {
-        var serviceRootDirectory = Path.Join(workingDirectory, relativePathToServiceRoot);
-        // use git command to find all remotes
+        var serviceRootDirectory = Path.GetDirectoryName(absolutePathToProjectFile)!;
         var process = new Process
         {
             StartInfo = new ProcessStartInfo
@@ -147,8 +147,8 @@ public class Check : BaseCheck
                 allFilesChanged.AddRange(filesChangedList.Select(fc => fc.item.path));
             }
 
-            var changedFilesInsideRepository = "/"+string.Join("/", relativePathToServiceRoot.Replace("\\", "/").Split("/").Skip(2));
-            if (!allFilesChanged.Any(fc => fc.StartsWith(changedFilesInsideRepository)))
+            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile)!;
+            if (!allFilesChanged.Any(fc => fc.EndsWith(projectFileNameWithExtension)))
             {
                 continue;
             }

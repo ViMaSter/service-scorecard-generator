@@ -4,6 +4,7 @@ namespace ScorecardGenerator.Test.Checks.BuiltForAKS;
 
 public class HandlesAllScenarios
 {
+    private const string ProjectFileName = "test.csproj";
     private static void CreateFilesAndExpectResult(Action<string> createFiles, int expectedDeductionCount, int? expectedFinalScore)
     {
         var logger = new LoggerConfiguration().CreateLogger();
@@ -14,12 +15,11 @@ public class HandlesAllScenarios
         {
             var tempDirectory = Path.Join(Path.GetTempPath(), randomDirectoryName);
             Directory.CreateDirectory(tempDirectory);
-            
             {
                 createFiles(tempDirectory);
             }
             
-            var deductions = check.SetupLoggerAndRun(Path.GetTempPath(), randomDirectoryName);
+            var deductions = check.SetupLoggerAndRun(Path.Join(Path.GetTempPath(), randomDirectoryName, ProjectFileName));
             deductions.CountAndFinalScore(expectedDeductionCount, expectedFinalScore);
         }
         catch (Exception e)
@@ -37,7 +37,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
             
@@ -51,7 +51,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
             
@@ -65,7 +65,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
             
@@ -79,7 +79,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
             
@@ -96,17 +96,9 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
-        }, 1, 0);
-    }
-    
-    [Test]
-    public void Returns0PointsForNoProjectFiles()
-    {
-        CreateFilesAndExpectResult(_ =>
-        {
         }, 1, 0);
     }
     
@@ -115,7 +107,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project></Project>"u8);
         }, 1, null);
@@ -126,7 +118,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk\"></Project>"u8);
         }, 1, null);
@@ -137,7 +129,7 @@ public class HandlesAllScenarios
     {
         CreateFilesAndExpectResult(tempDirectory =>
         {
-            var projectFile = Path.Join(tempDirectory, "test.csproj");
+            var projectFile = Path.Join(tempDirectory, ProjectFileName);
             using var projectFileStream = File.Create(projectFile);
             projectFileStream.Write("<Project Sdk=\"Microsoft.NET.Sdk.Web\"></Project>"u8);
             

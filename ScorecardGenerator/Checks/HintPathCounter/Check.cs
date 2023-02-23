@@ -11,18 +11,12 @@ public class Check : BaseCheck
     
     const int DeductionPerHintPath = 10;
 
-    protected override List<Deduction> Run(string workingDirectory, string relativePathToServiceRoot)
+    protected override List<Deduction> Run(string absolutePathToProjectFile)
     {
-        var absolutePathToServiceRoot = Path.Join(workingDirectory, relativePathToServiceRoot);
-        var csprojFiles = Directory.GetFiles(Path.Join(workingDirectory, relativePathToServiceRoot), "*.csproj", SearchOption.TopDirectoryOnly);
-        if (!csprojFiles.Any())
-        {
-            return new List<Deduction> {Deduction.Create(Logger, 100, "No csproj file found at {Location}", absolutePathToServiceRoot)};
-        }
-        var csproj = XDocument.Load(csprojFiles.First());
+        var csproj = XDocument.Load(absolutePathToProjectFile);
         if (csproj.Root == null)
         {
-            return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't parse {CsProj}", csprojFiles.First()) };
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't parse {CsProj}", absolutePathToProjectFile) };
         }
 
         var hintPaths = csproj.Root.Descendants("HintPath");
