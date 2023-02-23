@@ -31,6 +31,13 @@
       <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check2.md" />
@@ -69,6 +76,54 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Checks\PendingRenovateAzurePRs\HTTPS\https___vimaster_visualstudio_com_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_api_version_7_0">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\objects\pack\pack-79e9de371be3c7fdb0807ee17a660b27070d1304.idx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\objects\pack\pack-79e9de371be3c7fdb0807ee17a660b27070d1304.pack">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\COMMIT_EDITMSG">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\description">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\HEAD">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\index">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\ORIG_HEAD">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\packed-refs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\objects\info\packs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\objects\info\commit-graph">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\objects\4b\825dc642cb6eb9a060e54bf8d69288fbee4904">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\logs\HEAD">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\logs\refs\heads\main">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\info\refs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Visualizer\AzureWikiTableVisualizer\WithGitRepo\_git\info\exclude">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
