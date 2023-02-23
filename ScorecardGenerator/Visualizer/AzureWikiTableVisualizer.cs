@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
@@ -50,10 +52,93 @@ public class AzureWikiTableVisualizer : IVisualizer
         }
     }
 
+    private RunInfo? Get7DaysAgo()
+    {
+        var path = Path.Join(_outputPath, $"{FileName}.md");
+        var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
+        var commits = Process.Start(new ProcessStartInfo
+        {
+            FileName = "git",
+            Arguments = "log -n 100 --format=format:\"%h %ai\" --date=iso",
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = true,
+            WorkingDirectory = _outputPath
+        })?.StandardOutput.ReadToEnd().Trim();
+        if (string.IsNullOrEmpty(commits))
+        {
+            return null;
+        }
+
+        var cd = Directory.GetCurrentDirectory();
+        Directory.SetCurrentDirectory(_outputPath);
+        var sortedCommits = commits.Split(Environment.NewLine).Select(e =>
+        {
+            var list = e.Split(" ");
+            return (DateTime.Parse(string.Join(" ", list.Skip(1))), list.First());
+        }).OrderBy(a=>
+        {
+            Console.WriteLine(Math.Abs((a.Item1 - sevenDaysAgo).TotalSeconds));
+            return Math.Abs((a.Item1 - sevenDaysAgo).TotalSeconds);
+        });
+            
+        var commitToUse = sortedCommits.First();
+            
+        var arguments = $"show {commitToUse.Item2}:{Path.GetFileName(path)} ";
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "git",
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    WorkingDirectory = _outputPath
+                }
+            };
+            process.Start();
+            process.WaitForExit();
+            var a = process.StandardOutput.ReadToEnd();
+            var b = 3;
+        }
+        Directory.SetCurrentDirectory(cd);
+        var sevenDaysAgoContent = File.ReadAllText(path);
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "git",
+                    Arguments = "checkout master",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    WorkingDirectory = _outputPath
+                }
+            };
+            process.Start();
+            process.WaitForExit();
+        }
+        /* match content between <!-- and --> via regex */
+        var lastLineOfFile = sevenDaysAgoContent.Split(Environment.NewLine).Last();
+        var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
+        var match = regex.Match(lastLineOfFile);
+        if (!match.Success)
+        {
+            return null;
+        }
+        var content = match.Groups[1].Value;
+        return JsonConvert.DeserializeObject<RunInfo>(content)!;
+    }
+
     private void GenerateServiceOverview(RunInfo runInfo)
     {
-        var usageGuide = $"Hover over columns to show full service paths and score justifications.  {Environment.NewLine}Information on how to reach 100 points for each check can be found in the child pages:{Environment.NewLine}[[_TOSP_]]{Environment.NewLine}{Environment.NewLine}";
-        
+        var infoFromSevenDaysAgo = Get7DaysAgo();
+
+        var usageGuide = $"Information on how to reach 100 points for each check can be found in the child pages:{Environment.NewLine}[[_TOSP_]]{Environment.NewLine}{Environment.NewLine}# Hover over cells for details";
+
         var lastUpdatedAt = DateTime.Now;
         
         const string headerElement = "th";
@@ -83,19 +168,19 @@ public class AzureWikiTableVisualizer : IVisualizer
         }
         string ToElement(string element, IEnumerable<TableContent> columns)
         {
-            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} {StyleForElement(alternateColorIndex, element)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
+            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" {StyleForElement(alternateColorIndex, element)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
         }
 
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
         
-        var headers = ToElement(headerElement, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name)).Prepend("ServiceName").Append("Average"));
-        var groupData = ToElement(headerElement, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, group.Value.Count)).Prepend("   ").Append("   "));
+        var headers = ToElement(headerElement, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
+        var groupData = ToElement(headerElement, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
         
         var output = runInfo.ServiceScores.Select(pair =>
         {
             var (fullPathToService, (scoreByCheckName, average)) = pair;
-            var serviceName = $"<span title=\"{fullPathToService}\">{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
-            return ToElement(columnElement, scoreByCheckName.Select(check => new TableContent(FormatJustifiedScore(check.Value))).Prepend(serviceName).Append(ColorizeAverageScore(average)));
+            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
+            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, infoFromSevenDaysAgo?.ServiceScores[fullPathToService].DeductionsByCheck[check.Key])).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
         });
         
         _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
@@ -121,15 +206,25 @@ public class AzureWikiTableVisualizer : IVisualizer
         return $"<span title style=\"{StyleOfNumber(score)}\">{score}</span>";
     }
 
-    private static string FormatJustifiedScore(IList<BaseCheck.Deduction> checkValue)
+    private static TableContent FormatJustifiedScore(IList<BaseCheck.Deduction> checkValue, IList<BaseCheck.Deduction>? sevenDaysAgo)
     {
         var finalScore = checkValue.CalculateFinalScore();
+        var finalScoreSevenDaysAgo = sevenDaysAgo?.CalculateFinalScore();
+        var delta = finalScore - finalScoreSevenDaysAgo;
+        var deltaString = delta switch
+        {
+            null => "",
+            0 => "<sub><span title=\"compared to 7 days ago\" style=\"color: var(--status-info-foreground))\"> ➡0%<span></sub>",
+            > 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent2),1)\"> ↗+{delta}%</span></sub>",
+            < 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent1),1)\"> ↘{delta}%</span></sub>"
+        };
+        
         var justifications = string.Join("&#10;", checkValue.Select(deduction => deduction.ToString()));
-        return $"<span title=\"{justifications}\" style=\"{StyleOfNumber(finalScore)}\">{(finalScore == null ? "n/a" : finalScore)}{(finalScore != 100 ? QuestionMark : "")}</span>";
+        return new TableContent($"<span style=\"{StyleOfNumber(finalScore)}\">{(finalScore == null ? "n/a" : finalScore)}{deltaString}</span>", justifications);
     }
 
-    private record TableContent(string Content, int Colspan = 1)
+    private record TableContent(string Content, string title, int Colspan = 1)
     { 
-        public static implicit operator TableContent(string content) => new(content);
+        public static implicit operator TableContent(string content) => new(content, "");
     }
 }

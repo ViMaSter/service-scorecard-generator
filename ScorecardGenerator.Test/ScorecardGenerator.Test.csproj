@@ -31,9 +31,13 @@
       <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard\Checks\Check.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\Example\Service-Scorecard\Checks\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
       <None Include="Checks\PendingRenovateAzurePRs\HTTPS\https___dev_azure_com_vimaster_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_api_version_7_0">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

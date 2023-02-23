@@ -5,7 +5,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;
 
-public class Example : TestWithNeighboringDirectoryFixture
+public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
 {
     [Test]
     public void DeterministicallyRendersServiceInfo()
@@ -17,8 +17,8 @@ public class Example : TestWithNeighboringDirectoryFixture
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
             { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
-            { "Silver", new List<CheckInfo>() },
-            { "Bronze", new List<CheckInfo>() }
+            { "Silver", new List<CheckInfo>() { new("Check2", "PageContent"), new("DisqualifiedCheck2", "Disqualified PageContent") } },
+            { "Bronze", new List<CheckInfo>() { new("Check3", "PageContent"), new("DisqualifiedCheck3", "Disqualified PageContent") } }
         };
 
         var serviceInfo = new Dictionary<string, RunInfo.ServiceScorecard>
@@ -26,7 +26,11 @@ public class Example : TestWithNeighboringDirectoryFixture
             {"service", new RunInfo.ServiceScorecard(new Dictionary<string, IList<BaseCheck.Deduction>>
             {
                 {"Check", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value")}},
-                {"DisqualifiedCheck", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}} 
+                {"DisqualifiedCheck", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}},
+                {"Check2", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 20, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck2", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 20, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}}, 
+                {"Check3", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 30, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck3", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 30, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}} 
             }, 10)}
         }.ToImmutableSortedDictionary();
         
