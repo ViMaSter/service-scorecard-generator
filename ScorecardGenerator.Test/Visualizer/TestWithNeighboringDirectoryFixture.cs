@@ -11,7 +11,7 @@ public abstract class TestWithNeighboringDirectoryFixture
     [SetUp]
     public void BeforeEach()
     {
-        var resourceName = GetType().FullName;
+        var resourceName = GetType().FullName!;
         var assembly = Assembly.GetExecutingAssembly();
         var matchingResources = assembly.GetManifestResourceNames().Where(resource => resource.StartsWith(resourceName)).ToList();
         WorkingDirectory = Path.GetTempPath();

@@ -64,13 +64,13 @@ internal class GenerateScorecard
             var bronzeDeductionsByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), "")));
             var totalScore = new[]
             {
-                (decimal)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GoldWeight,
-                (decimal)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SilverWeight,
-                (decimal)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BronzeWeight
+                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GoldWeight,
+                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SilverWeight,
+                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BronzeWeight
             }.Sum();
 
             var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.GoldWeight + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.SilverWeight + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.BronzeWeight;
-            var average = (int)Math.Round(totalScore / totalChecks);
+            var average = totalScore == null ? 0 : (int)Math.Round((decimal)totalScore / totalChecks);
             var deductionsByCheck = goldDeductionsByCheck
                                                     .Concat(silverDeductionsByCheck)
                                                     .Concat(bronzeDeductionsByCheck)

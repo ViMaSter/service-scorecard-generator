@@ -21,7 +21,7 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
             var relativePath = file.Replace(source, "");
             var destination = Path.Join(actualOutputPath, relativePath);
             destination = destination.Replace("_git", ".git");
-            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
             File.Copy(file, destination);
         }
 
@@ -32,7 +32,7 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
             var relativePath = file.Replace(source, "");
             var destination = Path.Join(expectedOutputPath, relativePath);
             destination = destination.Replace("_git", ".git");
-            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
             File.Copy(file, destination);
         }
         
