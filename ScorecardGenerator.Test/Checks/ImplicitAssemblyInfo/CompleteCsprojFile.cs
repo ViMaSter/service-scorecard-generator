@@ -3,7 +3,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.ImplicitAssemblyInfo;
 
-public class CompleteCsprojFile : TestWithNeighboringFixture
+public class CompleteCsprojFile : TestWithNeighboringCsprojFixture
 {
     [Test]
     public void Returns100Points()

@@ -3,7 +3,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.NullableSetup;
 
-public class NullableEnabled : TestWithNeighboringFixture
+public class NullableEnabled : TestWithNeighboringCsprojFixture
 {
     [Test]
     public void Returns100Points()

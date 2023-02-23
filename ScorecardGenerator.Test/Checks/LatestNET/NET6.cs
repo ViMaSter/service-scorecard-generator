@@ -3,7 +3,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.LatestNET;
 
-public class NET6 : TestWithNeighboringFixture
+public class NET6 : TestWithNeighboringCsprojFixture
 {
     [Test]
     public void Returns86Points()

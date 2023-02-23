@@ -2,7 +2,7 @@ using ScorecardGenerator.Test.Helper;
 using Serilog;
 namespace ScorecardGenerator.Test.Checks.HintPathCounter;
 
-public class HasElevenHintPaths : TestWithNeighboringFixture
+public class HasElevenHintPaths : TestWithNeighboringCsprojFixture
 {
     [Test]
     public void Returns0Points()

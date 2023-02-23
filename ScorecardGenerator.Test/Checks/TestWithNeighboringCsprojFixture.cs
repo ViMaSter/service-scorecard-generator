@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace ScorecardGenerator.Test.Checks;
 
-public abstract class TestWithNeighboringFixture
+public abstract class TestWithNeighboringCsprojFixture
 {
     protected string WorkingDirectory { get; private set; } = "";
     protected string RelativePathToServiceRoot { get; private set; } = "";
