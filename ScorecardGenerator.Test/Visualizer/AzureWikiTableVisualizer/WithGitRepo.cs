@@ -15,8 +15,6 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
             .WriteTo.Console()
             .CreateLogger();
         
-        var source = Path.Join(Directory.GetCurrentDirectory(), "Visualizer", "AzureWikiTableVisualizer", "WithGitRepo");
-
         var actualOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(actualOutputPath);
         var git = Process.Start(new ProcessStartInfo
@@ -41,6 +39,7 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
 
         var expectedOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(expectedOutputPath);
+        var source = Path.Join(WorkingDirectory, RelativePathToServiceRoot);
         foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
         {
             var relativePath = file.Replace(source, "");
