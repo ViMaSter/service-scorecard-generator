@@ -8,7 +8,12 @@ on:
     
 jobs:
   unit-test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        
+    runs-on: ${{ matrix.os }}
         
     steps:
     - uses: actions/checkout@v3
@@ -16,6 +21,7 @@ jobs:
         path: app
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
+      
     - name: Build with dotnet
       run: dotnet build --configuration Release
       working-directory: app
@@ -42,5 +48,3 @@ jobs:
         name: test-results
         path: app/test-results
       if: ${{ always() }}
-
-    
