@@ -40,23 +40,13 @@ public partial class Check : BaseCheck
     {
         int IComparer<Release>.Compare(Release? x, Release? y)
         {
-            if (x == null)
-            {
-                return y == null ? 0 : -1;
-            }
-            
-            if (y == null)
-            {
-                return 1;
-            }
-            
-            var xSplit = x.ChannelVersion.Split(".");
+            var xSplit = x!.ChannelVersion.Split(".");
             var xMajor = xSplit.Length > 0 ? int.Parse(xSplit[0]) : 0;
             var xMinor = xSplit.Length > 1 ? int.Parse(xSplit[1]) : 0;
             var xPatch = xSplit.Length > 2 ? int.Parse(xSplit[2]) : 0;
             var xFull = xMajor * 10000 + xMinor * 100 + xPatch;
 
-            var ySplit = y.ChannelVersion.Split(".");
+            var ySplit = y!.ChannelVersion.Split(".");
             var yMajor = ySplit.Length > 0 ? int.Parse(xSplit[0]) : 0;
             var yMinor = ySplit.Length > 1 ? int.Parse(xSplit[1]) : 0;
             var yPatch = ySplit.Length > 2 ? int.Parse(xSplit[2]) : 0;
