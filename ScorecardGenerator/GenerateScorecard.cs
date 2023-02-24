@@ -37,7 +37,8 @@ internal class GenerateScorecard
             {
                 new ScorecardGenerator.Checks.BuiltForAKS.Check(_logger),
                 new ScorecardGenerator.Checks.LatestNET.Check(_logger),
-                new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT)
+                new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT),
+                new ScorecardGenerator.Checks.ProperDockerfile.Check(_logger)
             },
             new List<BaseCheck>()
             {
