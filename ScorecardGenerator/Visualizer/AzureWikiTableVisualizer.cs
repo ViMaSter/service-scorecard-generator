@@ -57,18 +57,6 @@ public class AzureWikiTableVisualizer : IVisualizer
         var path = Path.Join(_outputPath, $"{FileName}.md");
         var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
         
-        var gitInit = Process.Start(new ProcessStartInfo
-        {
-            FileName = "git",
-            Arguments = "init",
-            UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            CreateNoWindow = true,
-            WorkingDirectory = _outputPath
-        });
-        _logger.Information("git init stdout: {StdOut}", gitInit?.StandardOutput.ReadToEnd().Trim());
-        _logger.Information("git init stderr: {StdErr}", gitInit?.StandardError.ReadToEnd().Trim());
         var gitLog = Process.Start(new ProcessStartInfo
         {
             FileName = "git",
