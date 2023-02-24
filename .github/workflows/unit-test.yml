@@ -40,7 +40,7 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: app/test-results/coverage.cobertura.xml
         fail_ci_if_error: true
-      if: ${{ always() }}
+      if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
