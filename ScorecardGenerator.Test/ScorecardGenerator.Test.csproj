@@ -30,6 +30,7 @@
       <EmbeddedResource Include="Checks\LatestNET\NET7.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NETFramework471.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />
+      <EmbeddedResource Include="Checks\NullableSetup\NoNullableElement.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableEnabled.csproj.xml" />
       <EmbeddedResource Include="Checks\NullableSetup\NullableDisabled.csproj.xml" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result0\NoBuild.csproj.xml" />
