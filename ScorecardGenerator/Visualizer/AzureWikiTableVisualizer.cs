@@ -56,31 +56,40 @@ public class AzureWikiTableVisualizer : IVisualizer
     {
         if (!Directory.Exists(Path.Join(_outputPath, ".git")))
         {
+            _logger.Information("No git repository found at {OutputPath}, skipping 7 days ago check", _outputPath);
             return null;
         }
         var path = Path.Join(_outputPath, $"{FileName}.md");
         var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
         
-        _ = Process.Start(new ProcessStartInfo
+        var gitInit = Process.Start(new ProcessStartInfo
         {
             FileName = "git",
             Arguments = "init",
             UseShellExecute = false,
             RedirectStandardOutput = true,
+            RedirectStandardError = true,
             CreateNoWindow = true,
             WorkingDirectory = _outputPath
-        })?.StandardOutput.ReadToEnd().Trim();
-        var commits = Process.Start(new ProcessStartInfo
+        });
+        _logger.Information("git init stdout: {StdOut}", gitInit?.StandardOutput.ReadToEnd().Trim());
+        _logger.Information("git init stderr: {StdErr}", gitInit?.StandardError.ReadToEnd().Trim());
+        var gitLog = Process.Start(new ProcessStartInfo
         {
             FileName = "git",
             Arguments = "log -n 100 --format=format:\"%h %ai\" --date=iso",
             UseShellExecute = false,
             RedirectStandardOutput = true,
+            RedirectStandardError = true,
             CreateNoWindow = true,
             WorkingDirectory = _outputPath
-        })?.StandardOutput.ReadToEnd().Trim();
+        });
+        var commits = gitLog?.StandardOutput.ReadToEnd().Trim();
+        _logger.Information("git log stdout: {StdOut}", commits);
+        _logger.Information("git log stderr: {StdErr}", gitLog?.StandardError.ReadToEnd().Trim());
         if (string.IsNullOrEmpty(commits))
         {
+            _logger.Information("No commits found skipping 7 days ago check");
             return null;
         }
 
@@ -121,6 +130,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         var match = regex.Match(lastLineOfFile);
         if (!match.Success)
         {
+            _logger.Information("No last line matched; content: {Content}", sevenDaysAgoContent);
             return null;
         }
         var content = match.Groups[1].Value;
