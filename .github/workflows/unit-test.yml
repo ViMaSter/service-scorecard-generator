@@ -32,7 +32,9 @@ jobs:
 
     - name: Move coverage report from GUID folder to test-results
       run: find test-results -name "coverage.cobertura.xml" -exec mv {} test-results \;
+      shell: bash
       working-directory: app
+      if: ${{ always() }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
