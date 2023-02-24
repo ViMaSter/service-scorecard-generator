@@ -115,6 +115,8 @@ public class AzureWikiTableVisualizer : IVisualizer
             process.WaitForExitAsync().ConfigureAwait(false).GetAwaiter();
             sevenDaysAgoContent = process.StandardOutput.ReadToEnd();
         }
+        
+        _logger.Information("sevenDaysAgoContent: {SevenDaysAgoContent}", sevenDaysAgoContent);
 
         var lastLineOfFile = sevenDaysAgoContent.Replace("\r", Environment.NewLine).Replace("\n", Environment.NewLine).Split(Environment.NewLine).Last(line => !string.IsNullOrEmpty(line));
         var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
