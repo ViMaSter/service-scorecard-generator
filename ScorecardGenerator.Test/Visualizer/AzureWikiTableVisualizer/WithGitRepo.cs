@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
 using Serilog;
@@ -8,22 +9,35 @@ namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;
 public class WithGitRepo : TestWithNeighboringDirectoryFixture
 {
     [Test]
-    public void DeterministicallyRendersServiceInfo()
+    public async Task DeterministicallyRendersServiceInfo()
     {
-        var logger = new LoggerConfiguration().CreateLogger();
+        var logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
         
         var source = Path.Join(Directory.GetCurrentDirectory(), "Visualizer", "AzureWikiTableVisualizer", "WithGitRepo");
 
         var actualOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(actualOutputPath);
-        foreach (var file in Directory.GetFiles(source, "*", SearchOption.AllDirectories))
-        {
-            var relativePath = file.Replace(source, "");
-            var destination = Path.Join(actualOutputPath, relativePath);
-            destination = destination.Replace("_git", ".git");
-            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
-            File.Copy(file, destination);
-        }
+        var git = Process.Start(new ProcessStartInfo
+            {
+                FileName = "git",
+                Arguments = $"clone https://github.com/ViMaSter/code-scanning-scoreboard-test-fixture.git {actualOutputPath}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            }
+        );
+        
+        var stdErr = git.StandardError;
+        var stdOut = git.StandardOutput;
+
+        var resultAwaiter = stdOut.ReadToEndAsync();
+        var errResultAwaiter = stdErr.ReadToEndAsync();
+
+        await git.WaitForExitAsync();
+        
+        logger.Information("git clone output: {Output}", await resultAwaiter);
+        logger.Error("git clone error: {Output}", await errResultAwaiter);
 
         var expectedOutputPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(expectedOutputPath);
@@ -31,7 +45,6 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
         {
             var relativePath = file.Replace(source, "");
             var destination = Path.Join(expectedOutputPath, relativePath);
-            destination = destination.Replace("_git", ".git");
             Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
             File.Copy(file, destination);
         }

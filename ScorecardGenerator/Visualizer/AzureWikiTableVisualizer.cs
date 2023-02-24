@@ -121,11 +121,11 @@ public class AzureWikiTableVisualizer : IVisualizer
                 }
             };
             process.Start();
-            process.WaitForExit();
+            process.WaitForExitAsync().ConfigureAwait(false).GetAwaiter();
             sevenDaysAgoContent = process.StandardOutput.ReadToEnd();
         }
 
-        var lastLineOfFile = sevenDaysAgoContent.Split(Environment.NewLine).Last();
+        var lastLineOfFile = sevenDaysAgoContent.Replace("\r", Environment.NewLine).Replace("\n", Environment.NewLine).Split(Environment.NewLine).Last(line => !string.IsNullOrEmpty(line));
         var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
         var match = regex.Match(lastLineOfFile);
         if (!match.Success)
