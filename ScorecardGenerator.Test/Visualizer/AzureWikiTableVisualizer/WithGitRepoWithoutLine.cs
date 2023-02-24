@@ -6,7 +6,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;
 
-public class WithGitRepo : TestWithNeighboringDirectoryFixture
+public class WithGitRepoWithoutLine : TestWithNeighboringDirectoryFixture
 {
     [Test]
     public async Task DeterministicallyRendersServiceInfo()
@@ -20,7 +20,7 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
         var git = Process.Start(new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"clone https://github.com/ViMaSter/code-scanning-scoreboard-test-fixture.git {actualOutputPath}",
+                Arguments = $"clone -b nojson https://github.com/ViMaSter/code-scanning-scoreboard-test-fixture.git {actualOutputPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
@@ -59,6 +59,16 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
         var serviceInfo = new Dictionary<string, RunInfo.ServiceScorecard>
         {
             {"service", new RunInfo.ServiceScorecard(new Dictionary<string, IList<BaseCheck.Deduction>>
+            {
+                {"Check", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}},
+                {"Check2", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 20, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck2", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 20, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}}, 
+                {"Check3", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 30, "justification: {Value}", "value")}},
+                {"DisqualifiedCheck3", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 30, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}} 
+            }, 10)},
+            
+            {"service2", new RunInfo.ServiceScorecard(new Dictionary<string, IList<BaseCheck.Deduction>>
             {
                 {"Check", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value")}},
                 {"DisqualifiedCheck", new List<BaseCheck.Deduction> {BaseCheck.Deduction.Create( logger, 10, "justification: {Value}", "value"), BaseCheck.Deduction.CreateDisqualification( logger, "disqualify: {Value}", "disqualification")}},
