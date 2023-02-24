@@ -78,7 +78,6 @@ public class WithGitRepo : TestWithNeighboringDirectoryFixture
         var actualDirectoryInfo = new DirectoryInfo(absolutePathToDirectoryActual);
         var expectedDirectoryInfo = new DirectoryInfo(absolutePathToDirectoryExpected);
 
-        // filter .git and all files in .git
         var actualFiles = actualDirectoryInfo.GetFiles("*", SearchOption.AllDirectories).Where(file => !file.FullName.Contains(".git") && file.Name != ".DS_Store").ToArray();
         var expectedFiles = expectedDirectoryInfo.GetFiles("*", SearchOption.AllDirectories);
 

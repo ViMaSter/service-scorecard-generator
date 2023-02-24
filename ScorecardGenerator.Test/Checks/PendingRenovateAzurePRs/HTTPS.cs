@@ -51,7 +51,6 @@ public class HTTPS
     {
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, "", new NeighboringDirectoryStub());
-        // create empty temp directory
         var subdirectory = Guid.NewGuid().ToString();
         var target = Path.Join(Path.GetTempPath(), subdirectory);
         Directory.CreateDirectory(target);
