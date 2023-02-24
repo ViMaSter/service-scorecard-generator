@@ -155,7 +155,7 @@ public class AzureWikiTableVisualizer : IVisualizer
             return "";
         }
 
-        string StyleForElement(int colorIndex, string element)
+        string StyleForElement(int colorIndex)
         {
             var style = "";
             if (colorIndex <= 3)
@@ -167,7 +167,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         }
         string ToElement(string element, IEnumerable<TableContent> columns)
         {
-            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" {StyleForElement(alternateColorIndex, element)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
+            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" {StyleForElement(alternateColorIndex)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
         }
 
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
