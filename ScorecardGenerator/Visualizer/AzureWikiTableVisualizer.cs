@@ -60,7 +60,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         var gitLog = Process.Start(new ProcessStartInfo
         {
             FileName = "git",
-            Arguments = "log -n 100 --format=format:\"%h %ai\" --date=iso",
+            Arguments = "log -n 1000 --format=format:\"%h %ai\" --date=iso",
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
@@ -76,15 +76,21 @@ public class AzureWikiTableVisualizer : IVisualizer
             return null;
         }
 
-        var sortedCommits = commits.Split(Environment.NewLine).Select(e =>
-        {
-            var list = e.Split(" ");
-            return (DateTime.Parse(string.Join(" ", list.Skip(1))), list.First());
-        }).OrderBy(a=>
-        {
-            Console.WriteLine(Math.Abs((a.Item1 - sevenDaysAgo).TotalSeconds));
-            return Math.Abs((a.Item1 - sevenDaysAgo).TotalSeconds);
-        });
+        var sortedCommits = commits
+            .Replace("\r", Environment.NewLine)
+            .Replace("\n", Environment.NewLine)
+            .Split(Environment.NewLine)
+            .Where(line=>!string.IsNullOrEmpty(line))
+            .Select(line =>
+            {
+                var list = line.Split(" ");
+                return (DateTime.Parse(string.Join(" ", list.Skip(1))), list.First());
+            })
+            .OrderBy(dateAndHash=>
+            {
+                var (commitDate, _) = dateAndHash;
+                return Math.Abs((commitDate - sevenDaysAgo).TotalSeconds);
+            });
             
         var commitToUse = sortedCommits.First();
         
