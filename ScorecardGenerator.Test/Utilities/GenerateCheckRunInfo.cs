@@ -22,10 +22,13 @@ public class GenerateCheckRunInfo
         var emptyLogger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.LatestNET.Check(emptyLogger);
         var checkInfo = ScorecardGenerator.Utilities.GenerateCheckRunInfo(check);
-        Assert.AreEqual(checkInfo.Name, nameof(ScorecardGenerator.Checks.LatestNET));
-        Assert.AreEqual(checkInfo.InfoPageContent, check.InfoPageContent);
+        Assert.Multiple(() =>
+        {
+            Assert.That(checkInfo.Name, Is.EqualTo(nameof(ScorecardGenerator.Checks.LatestNET)));
+            Assert.That(check.InfoPageContent, Is.EqualTo(checkInfo.InfoPageContent));
+        });
     }
-    
+
     [TestCase]
     public void FailsForCheckWithoutMarkdownPage()
     {
