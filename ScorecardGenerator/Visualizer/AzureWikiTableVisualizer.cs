@@ -116,6 +116,12 @@ public class AzureWikiTableVisualizer : IVisualizer
             process.WaitForExitAsync().ConfigureAwait(false).GetAwaiter();
             sevenDaysAgoContent = process.StandardOutput.ReadToEnd();
         }
+
+        if (string.IsNullOrEmpty(sevenDaysAgoContent))
+        {
+            _logger.Information("No history available in that commit; skipping diff");
+            return null;
+        }
         
         _logger.Information("sevenDaysAgoContent: {SevenDaysAgoContent}", sevenDaysAgoContent);
 
