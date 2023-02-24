@@ -55,15 +55,6 @@
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
-      <None Include="Checks\PendingRenovateAzurePRs\HTTPS\https___dev_azure_com_vimaster_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_api_version_7_0">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="Checks\PendingRenovateAzurePRs\HTTPS\https___dev_azure_com_vimaster_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_1_changes_api_version_7_0">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="Checks\PendingRenovateAzurePRs\HTTPS\https___dev_azure_com_vimaster_ScorecardGenerator__apis_git_pullrequests_api_version_7_0_searchCriteria_status_active">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\refs\EMPTY">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -79,13 +70,22 @@
       <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\HEAD">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\https___vimaster_visualstudio_com_ScorecardGenerator__apis_git_pullrequests_api_version_7_0_searchCriteria_status_active">
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\pullrequests">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\https___vimaster_visualstudio_com_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_1_changes_api_version_7_0">
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\changes">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\https___vimaster_visualstudio_com_ScorecardGenerator__apis_git_repositories_b3eebcf1_3f4b_4e8a_b1bd_965403046f0d_pullRequests_1_iterations_api_version_7_0">
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\iterations">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\pullrequests">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\changes">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\iterations">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

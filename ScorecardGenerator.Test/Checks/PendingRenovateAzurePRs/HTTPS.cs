@@ -11,8 +11,11 @@ public class HTTPS
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var path = Regex.Replace(request.RequestUri!.ToString(), @"\W", "_");
-            var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), path);
+            var directory = request.RequestUri.Host.Contains("dev.azure") ? "azure" : "visualstudio";
+            var fileName = request.RequestUri.AbsolutePath.Split("/").Last();
+            
+            var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), directory, fileName);
+            Console.WriteLine($"'{file}' -> {request.RequestUri.AbsolutePath.Split("/").Last()}");
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(File.ReadAllText(file))
