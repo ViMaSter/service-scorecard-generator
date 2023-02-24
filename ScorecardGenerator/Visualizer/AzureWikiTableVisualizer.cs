@@ -54,11 +54,6 @@ public class AzureWikiTableVisualizer : IVisualizer
 
     private RunInfo? Get7DaysAgo()
     {
-        if (!Directory.Exists(Path.Join(_outputPath, ".git")))
-        {
-            _logger.Information("No git repository found at {OutputPath}, skipping git diff", _outputPath);
-            return null;
-        }
         var path = Path.Join(_outputPath, $"{FileName}.md");
         var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
         
