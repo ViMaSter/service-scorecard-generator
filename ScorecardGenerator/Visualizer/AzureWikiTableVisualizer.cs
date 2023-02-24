@@ -229,8 +229,8 @@ public class AzureWikiTableVisualizer : IVisualizer
         {
             null => "",
             0 => "",
-            > 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent2),1)\"> ↗+{delta}%</span></sub>",
-            < 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent1),1)\"> ↘{delta}%</span></sub>"
+            > 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent2),1)\"> ↑+{delta}%</span></sub>",
+            < 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent1),1)\"> ↓{delta}%</span></sub>"
         };
         
         var justifications = string.Join("&#10;", checkValue.Select(deduction => deduction.ToString()));
