@@ -41,13 +41,27 @@
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.csproj.xml" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\ResultSkipped\NoDockerfile.csproj.xml" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check2.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check3.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
-      <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check2.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\Check3.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck2.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Include="Visualizer\AzureWikiTableVisualizer\WithGitRepo\Service-Scorecard\DisqualifiedCheck3.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\Check2.md" />
