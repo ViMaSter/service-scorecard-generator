@@ -18,6 +18,11 @@ public static class DeductionExtensions
 
 public abstract class Utilities
 {
+    public static CheckInfo GenerateCheckRunInfo(BaseCheck check)
+    {
+        return new CheckInfo(GetNameFromCheckClass(check), check.InfoPageContent);
+    }
+    
     public static string GetNameFromCheckClass(BaseCheck check)
     {
         return check.GetType().FullName!.Split(".")[^2];
