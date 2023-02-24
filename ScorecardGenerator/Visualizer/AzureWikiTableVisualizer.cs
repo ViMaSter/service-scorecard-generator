@@ -56,7 +56,7 @@ public class AzureWikiTableVisualizer : IVisualizer
     {
         if (!Directory.Exists(Path.Join(_outputPath, ".git")))
         {
-            _logger.Information("No git repository found at {OutputPath}, skipping 7 days ago check", _outputPath);
+            _logger.Information("No git repository found at {OutputPath}, skipping git diff", _outputPath);
             return null;
         }
         var path = Path.Join(_outputPath, $"{FileName}.md");
@@ -89,7 +89,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         _logger.Information("git log stderr: {StdErr}", gitLog?.StandardError.ReadToEnd().Trim());
         if (string.IsNullOrEmpty(commits))
         {
-            _logger.Information("No commits found skipping 7 days ago check");
+            _logger.Information("No commits found skipping git diff");
             return null;
         }
 
