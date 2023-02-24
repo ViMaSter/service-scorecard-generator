@@ -15,7 +15,6 @@ public class HTTPS
             var fileName = request.RequestUri.AbsolutePath.Split("/").Last();
             
             var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), directory, fileName);
-            Console.WriteLine($"'{file}' -> {request.RequestUri.AbsolutePath.Split("/").Last()}");
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(File.ReadAllText(file))
