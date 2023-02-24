@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 using Serilog;
+using Polly;
+using Polly.Retry;
 
 namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
@@ -24,6 +25,16 @@ public class Check : BaseCheck
 
     private static readonly Dictionary<string, HttpResponseMessage> Data = new();
     private readonly HttpClient _client;
+    
+    private readonly RetryPolicy<HttpResponseMessage> _retryPolicy = Policy
+        .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+        .WaitAndRetry(new List<TimeSpan>()
+        {
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(3),
+            TimeSpan.FromSeconds(10),
+        });
 
     private HttpResponseMessage GetHTTPRequest(string url)
     {
@@ -31,7 +42,9 @@ public class Check : BaseCheck
         {
             return value;
         }
-        Data[url] = _client.GetAsync(url).Result;
+
+        Data[url] = _retryPolicy.Execute(() => _client.GetAsync(url).Result);
+        
         File.WriteAllText(Path.Join(Directory.GetCurrentDirectory(), url.Replace("/", "_")), $"{Data[url].StatusCode}{Environment.NewLine}{Data[url].Content.ReadAsStringAsync().Result}");
         return Data[url];
     }
@@ -102,13 +115,6 @@ public class Check : BaseCheck
 
         var projectPullRequestsURL = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
         var allProjectPullRequests = GetHTTPRequest(projectPullRequestsURL);
-        if (allProjectPullRequests is { IsSuccessStatusCode: false })
-        {
-            Logger.Verbose("response: {Response}", allProjectPullRequests);
-            Logger.Verbose("url: {Url}", projectPullRequestsURL);
-            return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch open PRs for {ServiceRootDirectory}; check verbose output for response", serviceRootDirectory) };
-        }
-
         var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
         var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<PullRequest>(pullRequestJSON)!.value;
         var renovatePullRequests = pullRequests.Where(pr => pr.repository.name == azureInfo.repo && pr.sourceRefName.Contains("renovate")).ToList();
@@ -121,13 +127,6 @@ public class Check : BaseCheck
             var path = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations?api-version=7.0";
 
             var iterations = GetHTTPRequest(path);
-            if (!iterations.IsSuccessStatusCode)
-            {
-                Logger.Error("Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory);
-                Logger.Verbose("response: {Response}", iterations);
-                Logger.Verbose("path: {Path}", path);
-                return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch iterations for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory) };
-            }
 
             var iterationsJSON = iterations.Content.ReadAsStringAsync().Result;
             var iterationsList = Newtonsoft.Json.JsonConvert.DeserializeObject<Iteration>(iterationsJSON)!.value;
@@ -135,13 +134,6 @@ public class Check : BaseCheck
             {
                 var url = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0";
                 var filesChanged = GetHTTPRequest(url);
-                if (!filesChanged.IsSuccessStatusCode)
-                {
-                    Logger.Verbose("response: {Response}", filesChanged);
-                    Logger.Verbose("url: {Url}", url);
-                    return new List<Deduction> { Deduction.Create(Logger, 100, "Couldn't fetch file changes for PR {PRNumber} in {ServiceRootDirectory}; check verbose output for response", pr.pullRequestId, serviceRootDirectory) };
-                }
-
                 var filesChangedJSON = filesChanged.Content.ReadAsStringAsync().Result;
                 var filesChangedList = Newtonsoft.Json.JsonConvert.DeserializeObject<Changes>(filesChangedJSON)!.changeEntries;
                 allFilesChanged.AddRange(filesChangedList.Select(fc => fc.item.path));

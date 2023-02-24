@@ -51,9 +51,9 @@ internal class GenerateScorecard
         );
         var listByGroup = new Dictionary<string, IList<CheckInfo>>
         {
-            { nameof(checks.Gold), checks.Gold.Select(GenerateCheckRunInfo).ToList() },
-            { nameof(checks.Silver), checks.Silver.Select(GenerateCheckRunInfo).ToList() },
-            { nameof(checks.Bronze), checks.Bronze.Select(GenerateCheckRunInfo).ToList() }
+            { nameof(checks.Gold), checks.Gold.Select(Utilities.GenerateCheckRunInfo).ToList() },
+            { nameof(checks.Silver), checks.Silver.Select(Utilities.GenerateCheckRunInfo).ToList() },
+            { nameof(checks.Bronze), checks.Bronze.Select(Utilities.GenerateCheckRunInfo).ToList() }
         };
         
         var scoreForServiceByCheck = _projectsInWorkingDirectory.Where(DoesntMatchExcludePath(excludePath)).ToImmutableSortedDictionary(entry=>entry.Replace(Directory.GetCurrentDirectory(), "").Replace(Path.DirectorySeparatorChar, '/'), serviceRootDirectory =>
@@ -86,11 +86,6 @@ internal class GenerateScorecard
     private bool ThatDontHaveDisqualification(KeyValuePair<string, IList<BaseCheck.Deduction>> arg)
     {
         return !arg.Value.Any(deduction => deduction.IsDisqualification);
-    }
-
-    private CheckInfo GenerateCheckRunInfo(BaseCheck check)
-    {
-        return new CheckInfo(Utilities.GetNameFromCheckClass(check), check.InfoPageContent);
     }
 
     private Func<string, bool> DoesntMatchExcludePath(string? excludePath)
