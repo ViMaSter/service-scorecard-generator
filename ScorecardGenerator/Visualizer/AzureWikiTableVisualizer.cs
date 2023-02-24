@@ -201,7 +201,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         var deltaString = delta switch
         {
             null => "",
-            0 => "<sub><span title=\"compared to 7 days ago\" style=\"color: var(--status-info-foreground))\"> ➡0%<span></sub>",
+            0 => "",
             > 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent2),1)\"> ↗+{delta}%</span></sub>",
             < 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: rgba(var(--palette-accent1),1)\"> ↘{delta}%</span></sub>"
         };
