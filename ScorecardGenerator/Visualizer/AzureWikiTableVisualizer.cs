@@ -88,7 +88,7 @@ public class AzureWikiTableVisualizer : IVisualizer
             
         var commitToUse = sortedCommits.First();
             
-        var arguments = $"show {commitToUse.Item2}:{Path.GetFileName(path)} ";
+        var arguments = $"show {commitToUse.Item2}:./{Path.GetFileName(path)} ";
         string sevenDaysAgoContent = "";
         {
             var process = new Process
