@@ -97,6 +97,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         _logger.Information("Diffing with commit: {Commit}", commitToUse);
             
         var arguments = $"show {commitToUse.Item2}:./{Path.GetFileName(path)} ";
+        _logger.Information("running: git {Arguments}", arguments);
         string sevenDaysAgoContent = "";
         {
             var process = new Process
