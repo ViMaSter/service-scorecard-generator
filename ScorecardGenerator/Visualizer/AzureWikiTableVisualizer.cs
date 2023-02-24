@@ -175,13 +175,30 @@ public class AzureWikiTableVisualizer : IVisualizer
         {
             var (fullPathToService, (scoreByCheckName, average)) = pair;
             var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
-            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, infoFromSevenDaysAgo?.ServiceScores[fullPathToService].DeductionsByCheck[check.Key])).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
+            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
         });
         
         _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
 
         var headline = $"# Service Scorecard for {_dayOfGeneration}";
         WriteGeneratedOutput($"{FileName}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}<table>{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
+    }
+
+    private static IList<BaseCheck.Deduction>? GetDeductions(RunInfo? infoFromSevenDaysAgo, string fullPathToService, KeyValuePair<string, IList<BaseCheck.Deduction>> check)
+    {
+        var serviceScores = infoFromSevenDaysAgo?.ServiceScores;
+        if (serviceScores == null || !serviceScores.ContainsKey(fullPathToService))
+        {
+            return null;
+        }
+
+        var deductionsByCheck = infoFromSevenDaysAgo?.ServiceScores[fullPathToService].DeductionsByCheck;
+        if (deductionsByCheck == null || !deductionsByCheck.ContainsKey(check.Key))
+        {
+            return null;
+        }
+
+        return deductionsByCheck[check.Key];
     }
 
     private static string StyleOfNumber(int? score)
