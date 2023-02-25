@@ -24,6 +24,10 @@ cd /sources
 /scoreboard-generator/bin/Release/net7.0/ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki
 ```
 
+## Interactive tables
+Due to limted HTML support, the table itself can't be made interactive. More info and a workaround can be found [in the wiki](https://github.com/ViMaSter/service-scorecard-generator/wiki/Interactive-table).
+![video of how to sort and filter the table](https://user-images.githubusercontent.com/1689033/221364567-c5ca0a3d-9e00-4730-b33e-052cfc1aa521.gif)
+
 ## License
 
 [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
