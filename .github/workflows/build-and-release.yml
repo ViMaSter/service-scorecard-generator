@@ -1,0 +1,181 @@
+name: Build (and Release)
+
+on:
+  push:
+  pull_request:
+    branches: [ "main" ]
+ 
+jobs:
+  unit-test:
+    runs-on: ${{ matrix.os }}
+    needs: []
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: app
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+      working-directory: app
+
+    - name: Generate coverage report
+      run: dotnet test --collect:"XPlat Code Coverage" --results-directory "test-results"
+      working-directory: app
+
+    - name: Move coverage report from GUID folder to test-results
+      run: find test-results -name "coverage.cobertura.xml" -exec mv {} test-results \;
+      shell: bash
+      working-directory: app
+      if: ${{ always() }}
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: app/test-results/coverage.cobertura.xml
+        fail_ci_if_error: true
+      if: ${{ always() && matrix.os == 'ubuntu-latest' }}
+
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: testresults-unit
+        path: app/test-results
+      if: ${{ always() }}
+
+    - name: Upload binaries as ${platform}-artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: binaries-${{ matrix.os }}
+        path: app/ScorecardGenerator/bin/Release/net7.0/*
+      if: ${{ always() }}
+
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: []
+    
+    strategy:
+      matrix: 
+        data: [
+          { suffix: "dev-azure-1",    url: "https://:PAT@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService1" },
+          { suffix: "dev-azure-2",    url: "https://:PAT@dev.azure.com/vimaster/ScorecardGenerator/_git/TestService2" },
+          { suffix: "visualstudio-1", url: "https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService1" },
+          { suffix: "visualstudio-2", url: "https://vimaster.visualstudio.com/DefaultCollection/ScorecardGenerator/_git/TestService2" },
+        ]
+        
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: app
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+      working-directory: app
+
+    - run: |
+        URL=$(echo "${{ matrix.data.url }}" | sed "s/PAT/${{ secrets.AZURE_PAT }}/g")
+        git clone $URL test-data
+      
+    - name: Run binary inside "test-data"
+      run: ../app/ScorecardGenerator/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki
+      working-directory: test-data
+      
+    - uses: actions/upload-artifact@v3
+      with:
+        name: testresults-integration-${{ matrix.data.suffix }}
+        path: test-data/wiki/*
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [ unit-test, integration-test ]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.ELEVATED_GITHUB_TOKEN || github.token }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Install Versionize
+      run: dotnet tool install --global Versionize
+
+    - name: Setup git
+      run: |
+        git config --local user.email "versionize-bot@by.vincent.mahn.ke"
+        git config --local user.name "Versionize Bot"
+
+    - name: Versionize Release
+      id: versionize
+      run: 'versionize --changelog-all --exit-insignificant-commits --commit-suffix " [skip ci]"'
+      continue-on-error: true
+
+    - name: No release required
+      if: steps.versionize.outcome != 'success'
+      run: echo "Skipping Release. No release required."
+
+    - name: Push changes to GitHub
+      if: steps.versionize.outcome == 'success'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        tags: true
+        
+    - name: Download ubuntu artifacts
+      if: steps.versionize.outcome == 'success'
+      uses: actions/download-artifact@v3
+      with:
+        name: binaries-ubuntu-latest
+        path: ubuntu-artifacts
+
+    - name: Download windows artifacts
+      if: steps.versionize.outcome == 'success'
+      uses: actions/download-artifact@v3
+      with:
+        name: binaries-windows-latest
+        path: windows-artifacts
+
+    - name: Download macos artifacts
+      if: steps.versionize.outcome == 'success'
+      uses: actions/download-artifact@v3
+      with:
+        name: binaries-macos-latest
+        path: macos-artifacts
+
+    - run: |
+        version=$(git describe --tags --abbrev=0)
+
+        zip -r ScorecardGenerator-ubuntu-x64-$version.zip ubuntu-artifacts
+        zip -r ScorecardGenerator-windows-x64-$version.zip windows-artifacts
+        zip -r ScorecardGenerator-macos-x64-$version.zip macos-artifacts
+      if: steps.versionize.outcome == 'success'
+
+    - name: "Create release with all artifacts"
+      if: steps.versionize.outcome == 'success'
+      run: |
+        version=$(git describe --tags --abbrev=0)
+
+        gh release create $version \
+          -t "$version" \
+          -R ${{ github.repository }} \
+          --target ${{ github.sha }} \
+          --title "$version" \
+          -F CHANGELOG.md \
+            ScorecardGenerator-ubuntu-x64-$version.zip \
+            ScorecardGenerator-windows-x64-$version.zip \
+            ScorecardGenerator-macos-x64-$version.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
+      shell: bash

@@ -20,7 +20,7 @@ public class WithGitRepoWithoutFile : TestWithNeighboringDirectoryFixture
         var git = Process.Start(new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"clone -b nofile https://github.com/ViMaSter/code-scanning-scoreboard-test-fixture.git {actualOutputPath}",
+                Arguments = $"clone -b nofile https://github.com/ViMaSter/service-scorecard-generator-test-fixture.git {actualOutputPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
