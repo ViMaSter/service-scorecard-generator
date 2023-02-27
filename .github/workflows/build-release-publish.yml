@@ -1,4 +1,4 @@
-name: Build (and Release)
+name: Build, Release, Publish
 
 on:
   push:
@@ -99,24 +99,25 @@ jobs:
     needs: [ unit-test, integration-test ]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
-    - uses: actions/checkout@v3
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
         token: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.ELEVATED_GITHUB_TOKEN || github.token }}
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
-
-    - name: Build
-      run: dotnet build --configuration Release
-    - name: Install Versionize
-      run: dotnet tool install --global Versionize
 
     - name: Setup git
       run: |
         git config --local user.email "versionize-bot@by.vincent.mahn.ke"
         git config --local user.name "Versionize Bot"
 
-    - name: Versionize Release
+    - name: Install Versionize
+      run: dotnet tool install --global Versionize
+
+    - name: Run Versionize
       id: versionize
       run: 'versionize --changelog-all --exit-insignificant-commits --commit-suffix " [skip ci]"'
       continue-on-error: true
@@ -132,6 +133,10 @@ jobs:
         github_token: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
         branch: ${{ github.ref }}
         tags: true
+
+    - name: Create NuPkg
+      if: steps.versionize.outcome == 'success'
+      run: dotnet pack --configuration Release
         
     - name: Download ubuntu artifacts
       if: steps.versionize.outcome == 'success'
@@ -160,6 +165,7 @@ jobs:
         zip -r ScorecardGenerator-ubuntu-x64-$version.zip ubuntu-artifacts
         zip -r ScorecardGenerator-windows-x64-$version.zip windows-artifacts
         zip -r ScorecardGenerator-macos-x64-$version.zip macos-artifacts
+        zip -r ScorecardGenerator-nupkg-x64-$version.zip ScorecardGenerator/nupkg/*.nupkg -j
       if: steps.versionize.outcome == 'success'
 
     - name: "Create release with all artifacts"
@@ -173,9 +179,20 @@ jobs:
           --target ${{ github.sha }} \
           --title "$version" \
           -F CHANGELOG.md \
+            ScorecardGenerator-nupkg-x64-$version.zip \
             ScorecardGenerator-ubuntu-x64-$version.zip \
             ScorecardGenerator-windows-x64-$version.zip \
             ScorecardGenerator-macos-x64-$version.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
+      shell: bash
+      
+    - name: Publish to NuGet
+      if: steps.versionize.outcome == 'success'
+      run: |
+        version=$(git describe --tags --abbrev=0)
+        
+        dotnet nuget push ScorecardGenerator/nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       env:
         GITHUB_TOKEN: ${{ secrets.ELEVATED_GITHUB_TOKEN }}
       shell: bash
