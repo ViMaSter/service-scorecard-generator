@@ -7,6 +7,18 @@
         <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <Version>1.1.0</Version>
+        <PackAsTool>true</PackAsTool>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Description>Generate Azure Wiki-friendly markdown files with scores for dotnet projects.</Description>
+        <PackageProjectUrl>https://github.com/ViMaSter/service-scorecard-generator</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ViMaSter/service-scorecard-generator.git</RepositoryUrl>
+        <Authors>Vincent Mahnke (vincent@mahn.ke)</Authors>
+        <Copyright>(c) 2023 by Vincent Mahnke</Copyright>
+        <PackageTags>dotnet;csharp;azure-devops;markdown</PackageTags>
+        <PackageReleaseNotes>Check CHANGELOG.md</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,6 +36,29 @@
       <EmbeddedResource Include="Checks\NullableSetup\README.md" />
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\README.md" />
       <EmbeddedResource Include="Checks\ProperDockerfile\README.md" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\LICENSE" Pack="true" PackagePath=""/>
+        <None Include="..\README.md" Pack="true" PackagePath=""/>
+        <Version>1.0.0</Version>
+        <PackAsTool>true</PackAsTool>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Description>Generate Azure Wiki-friendly markdown files with scores for dotnet projects.</Description>
+        <PackageProjectUrl>https://github.com/ViMaSter/service-scorecard-generator</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ViMaSter/service-scorecard-generator.git</RepositoryUrl>
+        <Authors>Vincent Mahnke (vincent@mahn.ke)</Authors>
+        <Copyright>(c) 2023 by Vincent Mahnke</Copyright>
+        <PackageTags>dotnet;csharp;azure-devops;markdown</PackageTags>
+        <PackageReleaseNotes>Check CHANGELOG.md</PackageReleaseNotes>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\LICENSE" Pack="true" PackagePath=""/>
+        <None Include="..\README.md" Pack="true" PackagePath=""/>
     </ItemGroup>
 
 </Project>

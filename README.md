@@ -1,4 +1,6 @@
-# Service Scorecard Generator <br /> [![codecov](https://codecov.io/gh/ViMaSter/service-scorecard-generator/branch/main/graph/badge.svg?token=T7ESI3L6ZN)](https://codecov.io/gh/ViMaSter/service-scorecard-generator) [![Build (and Release)](https://github.com/ViMaSter/service-scorecard-generator/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/ViMaSter/service-scorecard-generator/actions/workflows/build-and-release.yml)
+# Service Scorecard Generator
+
+[![codecov](https://codecov.io/gh/ViMaSter/service-scorecard-generator/branch/main/graph/badge.svg?token=T7ESI3L6ZN)](https://codecov.io/gh/ViMaSter/service-scorecard-generator) [![Build (and Release)](https://github.com/ViMaSter/service-scorecard-generator/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/ViMaSter/service-scorecard-generator/actions/workflows/build-and-release.yml)
 
 Service Scorecard Generator is a dotnet app that generates Azure Wiki-friendly markdown files with scores for dotnet projects.  
 ![image](https://user-images.githubusercontent.com/1689033/218286805-7acdd1c5-e2be-4d69-92fb-8081f9e1d0a2.png)
