@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.1.0"></a>
+## [1.1.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.1.0) (2023-2-27)
+
+### Features
+
+* **AzureWikiTableVisualizer:** Added id-attribute to distinguish table element ([18b83a4](https://www.github.com/ViMaSter/service-scorecard-generator/commit/18b83a4bae500034c25921d73c953874065cac22))
+
+### Other
+
+* **deps:** bump NUnit3TestAdapter in /ScorecardGenerator.Test ([1379ce5](https://www.github.com/ViMaSter/service-scorecard-generator/commit/1379ce5b4209fa51f1f7d090547eac2e40d47f21))
+* **docs:** Limit vale to .md files ([7d15ad7](https://www.github.com/ViMaSter/service-scorecard-generator/commit/7d15ad7e2a4714b3a0a773bd228a860045d07d43))
+
 <a name="1.0.0"></a>
 ## [1.0.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.0.0) (2023-2-26)
 
