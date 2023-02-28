@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.2.0"></a>
+## [1.2.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.2.0) (2023-2-28)
+
+### Features
+
+* **workflows:** Added NuGet publishing step ([998947e](https://www.github.com/ViMaSter/service-scorecard-generator/commit/998947e7c183398347bea4d7264009d136f849fe))
+
+### Other
+
+* **README,csproj:** Added info for NuGet ([647dfdf](https://www.github.com/ViMaSter/service-scorecard-generator/commit/647dfdfbc7f043c197180daef4a93747bbffaa58))
+
 <a name="1.1.0"></a>
 ## [1.1.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.1.0) (2023-2-27)
 
