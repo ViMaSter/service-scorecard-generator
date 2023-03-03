@@ -29,7 +29,7 @@ internal class GenerateScorecard
         _projectsInWorkingDirectory = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj", SearchOption.AllDirectories);
     }
     
-    public void Execute(string azurePAT, string outputPath, string? excludePath = null)
+    public void Execute(string azurePAT, string sonarQubeToken, string outputPath, string? excludePath = null)
     {
         var checks = new Checks
         (
@@ -38,7 +38,8 @@ internal class GenerateScorecard
                 new ScorecardGenerator.Checks.BuiltForAKS.Check(_logger),
                 new ScorecardGenerator.Checks.LatestNET.Check(_logger),
                 new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT),
-                new ScorecardGenerator.Checks.ProperDockerfile.Check(_logger)
+                new ScorecardGenerator.Checks.ProperDockerfile.Check(_logger),
+                new ScorecardGenerator.Checks.SonarQubeCoverage.Check(_logger, sonarQubeToken)
             },
             new List<BaseCheck>()
             {
