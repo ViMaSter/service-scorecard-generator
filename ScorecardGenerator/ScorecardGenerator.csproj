@@ -36,6 +36,7 @@
       <EmbeddedResource Include="Checks\NullableSetup\README.md" />
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\README.md" />
       <EmbeddedResource Include="Checks\ProperDockerfile\README.md" />
+      <EmbeddedResource Include="Checks\SonarQubeCoverage\README.md" />
     </ItemGroup>
 
     <ItemGroup>
