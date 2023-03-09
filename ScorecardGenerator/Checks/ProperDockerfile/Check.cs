@@ -19,9 +19,9 @@ public class Check : BaseCheck
         }
         
         var dockerfileContent = File.ReadAllText(dockerfile);
-        if (!dockerfileContent.Contains("dotnet build"))
+        if (!dockerfileContent.Contains("dotnet build") && !dockerfileContent.Contains("dotnet publish"))
         {
-            return new List<Deduction> {Deduction.Create(Logger, 100, "Dockerfile at {Location} does not contain 'dotnet build'", dockerfile)};
+            return new List<Deduction> {Deduction.Create(Logger, 100, "Dockerfile at {Location} does not contain 'dotnet build' or 'dotnet publish", dockerfile)};
         }
         
         if (!dockerfileContent.Contains("dotnet sonarscanner"))

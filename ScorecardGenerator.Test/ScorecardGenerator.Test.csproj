@@ -38,6 +38,8 @@
       <EmbeddedResource Include="Checks\ProperDockerfile\Result0\NoBuild.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result100\DotnetBuildAndSonarscanner.csproj.xml" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result100\DotnetBuildAndSonarscanner.Dockerfile" />
+      <EmbeddedResource Include="Checks\ProperDockerfile\Result100\DotnetPublishAndSonarscanner.csproj.xml" />
+      <EmbeddedResource Include="Checks\ProperDockerfile\Result100\DotnetPublishAndSonarscanner.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.csproj.xml" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\ResultSkipped\NoDockerfile.csproj.xml" />

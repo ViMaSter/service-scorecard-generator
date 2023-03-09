@@ -3,7 +3,7 @@
 ## About
 This check returns **100 points** when a `Dockerfile` next to the `.csproj` exists and contains `dotnet build`.  
 A `Dockerfile` that doesn't contain `dotnet sonarscanner` results in a **50 point deduction**.  
-A `Dockerfile` that doesn't contain `dotnet build` results in a **100 point deduction**.  
+A `Dockerfile` that contains neither `dotnet build` nor `dotnet publish` results in a **100 point deduction**.  
 The Scorecard **skips this check** if no `Dockerfile` exists next to the `.csproj` file.
 
 ## How to achieve 100 points
@@ -18,6 +18,6 @@ This ensures:
  - executables generated locally match the ones running in generated images inside the Kubernetes cluster
  - the project compiles across platforms
  - local and CI/CD environments can run all build steps
- - 
+ 
 ### Run code analysis
 This allows local runs of code analysis
