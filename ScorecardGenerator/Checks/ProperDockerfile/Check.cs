@@ -26,7 +26,7 @@ public class Check : BaseCheck
         
         if (!dockerfileContent.Contains("dotnet sonarscanner"))
         {
-            return new List<Deduction> {Deduction.Create(Logger, 50, "Dockerfile at {Location} contains 'sonarqube'", dockerfile)};
+            return new List<Deduction> {Deduction.Create(Logger, 50, "Dockerfile at {Location} doesn't contain 'dotnet sonarscanner'", dockerfile)};
         }
 
         return new List<Deduction>();
