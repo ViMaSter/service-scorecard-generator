@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.3.1) (2023-3-9)
+
+### Bug Fixes
+
+* **ProperDockerfile:** Clarified 'dotnet sonarscanner' deduction message ([73f8056](https://www.github.com/ViMaSter/service-scorecard-generator/commit/73f80564ca3ebd546b9a324f576baeeb674f3adf))
+
 <a name="1.3.0"></a>
 ## [1.3.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.3.0) (2023-3-9)
 
