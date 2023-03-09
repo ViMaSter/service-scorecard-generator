@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.3.0"></a>
+## [1.3.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.3.0) (2023-3-9)
+
+### Features
+
+* **ProperDockerfile:** 100 points if `dotnet build` or `dotnet publish` exists ([c209e83](https://www.github.com/ViMaSter/service-scorecard-generator/commit/c209e8361b9909e3e37c44a3c4005a6e0b8e4f12))
+
+### Other
+
+* **deps:** bump NUnit3TestAdapter in /ScorecardGenerator.Test ([eeed8bb](https://www.github.com/ViMaSter/service-scorecard-generator/commit/eeed8bb30dc3c06e4cfb364f64f1b31b41b25ae9))
+* **README:** Updated "Usage" chapter to use binaries via "dotnet tool install" instead of source ([a4e7b03](https://www.github.com/ViMaSter/service-scorecard-generator/commit/a4e7b03feebd57f66cb5fccb1c305ed7a7cd20ee))
+
 <a name="1.2.0"></a>
 ## [1.2.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.2.0) (2023-2-28)
 
