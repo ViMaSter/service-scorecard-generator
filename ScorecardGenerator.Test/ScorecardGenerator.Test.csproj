@@ -42,6 +42,8 @@
       <EmbeddedResource Include="Checks\ProperDockerfile\Result100\DotnetPublishAndSonarscanner.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.csproj.xml" />
       <EmbeddedResource Include="Checks\ProperDockerfile\Result50\DotnetBuildOnly.Dockerfile" />
+      <EmbeddedResource Include="Checks\ProperDockerfile\Result90\PinnedVersion.csproj.xml" />
+      <EmbeddedResource Include="Checks\ProperDockerfile\Result90\PinnedVersion.Dockerfile" />
       <EmbeddedResource Include="Checks\ProperDockerfile\ResultSkipped\NoDockerfile.csproj.xml" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepoWithHistory\Service-Scorecard.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithGitRepoWithHistory\Service-Scorecard\Check.md" />
