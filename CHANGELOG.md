@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.4.0"></a>
+## [1.4.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.0) (2023-3-10)
+
+### Features
+
+* **ProperDockerfile:** Deduct 10 points for pinned version ([47502ff](https://www.github.com/ViMaSter/service-scorecard-generator/commit/47502ff1300540cae6c822bef885e81f0a8ba1cb))
+
+### Other
+
+* **deps:** bump Newtonsoft.Json in /ScorecardGenerator ([5127a90](https://www.github.com/ViMaSter/service-scorecard-generator/commit/5127a90d8c615c1d59531ca4a6b46ea0876e1063))
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.3.1) (2023-3-9)
 
