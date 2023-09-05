@@ -16,7 +16,7 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: app
     - name: Setup .NET Core
@@ -72,7 +72,7 @@ jobs:
         ]
         
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: app
     - name: Setup .NET Core
@@ -101,7 +101,7 @@ jobs:
     steps:
 
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
         token: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.ELEVATED_GITHUB_TOKEN || github.token }}
