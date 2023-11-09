@@ -27,7 +27,7 @@
       <EmbeddedResource Include="Checks\ImplicitAssemblyInfo\MissingProperties.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NETCore31.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NET6.csproj.xml" />
-      <EmbeddedResource Include="Checks\LatestNET\NET7.csproj.xml" />
+      <EmbeddedResource Include="Checks\LatestNET\NewestMajor.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NETFramework471.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NoTargetFramework.csproj.xml" />
       <EmbeddedResource Include="Checks\LatestNET\NotYetReleased.csproj.xml" />

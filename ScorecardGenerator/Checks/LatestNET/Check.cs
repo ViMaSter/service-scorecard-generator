@@ -55,8 +55,9 @@ public partial class Check : BaseCheck
             return yFull.CompareTo(xFull);
         }
     }
-    
-    private readonly int _newestMajor;
+
+    public int NewestMajor { get; }
+
     private readonly string _newestText;
 
     public Check(ILogger logger) : base(logger)
@@ -65,7 +66,7 @@ public partial class Check : BaseCheck
         var jsonResponse = httpClient.GetStringAsync("https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json").Result;
         var parsed = JsonConvert.DeserializeObject<ReleaseData>(jsonResponse);
         var latestNonPreviewVersion = parsed!.ReleasesIndex.Where(release => !release.LatestRelease.Contains("preview")).OrderDescending(new ReleaseComparer()).First();
-        _newestMajor = int.Parse(latestNonPreviewVersion.ChannelVersion.Split(".").First());
+        NewestMajor = int.Parse(latestNonPreviewVersion.ChannelVersion.Split(".").First());
         _newestText = latestNonPreviewVersion.ChannelVersion;
     }
 
@@ -84,18 +85,18 @@ public partial class Check : BaseCheck
         }
         
         var currentMajor = int.Parse(FirstNumber().Match(targetFramework).Value);
-        if (currentMajor > _newestMajor)
+        if (currentMajor > NewestMajor)
         {
             Logger.Warning("Current major version ({Current}) is higher than the newest major version ({Latest})", currentMajor, _newestText);
             return new List<Deduction> { Deduction.Create(Logger, 5, "Service uses ({Current}) latest available is only ({Latest})", targetFramework, _newestText) };
         }
-        if (currentMajor == _newestMajor)
+        if (currentMajor == NewestMajor)
         {
             return new List<Deduction>();
         }
         
-        var offset = 100-(int)Math.Round(((double)currentMajor / _newestMajor) * 100);
-        return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {CurrentText}, latest available is {LatestText} ({CurrentMajor}/{LatestMajor}={Offset}%)", targetFramework, _newestText, currentMajor, _newestMajor, 100-offset) };
+        var offset = 100-(int)Math.Round(((double)currentMajor / NewestMajor) * 100);
+        return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {CurrentText}, latest available is {LatestText} ({CurrentMajor}/{LatestMajor}={Offset}%)", targetFramework, _newestText, currentMajor, NewestMajor, 100-offset) };
     }
 
     [GeneratedRegex("\\d")]

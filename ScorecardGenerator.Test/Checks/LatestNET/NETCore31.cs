@@ -11,6 +11,6 @@ public class NETCore31 : TestWithNeighboringCsprojFixture
         var logger = new LoggerConfiguration().CreateLogger();
         var check = new ScorecardGenerator.Checks.LatestNET.Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
-        deductions.CountAndFinalScore(1, (int)Math.Round(3.0 / 7.0*100));
+        deductions.CountAndFinalScore(1, (int)Math.Round(3.0 / check.NewestMajor*100));
     }
 }
