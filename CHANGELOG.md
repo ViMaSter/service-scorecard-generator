@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.4.1"></a>
+## [1.4.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.1) (2023-11-09)
+
+### Bug Fixes
+
+* Allows automerging by explicitly specifying workflow check ([9f93e9d](https://www.github.com/ViMaSter/service-scorecard-generator/commit/9f93e9df25138761b7df46ea6cc00923445a3809))
+* **LatestNET:** Tests dynamically use newest major ([c564e47](https://www.github.com/ViMaSter/service-scorecard-generator/commit/c564e47fdbd02b2cfb836ce931e1e1290070bfcc))
+
+### Other
+
+* **automerge:** Use elevated GitHub token to allow merges ([07a6e98](https://www.github.com/ViMaSter/service-scorecard-generator/commit/07a6e9895ce555fa9861016e9b9809ba5ca17bcb))
+* **deps:** bump actions/checkout from 3 to 4 ([205422e](https://www.github.com/ViMaSter/service-scorecard-generator/commit/205422eb9ff7a871097f9f9f6e638d231fcaa42d))
+* **deps:** bump Cocona.Lite in /ScorecardGenerator.Test ([9d03a9b](https://www.github.com/ViMaSter/service-scorecard-generator/commit/9d03a9b51ddcc8d579106472cefc9463d93abd99))
+* **deps:** bump coverlet.collector in /ScorecardGenerator.Test ([59ba44e](https://www.github.com/ViMaSter/service-scorecard-generator/commit/59ba44e7ba57685d900c650597f9bfbff4df93be))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([cd2f48f](https://www.github.com/ViMaSter/service-scorecard-generator/commit/cd2f48f5826202a9e83da93bb1082b6ab17727dc))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([64d4231](https://www.github.com/ViMaSter/service-scorecard-generator/commit/64d42314badf5d9404d52b2670c19d084425ec6b))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([b3bb1f8](https://www.github.com/ViMaSter/service-scorecard-generator/commit/b3bb1f84bbb688d673ff92ab55987b8f8034fc62))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([98aca7e](https://www.github.com/ViMaSter/service-scorecard-generator/commit/98aca7ee416633e3f4c700b0e18209c883458740))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([0efe1bb](https://www.github.com/ViMaSter/service-scorecard-generator/commit/0efe1bb4fc4330cfdaed8f1f26d227c4c1c31a2b))
+* **deps:** bump NUnit.Analyzers in /ScorecardGenerator.Test ([75e78b2](https://www.github.com/ViMaSter/service-scorecard-generator/commit/75e78b23c5ba14104d5180ff7498eabaae104366))
+* **deps:** bump NUnit3TestAdapter in /ScorecardGenerator.Test ([5526fe3](https://www.github.com/ViMaSter/service-scorecard-generator/commit/5526fe3b0b46771836c1eb31bac89e05bbe0985b))
+* **deps:** bump Polly from 7.2.3 to 7.2.4 in /ScorecardGenerator ([58d56bb](https://www.github.com/ViMaSter/service-scorecard-generator/commit/58d56bbe8263d0bd516ecf47032cdfb713d38b53))
+
 <a name="1.4.0"></a>
 ## [1.4.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.0) (2023-3-10)
 
