@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.4.2"></a>
+## [1.4.2](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.2) (2023-11-23)
+
+### Bug Fixes
+
+* Sets proper newlines ([a50aa99](https://www.github.com/ViMaSter/service-scorecard-generator/commit/a50aa993b78927ceee8a83972f1501e67147814d))
+
+### Other
+
+* **deps:** bump dotnet/runtime from 7.0 to 8.0 in /ScorecardGenerator ([66b40ad](https://www.github.com/ViMaSter/service-scorecard-generator/commit/66b40ad0276cfb7d22246941da9222236c18c7f4))
+* **deps:** bump dotnet/sdk from 7.0 to 8.0 in /ScorecardGenerator ([dd9eef4](https://www.github.com/ViMaSter/service-scorecard-generator/commit/dd9eef41da909b67d9db727d54508cc09442ef08))
+* **deps:** bump Microsoft.NET.Test.Sdk in /ScorecardGenerator.Test ([c81b62b](https://www.github.com/ViMaSter/service-scorecard-generator/commit/c81b62b05297f21e60a28a21ebdf285ae2a6365f))
+* **deps:** bump NUnit in /ScorecardGenerator.Test ([44775ec](https://www.github.com/ViMaSter/service-scorecard-generator/commit/44775ec0c6adda17aa8ee5e3c47338de961657d5))
+* **deps:** bump NUnit.Analyzers in /ScorecardGenerator.Test ([ed19826](https://www.github.com/ViMaSter/service-scorecard-generator/commit/ed198266b0309d0bcdb12ede6bc090604fc81cff))
+* **deps:** bump Polly from 7.2.4 to 8.1.0 in /ScorecardGenerator.Test ([f65295b](https://www.github.com/ViMaSter/service-scorecard-generator/commit/f65295b2809b2bf0dca42e73ad290088cd952d43))
+* **deps:** bump Polly from 8.1.0 to 8.2.0 in /ScorecardGenerator ([2a288fd](https://www.github.com/ViMaSter/service-scorecard-generator/commit/2a288fd08a3b1e8f40c8bee21c3e831b0c494bb9))
+* **deps:** bump Serilog.Sinks.Console in /ScorecardGenerator.Test ([2ece085](https://www.github.com/ViMaSter/service-scorecard-generator/commit/2ece085d3cad42c13d6a4689453250ee67977aa7))
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.1) (2023-11-09)
 
