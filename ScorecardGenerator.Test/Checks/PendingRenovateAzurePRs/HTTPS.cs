@@ -11,8 +11,8 @@ public class HTTPS
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var directory = request.RequestUri.Host.Contains("dev.azure") ? "azure" : "visualstudio";
-            var fileName = request.RequestUri.AbsolutePath.Split("/").Last();
+            var directory = request.RequestUri != null && request.RequestUri.Host.Contains("dev.azure") ? "azure" : "visualstudio";
+            var fileName = request.RequestUri?.AbsolutePath.Split("/").Last();
             
             var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), directory, fileName);
             var response = new HttpResponseMessage(HttpStatusCode.OK)
