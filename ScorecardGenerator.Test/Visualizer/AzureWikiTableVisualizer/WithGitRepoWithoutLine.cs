@@ -24,7 +24,7 @@ public class WithGitRepoWithoutLine : TestWithNeighboringDirectoryFixture
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
-        );
+        )!;
         
         var stdErr = git.StandardError;
         var stdOut = git.StandardOutput;
