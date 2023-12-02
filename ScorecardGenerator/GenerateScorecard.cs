@@ -80,7 +80,7 @@ internal class GenerateScorecard
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
-        IVisualizer visualizer = new AzureWikiTableVisualizer(_logger, outputPath);
+        IVisualizer visualizer = new HTMLVisualizer(_logger, outputPath);
         visualizer.Visualize(runInfo);
     }
 

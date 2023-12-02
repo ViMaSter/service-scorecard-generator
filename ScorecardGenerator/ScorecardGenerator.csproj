@@ -36,6 +36,8 @@
       <EmbeddedResource Include="Checks\NullableSetup\README.md" />
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\README.md" />
       <EmbeddedResource Include="Checks\ProperDockerfile\README.md" />
+      <None Remove="Visualizer\HTMLVisualizer.html" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer.html" />
     </ItemGroup>
 
     <ItemGroup>
