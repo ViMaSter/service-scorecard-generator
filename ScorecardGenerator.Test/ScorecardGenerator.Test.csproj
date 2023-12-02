@@ -73,6 +73,34 @@
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
       <EmbeddedResource Include="Visualizer\AzureWikiTableVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithHistory\Service-Scorecard\DisqualifiedCheck3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\Service-Scorecard\DisqualifiedCheck3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\Service-Scorecard\DisqualifiedCheck3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
       <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\refs\EMPTY">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
