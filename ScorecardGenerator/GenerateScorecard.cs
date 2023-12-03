@@ -29,7 +29,7 @@ internal class GenerateScorecard
         _projectsInWorkingDirectory = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj", SearchOption.AllDirectories);
     }
     
-    public void Execute(string azurePAT, string outputPath, string? excludePath = null)
+    public void Execute(string azurePAT, string outputPath, string visualizer, string? excludePath = null)
     {
         var checks = new Checks
         (
@@ -80,8 +80,13 @@ internal class GenerateScorecard
 
         var runInfo = new RunInfo(listByGroup, scoreForServiceByCheck);
 
-        IVisualizer visualizer = new HTMLVisualizer(_logger, outputPath);
-        visualizer.Visualize(runInfo);
+        IVisualizer visualizerToUse = visualizer switch
+        {
+            "html" => new HTMLVisualizer(_logger, outputPath),
+            "azurewiki" => new AzureWikiTableVisualizer(_logger, outputPath),
+            _ => throw new ArgumentException($"Unknown visualizer {visualizer}")
+        };
+        visualizerToUse.Visualize(runInfo);
     }
 
     private bool ThatDontHaveDisqualification(KeyValuePair<string, IList<BaseCheck.Deduction>> arg)
