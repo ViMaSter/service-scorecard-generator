@@ -20,7 +20,7 @@ public class WithGitRepoWithHistory : TestWithNeighboringDirectoryFixture
         var git = Process.Start(new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"clone -b withhistory https://github.com/ViMaSter/service-scorecard-generator-test-fixture.git {actualOutputPath}",
+                Arguments = $"clone -b withhistory-azure https://github.com/ViMaSter/service-scorecard-generator-test-fixture.git {actualOutputPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
@@ -98,7 +98,7 @@ public class WithGitRepoWithHistory : TestWithNeighboringDirectoryFixture
         foreach (var actualFile in actualFiles)
         {
             Assert.That(actualFile.Name, Is.EqualTo(expectedFilesDictionary[actualFile.Name].Name));
-            Assert.That(File.ReadAllText(actualFile.FullName), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd"))));
+            Assert.That(File.ReadAllText(actualFile.FullName).ReplaceLineEndings(), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd")).ReplaceLineEndings()));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Markdig;
 using Newtonsoft.Json;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
@@ -8,13 +9,13 @@ using Serilog;
 
 namespace ScorecardGenerator.Visualizer;
 
-public class HTMLVisualizer : IVisualizer
+public partial class HTMLVisualizer : IVisualizer
 {
     private readonly ILogger _logger;
     private readonly string _outputPath;
     private readonly string _dayOfGeneration;
     private const string QuestionMark = "<sup>&nbsp;<b><i><u>?</u></i></b></sup>";
-    private const string FileName = "Service-Scorecard";
+    private const string FileName = "index";
     const string RESOURCE_NAME = "ScorecardGenerator.Visualizer.HTMLVisualizer.html";
 
     public HTMLVisualizer(ILogger logger, string outputPath)
@@ -22,21 +23,67 @@ public class HTMLVisualizer : IVisualizer
         _logger = logger.ForContext<HTMLVisualizer>();
         _outputPath = outputPath;
         _dayOfGeneration = $"{DateTime.Now:yyyy-MM-dd}";
+        if (!Directory.Exists(_outputPath))
+        {
+            Directory.CreateDirectory(_outputPath);
+        }
     }
     
     public void Visualize(RunInfo runInfo)
     {
-        CreateDirectoryForDay();
-        GenerateCheckPages(runInfo);
-        GenerateServiceOverview(runInfo);
-    }
+        var infoFromSevenDaysAgo = Get7DaysAgo();
 
-    private void CreateDirectoryForDay()
-    {
-        if (!Directory.Exists(Path.Join(_outputPath, FileName)))
+        var lastUpdatedAt = DateTime.Now;
+        
+        const string headerElement = "th";
+        const string columnElement = "td";
+        string ToElement(string element, IEnumerable<TableContent> columns)
         {
-            Directory.CreateDirectory(Path.Join(_outputPath, FileName));
+            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
         }
+
+        var runInfoJSON = JsonConvert.SerializeObject(runInfo);
+        
+        var headers = ToElement(headerElement, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
+        var groupData = ToElement(headerElement, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
+        
+        var output = runInfo.ServiceScores.Select(pair =>
+        {
+            var (fullPathToService, (scoreByCheckName, average)) = pair;
+            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
+            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
+        });
+        
+        _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
+        
+        var assembly = Assembly.GetExecutingAssembly();
+        string? html;
+        using (var stream = assembly.GetManifestResourceStream(RESOURCE_NAME))
+        {
+            if (stream == null)
+            {
+                throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
+            }
+            using var reader = new StreamReader(stream);
+            html = reader.ReadToEnd();
+        }
+        if (string.IsNullOrEmpty(html))
+        {
+            throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
+        }
+
+        var headline = $"Service Scorecard for {_dayOfGeneration}";
+        
+        var parameters = new Dictionary<string, string>
+        {
+            {"headline", headline},
+            {"table", $"<table id=\"service-scorecard\">{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>" },
+            {"data", runInfoJSON},
+            {"lists", GenerateCheckHTML(runInfo)},
+            {"lastUpdatedAt", lastUpdatedAt.ToString("O")}
+        };
+        
+        WriteGeneratedOutput($"{FileName}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
     }
     
     private void WriteGeneratedOutput(string path, string content)
@@ -44,13 +91,19 @@ public class HTMLVisualizer : IVisualizer
         File.WriteAllText(Path.Join(_outputPath, path), $"{content}");
     }
 
-    private void GenerateCheckPages(RunInfo runInfo)
+    private string GenerateCheckHTML(RunInfo runInfo)
     {
+        var htmlContent = "";
         foreach (var (checkName, infoPageContent) in runInfo.Checks.Values.SelectMany(checks => checks))
         {
-            WriteGeneratedOutput($"{FileName}/{checkName}.html", infoPageContent);
+            var content = infoPageContent.ReplaceLineEndings().Split(Environment.NewLine).Where(line => !line.StartsWith("# ")).Aggregate((current, next) => $"{current}{Environment.NewLine}{next}").Trim();
+            htmlContent += $"<li><details><summary>{checkName}</summary><div>{Markdown.ToHtml(content)}</div></details></li>";
         }
+
+        return htmlContent;
     }
+
+    public static string RemoveDates(string content) => NoScriptFilter().Replace(content, "").Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd")).ReplaceLineEndings();
 
     private RunInfo? Get7DaysAgo()
     {
@@ -136,64 +189,7 @@ public class HTMLVisualizer : IVisualizer
         var content = match.Groups[1].Value;
         return JsonConvert.DeserializeObject<RunInfo>(content)!;
     }
-
-    private void GenerateServiceOverview(RunInfo runInfo)
-    {
-        var infoFromSevenDaysAgo = Get7DaysAgo();
-
-        var lastUpdatedAt = DateTime.Now;
-        
-        const string headerElement = "th";
-        const string columnElement = "td";
-        string ToElement(string element, IEnumerable<TableContent> columns)
-        {
-            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
-        }
-
-        var runInfoJSON = JsonConvert.SerializeObject(runInfo);
-        
-        var headers = ToElement(headerElement, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
-        var groupData = ToElement(headerElement, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
-        
-        var output = runInfo.ServiceScores.Select(pair =>
-        {
-            var (fullPathToService, (scoreByCheckName, average)) = pair;
-            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
-            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
-        });
-        
-        _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
-        
-        var assembly = Assembly.GetExecutingAssembly();
-        string? html;
-        using (var stream = assembly.GetManifestResourceStream(RESOURCE_NAME))
-        {
-            if (stream == null)
-            {
-                throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
-            }
-            using var reader = new StreamReader(stream);
-            html = reader.ReadToEnd();
-        }
-        if (string.IsNullOrEmpty(html))
-        {
-            throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
-        }
-
-        var headline = $"Service Scorecard for {_dayOfGeneration}";
-        
-        var parameters = new Dictionary<string, string>
-        {
-            {"headline", headline},
-            {"table", $"<table id=\"service-scorecard\">{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>" },
-            {"data", runInfoJSON},
-            {"lists", string.Join(Environment.NewLine, runInfo.Checks.Values.SelectMany(checks => checks).Select(check => $"<li><a href=\"Service-Scorecard/{check.Name}.html\">{check.Name}</a></li>"))},
-            {"lastUpdatedAt", lastUpdatedAt.ToString("O")}
-        };
-        
-        WriteGeneratedOutput($"{FileName}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
-    }
-
+    
     private static IList<BaseCheck.Deduction>? GetDeductions(ILogger logger, RunInfo? infoFromSevenDaysAgo, string fullPathToService, KeyValuePair<string, IList<BaseCheck.Deduction>> check)
     {
         var serviceScores = infoFromSevenDaysAgo?.ServiceScores;
@@ -251,4 +247,7 @@ public class HTMLVisualizer : IVisualizer
     { 
         public static implicit operator TableContent(string content) => new(content, "");
     }
+
+    [GeneratedRegex("<noscript>.*</noscript>")]
+    private static partial Regex NoScriptFilter();
 }
