@@ -13,7 +13,7 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         var logger = new LoggerConfiguration().CreateLogger();
         var tempPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         
-        var visualizer = new ScorecardGenerator.Visualizer.AzureWikiTableVisualizer(logger, tempPath);
+        var visualizer = new ScorecardGenerator.Visualizer.HTMLVisualizer(logger, tempPath);
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
             { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
@@ -62,7 +62,7 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         foreach (var actualFile in actualFiles)
         {
             Assert.That(actualFile.Name, Is.EqualTo(expectedFilesDictionary[actualFile.Name].Name));
-            Assert.That(File.ReadAllText(actualFile.FullName), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd"))));
+            Assert.That(ScorecardGenerator.Visualizer.HTMLVisualizer.RemoveDates(File.ReadAllText(actualFile.FullName)), Is.EqualTo(ScorecardGenerator.Visualizer.HTMLVisualizer.RemoveDates(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName))));
         }
     }
 }

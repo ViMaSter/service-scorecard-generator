@@ -20,11 +20,11 @@ public class WithGitRepoWithoutLine : TestWithNeighboringDirectoryFixture
         var git = Process.Start(new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"clone -b nojson https://github.com/ViMaSter/service-scorecard-generator-test-fixture.git {actualOutputPath}",
+                Arguments = $"clone -b nojson-html https://github.com/ViMaSter/service-scorecard-generator-test-fixture.git {actualOutputPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
             }
-        );
+        )!;
         
         var stdErr = git.StandardError;
         var stdOut = git.StandardOutput;
@@ -48,7 +48,7 @@ public class WithGitRepoWithoutLine : TestWithNeighboringDirectoryFixture
             File.Copy(file, destination);
         }
         
-        var visualizer = new ScorecardGenerator.Visualizer.AzureWikiTableVisualizer(logger, actualOutputPath);
+        var visualizer = new ScorecardGenerator.Visualizer.HTMLVisualizer(logger, actualOutputPath);
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
             { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
@@ -98,7 +98,7 @@ public class WithGitRepoWithoutLine : TestWithNeighboringDirectoryFixture
         foreach (var actualFile in actualFiles)
         {
             Assert.That(actualFile.Name, Is.EqualTo(expectedFilesDictionary[actualFile.Name].Name));
-            Assert.That(File.ReadAllText(actualFile.FullName), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd"))));
+            Assert.That(ScorecardGenerator.Visualizer.HTMLVisualizer.RemoveDates(File.ReadAllText(actualFile.FullName)), Is.EqualTo(ScorecardGenerator.Visualizer.HTMLVisualizer.RemoveDates(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd")))));
         }
     }
 }

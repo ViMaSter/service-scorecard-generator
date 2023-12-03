@@ -62,7 +62,7 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         foreach (var actualFile in actualFiles)
         {
             Assert.That(actualFile.Name, Is.EqualTo(expectedFilesDictionary[actualFile.Name].Name));
-            Assert.That(File.ReadAllText(actualFile.FullName), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd"))));
+            Assert.That(File.ReadAllText(actualFile.FullName).ReplaceLineEndings(), Is.EqualTo(File.ReadAllText(expectedFilesDictionary[actualFile.Name].FullName).Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd")).ReplaceLineEndings()));
         }
     }
 }
