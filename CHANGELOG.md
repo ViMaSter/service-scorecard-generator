@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.0.0"></a>
+## [2.0.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.0.0) (2023-12-03)
+
+### Features
+
+* Adds check info to index page of HTML visualizer ([894d668](https://www.github.com/ViMaSter/service-scorecard-generator/commit/894d668202b1e53e9be82bf8094e601c68011ee4))
+* Adds index page for HTML visualizer ([a7096b0](https://www.github.com/ViMaSter/service-scorecard-generator/commit/a7096b0b0be1ff32618beddd3ce262f05bbfeffa))
+* Adds parameter to switch visualizers ([ea9fcb9](https://www.github.com/ViMaSter/service-scorecard-generator/commit/ea9fcb90b9ff163382ff8a0dc6c236cd8e451c48))
+
+### Breaking Changes
+
+* Adds parameter to switch visualizers ([ea9fcb9](https://www.github.com/ViMaSter/service-scorecard-generator/commit/ea9fcb90b9ff163382ff8a0dc6c236cd8e451c48))
+
+### Other
+
+* Applies ReSharper actions ([d98e292](https://www.github.com/ViMaSter/service-scorecard-generator/commit/d98e292cc46d524446be4fb20d28bee79b0e13f2))
+* Removes redundant reference ([daa746f](https://www.github.com/ViMaSter/service-scorecard-generator/commit/daa746ff5a4fabc90a3568462a1a179fa2bcce28))
+* Removes uncovered lines ([6802002](https://www.github.com/ViMaSter/service-scorecard-generator/commit/6802002533ba0afffbc5e5596a66c9e659040441))
+* Resolves warnings ([6303bab](https://www.github.com/ViMaSter/service-scorecard-generator/commit/6303babaec89fd486680bc68a5db00559b8adabd))
+* Silences warning ([e2cf808](https://www.github.com/ViMaSter/service-scorecard-generator/commit/e2cf80844073974f5804cec2393bb9b4598cac8d))
+* **deps:** bump NUnit from 3.14.0 to 4.0.0 in /ScorecardGenerator.Test ([41ecebf](https://www.github.com/ViMaSter/service-scorecard-generator/commit/41ecebf92dfb7ced7979ba77265455b8e2be4ce4))
+* **deps:** bump NUnit.Analyzers in /ScorecardGenerator.Test ([58f9502](https://www.github.com/ViMaSter/service-scorecard-generator/commit/58f95020df2969e2c4ee5af532f40fa39840cd53))
+* **deps:** bump Serilog.Sinks.Console in /ScorecardGenerator ([56ae4d9](https://www.github.com/ViMaSter/service-scorecard-generator/commit/56ae4d9f1496ed643e0bc8589599fc734b92525d))
+
 <a name="1.4.2"></a>
 ## [1.4.2](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v1.4.2) (2023-11-23)
 
