@@ -60,16 +60,8 @@ public partial class HTMLVisualizer : IVisualizer
         string? html;
         using (var stream = assembly.GetManifestResourceStream(RESOURCE_NAME))
         {
-            if (stream == null)
-            {
-                throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
-            }
             using var reader = new StreamReader(stream);
             html = reader.ReadToEnd();
-        }
-        if (string.IsNullOrEmpty(html))
-        {
-            throw new Exception($"Could not find embedded resource {RESOURCE_NAME}");
         }
 
         var headline = $"Service Scorecard for {_dayOfGeneration}";
