@@ -19,7 +19,7 @@ cd /sources
 # obtain an Azure PAT: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat 
 
 # this assumes you want to output the markdown files to `/wiki`
-ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki     
+ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki --visualizer azurewiki
 ```
 
 ## Interactive tables
