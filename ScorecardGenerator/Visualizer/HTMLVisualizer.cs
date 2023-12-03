@@ -58,7 +58,7 @@ public partial class HTMLVisualizer : IVisualizer
         
         var assembly = Assembly.GetExecutingAssembly();
         string? html;
-        using (var stream = assembly.GetManifestResourceStream(RESOURCE_NAME))
+        using (var stream = assembly.GetManifestResourceStream(RESOURCE_NAME)!)
         {
             using var reader = new StreamReader(stream);
             html = reader.ReadToEnd();
