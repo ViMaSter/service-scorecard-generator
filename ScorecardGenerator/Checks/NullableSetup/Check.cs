@@ -19,10 +19,10 @@ public class Check : BaseCheck
             return new List<Deduction> { Deduction.Create(Logger, 100, "No <Nullable> element found in {CsProj}", absolutePathToProjectFile) };
         }
 
-        const string expectedValue = "enable";
+        const string EXPECTED_VALUE = "enable";
         if (nullable.ToLower() != "enable")
         {
-            return new List<Deduction> { Deduction.Create(Logger, 100, "Expected: <Nullable> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, nullable) };
+            return new List<Deduction> { Deduction.Create(Logger, 100, "Expected: <Nullable> should contain '{Expected}'. Actual: '{Actual}'", EXPECTED_VALUE, nullable) };
         }
 
         return new List<Deduction>();
