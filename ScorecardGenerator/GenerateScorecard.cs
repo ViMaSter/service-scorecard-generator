@@ -15,9 +15,9 @@ internal class GenerateScorecard
         List<BaseCheck> Gold, List<BaseCheck> Silver, List<BaseCheck> Bronze
     )
     {
-        public const int GoldWeight = 10;
-        public const int SilverWeight = 5;
-        public const int BronzeWeight = 1;
+        public const int GOLD_WEIGHT = 10;
+        public const int SILVER_WEIGHT = 5;
+        public const int BRONZE_WEIGHT = 1;
     }
         
     private readonly IEnumerable<string> _projectsInWorkingDirectory;
@@ -64,12 +64,12 @@ internal class GenerateScorecard
             var bronzeDeductionsByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Path.Join(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), ""))));
             var totalScore = new[]
             {
-                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GoldWeight,
-                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SilverWeight,
-                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BronzeWeight
+                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GOLD_WEIGHT,
+                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SILVER_WEIGHT,
+                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BRONZE_WEIGHT
             }.Sum();
 
-            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.GoldWeight + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.SilverWeight + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.BronzeWeight;
+            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.GOLD_WEIGHT + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.SILVER_WEIGHT + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.BRONZE_WEIGHT;
             var average = totalScore == null ? 0 : (int)Math.Round((decimal)totalScore / totalChecks);
             var deductionsByCheck = goldDeductionsByCheck
                                                     .Concat(silverDeductionsByCheck)

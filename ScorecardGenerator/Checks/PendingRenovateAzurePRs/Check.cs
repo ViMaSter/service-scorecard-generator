@@ -21,7 +21,7 @@ public class Check : BaseCheck
         }; 
     }
 
-    private const int DeductionPerActivePullRequest = 20;
+    private const int DEDUCTION_PER_ACTIVE_PULL_REQUEST = 20;
 
     private static readonly Dictionary<string, HttpResponseMessage> Data = new();
     private readonly HttpClient _client;
@@ -144,7 +144,7 @@ public class Check : BaseCheck
             {
                 continue;
             }
-            deductionsPerPR.Add(Deduction.Create(Logger, DeductionPerActivePullRequest, "PR {PRNumber} - {Title}", pr.pullRequestId, pr.title));
+            deductionsPerPR.Add(Deduction.Create(Logger, DEDUCTION_PER_ACTIVE_PULL_REQUEST, "PR {PRNumber} - {Title}", pr.pullRequestId, pr.title));
         }
 
         return deductionsPerPR;

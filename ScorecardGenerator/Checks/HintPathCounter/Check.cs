@@ -8,8 +8,8 @@ public class Check : BaseCheck
     public Check(ILogger logger) : base(logger)
     {
     }
-    
-    const int DeductionPerHintPath = 10;
+
+    private const int DEDUCTION_PER_HINT_PATH = 10;
 
     protected override List<Deduction> Run(string absolutePathToProjectFile)
     {
@@ -24,6 +24,6 @@ public class Check : BaseCheck
         }
 
         var hintPaths = csproj.Root!.Descendants("HintPath");
-        return hintPaths.Select(hintPath => Deduction.Create(Logger, DeductionPerHintPath, "HintPath: {HintPath}", hintPath.Value)).ToList();
+        return hintPaths.Select(hintPath => Deduction.Create(Logger, DEDUCTION_PER_HINT_PATH, "HintPath: {HintPath}", hintPath.Value)).ToList();
     }
 }

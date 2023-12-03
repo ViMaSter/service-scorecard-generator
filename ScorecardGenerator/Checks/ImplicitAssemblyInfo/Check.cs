@@ -38,10 +38,10 @@ public class Check : BaseCheck
         }
         else
         {
-            const string expectedValue = "true";
-            if (generateAssemblyInfo.ToLower() != expectedValue)
+            const string EXPECTED_VALUE = "true";
+            if (generateAssemblyInfo.ToLower() != EXPECTED_VALUE)
             {
-                deductions.Add(Deduction.Create(Logger, 100, "Expected: <GenerateAssemblyInfo> should contain '{Expected}'. Actual: '{Actual}'", expectedValue, generateAssemblyInfo));
+                deductions.Add(Deduction.Create(Logger, 100, "Expected: <GenerateAssemblyInfo> should contain '{Expected}'. Actual: '{Actual}'", EXPECTED_VALUE, generateAssemblyInfo));
             }
         }
 

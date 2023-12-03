@@ -14,9 +14,9 @@ public partial class HTMLVisualizer : IVisualizer
     private readonly ILogger _logger;
     private readonly string _outputPath;
     private readonly string _dayOfGeneration;
-    private const string QuestionMark = "<sup>&nbsp;<b><i><u>?</u></i></b></sup>";
-    private const string FileName = "index";
-    const string RESOURCE_NAME = "ScorecardGenerator.Visualizer.HTMLVisualizer.html";
+    private const string QUESTION_MARK = "<sup>&nbsp;<b><i><u>?</u></i></b></sup>";
+    private const string FILE_NAME = "index";
+    private const string RESOURCE_NAME = "ScorecardGenerator.Visualizer.HTMLVisualizer.html";
 
     public HTMLVisualizer(ILogger logger, string outputPath)
     {
@@ -35,23 +35,23 @@ public partial class HTMLVisualizer : IVisualizer
 
         var lastUpdatedAt = DateTime.Now;
         
-        const string headerElement = "th";
-        const string columnElement = "td";
+        const string HEADER_ELEMENT = "th";
+        const string COLUMN_ELEMENT = "td";
         string ToElement(string element, IEnumerable<TableContent> columns)
         {
-            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
+            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.Title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
         }
 
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
         
-        var headers = ToElement(headerElement, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
-        var groupData = ToElement(headerElement, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
+        var headers = ToElement(HEADER_ELEMENT, runInfo.Checks.Values.SelectMany(checksInGroup=>checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
+        var groupData = ToElement(HEADER_ELEMENT, runInfo.Checks.Where(group => group.Value.Any()).Select(group=>new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
         
         var output = runInfo.ServiceScores.Select(pair =>
         {
             var (fullPathToService, (scoreByCheckName, average)) = pair;
-            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QuestionMark}</span>";
-            return ToElement(columnElement, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
+            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QUESTION_MARK}</span>";
+            return ToElement(COLUMN_ELEMENT, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
         });
         
         _logger.Information("Generated scorecard at {LastUpdatedAt}", lastUpdatedAt);
@@ -75,7 +75,7 @@ public partial class HTMLVisualizer : IVisualizer
             {"lastUpdatedAt", lastUpdatedAt.ToString("O")}
         };
         
-        WriteGeneratedOutput($"{FileName}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
+        WriteGeneratedOutput($"{FILE_NAME}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
     }
     
     private void WriteGeneratedOutput(string path, string content)
@@ -99,7 +99,7 @@ public partial class HTMLVisualizer : IVisualizer
 
     private RunInfo? Get7DaysAgo()
     {
-        var path = Path.Join(_outputPath, $"{FileName}.html");
+        var path = Path.Join(_outputPath, $"{FILE_NAME}.html");
         var sevenDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(7));
         
         var gitLog = Process.Start(new ProcessStartInfo
@@ -143,7 +143,7 @@ public partial class HTMLVisualizer : IVisualizer
             
         var arguments = $"show {commitToUse.Item2}:./{Path.GetFileName(path)} ";
         _logger.Information("running: git {Arguments}", arguments);
-        string sevenDaysAgoContent = "";
+        var sevenDaysAgoContent = "";
         {
             var process = new Process
             {
@@ -235,7 +235,7 @@ public partial class HTMLVisualizer : IVisualizer
         return new TableContent($"<span style=\"{StyleOfNumber(finalScore)}\">{(finalScore == null ? "n/a" : finalScore)}{deltaString}</span>", justifications);
     }
 
-    private record TableContent(string Content, string title, int Colspan = 1)
+    private record TableContent(string Content, string Title, int Colspan = 1)
     { 
         public static implicit operator TableContent(string content) => new(content, "");
     }
