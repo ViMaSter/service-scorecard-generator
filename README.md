@@ -16,11 +16,16 @@ dotnet tool install --global ScorecardGenerator
 # this assumes you want to scan all .csproj files residing inside `/sources` and subdirectories thereof
 cd /sources
 
-# obtain an Azure PAT: https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat 
-
-# this assumes you want to output the markdown files to `/wiki`
-ScorecardGenerator --azure-pat <azure-pat> --output-path /wiki --visualizer azurewiki
+# this assumes you want to output the markdown files to `/wiki` and use the default configuration
+ScorecardGenerator --output-path /wiki --visualizer azurewiki
 ```
+
+## Configuration
+The Service Scorecard Generator stores and loads configuration from a `scorecard.config.json` file in the current working directory.
+If the file is missing when running, it will be created [with default values](https://github.com/ViMaSter/service-scorecard-generator/blob/main/ScorecardGenerator/Configuration/default.json) before the tool starts.
+
+- 
+
 
 ## Interactive tables
 Due to limted HTML support, the table itself can't be made interactive. More info and a workaround can be found [in the wiki](https://github.com/ViMaSter/service-scorecard-generator/wiki/Interactive-table).

@@ -10,13 +10,23 @@ namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
 public class Check : BaseCheck
 {
-    public Check(ILogger logger, string azurePAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
+    // ReSharper disable once ClassNeverInstantiated.Global instantiated via DI
+    public class AzurePAT
+    {
+        public string Value { get; }
+
+        public AzurePAT(string value)
+        {
+            Value = value;
+        }
+    }
+    public Check(ILogger logger, AzurePAT azurePAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
     {
         _client = new HttpClient(overrideMessageHandler ?? new HttpClientHandler())
         {
             DefaultRequestHeaders =
             {
-                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT}")))
+                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT.Value}")))
             }
         }; 
     }
@@ -70,35 +80,35 @@ public class Check : BaseCheck
         var azureInfoFromGit = allLines.Split(Environment.NewLine).Where(line => line.Contains("visualstudio") || line.Contains("dev.azure")).Select(line =>
         {
             line = line.Replace("\t", " ").Replace("  ", " ").Split(" ")[1];
-            string organization, project, repo;
-            if (line.Contains("http"))
-            {
-                if (line.Contains("dev.azure"))
-                {
-                    var pathSplit = line.Split('/');
-                    var gitIndex = Array.IndexOf(pathSplit, "_git");
-                    organization = pathSplit[gitIndex - 2];
-                    project = pathSplit[gitIndex - 1];
-                    repo = pathSplit[gitIndex + 1];
-                }
-                else
-                {
-                    organization = line.Split('.')[0].Split("/")[2];
-                    var pathSplit = line.Split('/');
-                    var gitIndex = Array.IndexOf(pathSplit, "_git");
-                    project = pathSplit[gitIndex - 1];
-                    repo = pathSplit[gitIndex + 1];
-                }
-            }
-            else
+            if (!line.Contains("http"))
             {
                 var parts = line.Split("/");
-                organization = parts[^3];
-                project = parts[^2];
-                repo = parts[^1];
+                return new
+                {
+                    organization = parts[^3],
+                    project = parts[^2],
+                    repo = parts[^1]
+                };
             }
 
-            return new { organization, project, repo };
+            var pathSplit = line.Split('/');
+            var gitIndex = Array.IndexOf(pathSplit, "_git");
+            if (line.Contains("dev.azure"))
+            {
+                return new
+                {
+                    organization = pathSplit[gitIndex - 2], 
+                    project = pathSplit[gitIndex - 1], 
+                    repo = pathSplit[gitIndex + 1]
+                };
+            }
+                
+            return new
+            {
+                organization = line.Split('.')[0].Split("/")[2],
+                project = pathSplit[gitIndex - 1], 
+                repo = pathSplit[gitIndex + 1]
+            };
         }).ToList();
 
         if (!azureInfoFromGit.Any())

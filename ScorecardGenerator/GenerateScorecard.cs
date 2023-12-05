@@ -2,6 +2,8 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Checks.PendingRenovateAzurePRs;
+using ScorecardGenerator.Configuration;
 using ScorecardGenerator.Visualizer;
 using Serilog;
 
@@ -10,15 +12,6 @@ namespace ScorecardGenerator;
 [ExcludeFromCodeCoverage(Justification = "Opinionated execution of tested code")]
 internal class GenerateScorecard
 {
-    private record Checks
-    (
-        List<BaseCheck> Gold, List<BaseCheck> Silver, List<BaseCheck> Bronze
-    )
-    {
-        public const int GOLD_WEIGHT = 10;
-        public const int SILVER_WEIGHT = 5;
-        public const int BRONZE_WEIGHT = 1;
-    }
         
     private readonly IEnumerable<string> _projectsInWorkingDirectory;
     private readonly ILogger _logger;
@@ -29,27 +22,10 @@ internal class GenerateScorecard
         _projectsInWorkingDirectory = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj", SearchOption.AllDirectories);
     }
     
-    public void Execute(string azurePAT, string outputPath, string visualizer, string? excludePath = null)
+    public void Execute(string outputPath, string visualizer, string? excludePath = null, string azurePAT = "")
     {
-        var checks = new Checks
-        (
-            new List<BaseCheck>()
-            {
-                new ScorecardGenerator.Checks.BuiltForAKS.Check(_logger),
-                new ScorecardGenerator.Checks.LatestNET.Check(_logger),
-                new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(_logger, azurePAT),
-                new ScorecardGenerator.Checks.ProperDockerfile.Check(_logger)
-            },
-            new List<BaseCheck>()
-            {
-                new ScorecardGenerator.Checks.NullableSetup.Check(_logger),
-                new ScorecardGenerator.Checks.ImplicitAssemblyInfo.Check(_logger)
-            },
-            new List<BaseCheck>()
-            {
-                new ScorecardGenerator.Checks.HintPathCounter.Check(_logger)
-            }
-        );
+        var configParser = new ConfigurationParser(_logger, new []{new Check.AzurePAT(azurePAT)});
+        var checks = configParser.LoadChecks();
         var listByGroup = new Dictionary<string, IList<CheckInfo>>
         {
             { nameof(checks.Gold), checks.Gold.Select(Utilities.GenerateCheckRunInfo).ToList() },
@@ -64,12 +40,12 @@ internal class GenerateScorecard
             var bronzeDeductionsByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Path.Join(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), ""))));
             var totalScore = new[]
             {
-                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Checks.GOLD_WEIGHT,
-                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.SILVER_WEIGHT,
-                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Checks.BRONZE_WEIGHT
+                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Configuration.Checks.GOLD_WEIGHT,
+                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Checks.SILVER_WEIGHT,
+                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Checks.BRONZE_WEIGHT
             }.Sum();
 
-            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.GOLD_WEIGHT + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.SILVER_WEIGHT + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Checks.BRONZE_WEIGHT;
+            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.GOLD_WEIGHT + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.SILVER_WEIGHT + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.BRONZE_WEIGHT;
             var average = totalScore == null ? 0 : (int)Math.Round((decimal)totalScore / totalChecks);
             var deductionsByCheck = goldDeductionsByCheck
                                                     .Concat(silverDeductionsByCheck)
