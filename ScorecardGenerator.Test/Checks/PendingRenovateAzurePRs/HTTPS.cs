@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.RegularExpressions;
+using ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -31,7 +32,7 @@ public class HTTPS
     public void Deducts20PointsIfOnePRIsOpen(string gitRepo)
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, "", new NeighboringDirectoryStub());
+        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, new Check.AzurePAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
         var source = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), "_git");
         var target = Path.Join(Path.GetTempPath(), subdirectory, ".git");
@@ -52,7 +53,7 @@ public class HTTPS
     public void Deducts0PointsIfNoGitPathIsFound()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, "", new NeighboringDirectoryStub());
+        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, new Check.AzurePAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
         var target = Path.Join(Path.GetTempPath(), subdirectory);
         Directory.CreateDirectory(target);

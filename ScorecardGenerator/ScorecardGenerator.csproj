@@ -38,6 +38,8 @@
       <EmbeddedResource Include="Checks\PendingRenovateAzurePRs\README.md" />
       <EmbeddedResource Include="Checks\ProperDockerfile\README.md" />
       <EmbeddedResource Include="Visualizer\HTMLVisualizer.html" />
+      <None Remove="Config\default.json" />
+      <EmbeddedResource Include="Configuration\default.json" />
     </ItemGroup>
 
     <ItemGroup>
