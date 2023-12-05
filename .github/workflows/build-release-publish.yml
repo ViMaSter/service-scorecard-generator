@@ -20,7 +20,7 @@ jobs:
       with:
         path: app
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       
     - name: Build with dotnet
       run: dotnet build --configuration Release
@@ -76,7 +76,7 @@ jobs:
       with:
         path: app
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
     - name: Build with dotnet
       run: dotnet build --configuration Release
       working-directory: app
@@ -107,7 +107,7 @@ jobs:
         token: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.ELEVATED_GITHUB_TOKEN || github.token }}
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
 
     - name: Setup git
       run: |
