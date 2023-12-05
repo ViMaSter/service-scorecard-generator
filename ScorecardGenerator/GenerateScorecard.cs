@@ -78,6 +78,17 @@ internal class GenerateScorecard
         }
         return path => !path.Contains(excludePath);
     }
+
+    public void ListChecks()
+    {
+        var availableChecks = typeof(BaseCheck).Assembly.GetTypes()
+            .Where(type => type.IsSubclassOf(typeof(BaseCheck)))
+            .Select(type => type.FullName!.Split(".")[^2])
+            .OrderBy(checkName => checkName)
+            .Select(entry=> $"{Environment.NewLine}  - {entry}")
+            .ToList();
+        _logger.Information("Available checks:{AvailableChecks}", string.Join("", availableChecks));
+    }
 }
 
 public record CheckInfo(string Name, string InfoPageContent);

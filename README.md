@@ -21,11 +21,12 @@ ScorecardGenerator --output-path /wiki --visualizer azurewiki
 ```
 
 ## Configuration
-The Service Scorecard Generator stores and loads configuration from a `scorecard.config.json` file in the current working directory.
+The Service Scorecard Generator stores and loads configuration from a `scorecard.config.json` file in the working directory.  
 If the file is missing when running, it will be created [with default values](https://github.com/ViMaSter/service-scorecard-generator/blob/main/ScorecardGenerator/Configuration/default.json) before the tool starts.
 
-- 
-
+Configuration consists of three groups of checks: `Gold`, `Silver` and `Bronze`.  
+Documentation for all available checks can be found [in this repository](https://github.com/ViMaSter/service-scorecard-generator/tree/main/ScorecardGenerator/Checks).  
+Checks can be also be listed by using `ScorecardGenerator list-checks`. 
 
 ## Interactive tables
 Due to limted HTML support, the table itself can't be made interactive. More info and a workaround can be found [in the wiki](https://github.com/ViMaSter/service-scorecard-generator/wiki/Interactive-table).
