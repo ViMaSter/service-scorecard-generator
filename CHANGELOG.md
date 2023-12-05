@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.1.0"></a>
+## [2.1.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.0) (2023-12-05)
+
+### Features
+
+* Adds `list-checks` command ([637d955](https://www.github.com/ViMaSter/service-scorecard-generator/commit/637d955b9bce996dc74a9b4bd46d4b29e7861c17))
+* Makes azure-pat optional by allowing to configure used checks ([dc6829f](https://www.github.com/ViMaSter/service-scorecard-generator/commit/dc6829f852bfdb0415026c764b16cccec0b31f73))
+
+### Other
+
+* **deps:** bump actions/setup-dotnet from 3 to 4 ([4671cd8](https://www.github.com/ViMaSter/service-scorecard-generator/commit/4671cd8300109ed02ebf2419d15cc9467d7b48bf))
+* **deps:** bump NUnit from 3.14.0 to 4.0.1 in /ScorecardGenerator.Test ([515d7dd](https://www.github.com/ViMaSter/service-scorecard-generator/commit/515d7ddcc908bc07b731f001b4ceb22b6ae839ab))
+
 <a name="2.0.0"></a>
 ## [2.0.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.0.0) (2023-12-03)
 
