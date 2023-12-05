@@ -17,6 +17,7 @@ internal abstract class Program
         var inst = new GenerateScorecard(logger);
         var app = CoconaLiteApp.Create();
         app.AddCommand(inst.Execute);
+        app.AddCommand("list-checks", inst.ListChecks);
         await app.RunAsync();
     }
 }
