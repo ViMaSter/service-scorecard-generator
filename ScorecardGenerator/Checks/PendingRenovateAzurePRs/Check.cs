@@ -20,6 +20,7 @@ public class Check : BaseCheck
             Value = value;
         }
     }
+
     public Check(ILogger logger, AzurePAT azurePAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
     {
         _client = new HttpClient(overrideMessageHandler ?? new HttpClientHandler())
@@ -28,14 +29,14 @@ public class Check : BaseCheck
             {
                 Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT.Value}")))
             }
-        }; 
+        };
     }
 
     private const int DEDUCTION_PER_ACTIVE_PULL_REQUEST = 20;
 
     private static readonly Dictionary<string, HttpResponseMessage> Data = new();
     private readonly HttpClient _client;
-    
+
     private readonly RetryPolicy<HttpResponseMessage> _retryPolicy = Policy
         .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
         .WaitAndRetry(new List<TimeSpan>()
@@ -54,10 +55,12 @@ public class Check : BaseCheck
         }
 
         Data[url] = _retryPolicy.Execute(() => _client.GetAsync(url).Result);
-        
+
         File.WriteAllText(Path.Join(Directory.GetCurrentDirectory(), url.Replace("/", "_")), $"{Data[url].StatusCode}{Environment.NewLine}{Data[url].Content.ReadAsStringAsync().Result}");
         return Data[url];
     }
+
+    
 
     protected override IList<Deduction> Run(string absolutePathToProjectFile)
     {
@@ -77,39 +80,7 @@ public class Check : BaseCheck
         process.Start();
         process.WaitForExit();
         var allLines = process.StandardOutput.ReadToEnd();
-        var azureInfoFromGit = allLines.Split(Environment.NewLine).Where(line => line.Contains("visualstudio") || line.Contains("dev.azure")).Select(line =>
-        {
-            line = line.Replace("\t", " ").Replace("  ", " ").Split(" ")[1];
-            if (!line.Contains("http"))
-            {
-                var parts = line.Split("/");
-                return new
-                {
-                    organization = parts[^3],
-                    project = parts[^2],
-                    repo = parts[^1]
-                };
-            }
-
-            var pathSplit = line.Split('/');
-            var gitIndex = Array.IndexOf(pathSplit, "_git");
-            if (line.Contains("dev.azure"))
-            {
-                return new
-                {
-                    organization = pathSplit[gitIndex - 2], 
-                    project = pathSplit[gitIndex - 1], 
-                    repo = pathSplit[gitIndex + 1]
-                };
-            }
-                
-            return new
-            {
-                organization = line.Split('.')[0].Split("/")[2],
-                project = pathSplit[gitIndex - 1], 
-                repo = pathSplit[gitIndex + 1]
-            };
-        }).ToList();
+        var azureInfoFromGit = allLines.Split(Environment.NewLine).Select(InfoGenerator.FromURL).ToList();
 
         if (!azureInfoFromGit.Any())
         {
