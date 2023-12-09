@@ -1,4 +1,3 @@
-using System.Reflection;
 using Newtonsoft.Json;
 using ScorecardGenerator.Checks;
 using Serilog;

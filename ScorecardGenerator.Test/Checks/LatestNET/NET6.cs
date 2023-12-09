@@ -1,5 +1,4 @@
 using ScorecardGenerator.Test.Helper;
-using ScorecardGenerator.Test.Utilities;
 using Serilog;
 
 namespace ScorecardGenerator.Test.Checks.LatestNET;

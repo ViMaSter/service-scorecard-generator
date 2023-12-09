@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text.RegularExpressions;
 using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Test.Helper;
 using Serilog;

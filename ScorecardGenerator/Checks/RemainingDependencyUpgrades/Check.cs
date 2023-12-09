@@ -2,8 +2,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using Markdig.Helpers;
-using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models;
 using Serilog;
 using Polly;
 using Polly.Retry;

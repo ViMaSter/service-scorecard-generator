@@ -1,4 +1,3 @@
-using NUnit.Framework.Internal;
 using ScorecardGenerator.Checks;
 using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Configuration;
