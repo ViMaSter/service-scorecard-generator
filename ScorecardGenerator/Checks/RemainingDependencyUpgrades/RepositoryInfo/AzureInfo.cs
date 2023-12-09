@@ -1,5 +1,8 @@
-﻿using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.GitHub;
+﻿using Newtonsoft.Json;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.Azure;
 using Serilog;
+using Changes = ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.GitHub.Changes;
+using Iteration = ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.GitHub.Iteration;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
 
@@ -31,6 +34,7 @@ public class AzureInfo : IInfo
         Neither
     }
 
+    // ReSharper disable once UnusedMember.Global - Used via InfoGenerator.FromURL
     public static IInfo? FromURL(string url)
     {
         var pathSplit = url.Split('/');
@@ -81,7 +85,7 @@ public class AzureInfo : IInfo
         var projectPullRequestsURL = $"https://dev.azure.com/{_organization}/{_project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
         var allProjectPullRequests = getHTTPRequest(projectPullRequestsURL);
         var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
-        var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.Azure.PullRequest>(pullRequestJSON)!.value;
+        var pullRequests = JsonConvert.DeserializeObject<PullRequest>(pullRequestJSON)!.value;
         var renovatePullRequests = pullRequests.Where(pr => pr.repository.name == _repo && pr.sourceRefName.Contains("renovate")).ToList();
 
         foreach (var pr in renovatePullRequests)
@@ -93,17 +97,17 @@ public class AzureInfo : IInfo
             var iterations = getHTTPRequest(path);
 
             var iterationsJSON = iterations.Content.ReadAsStringAsync().Result;
-            var iterationsList = Newtonsoft.Json.JsonConvert.DeserializeObject<Iteration>(iterationsJSON)!.value;
+            var iterationsList = JsonConvert.DeserializeObject<Iteration>(iterationsJSON)!.value;
             foreach (var iteration in iterationsList)
             {
                 var url = $"https://dev.azure.com/{_organization}/{_project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0";
                 var filesChanged = getHTTPRequest(url);
                 var filesChangedJSON = filesChanged.Content.ReadAsStringAsync().Result;
-                var filesChangedList = Newtonsoft.Json.JsonConvert.DeserializeObject<Changes>(filesChangedJSON)!.changeEntries;
+                var filesChangedList = JsonConvert.DeserializeObject<Changes>(filesChangedJSON)!.changeEntries;
                 allFilesChanged.AddRange(filesChangedList.Select(fc => fc.item.path));
             }
 
-            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile)!;
+            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile);
             if (!allFilesChanged.Any(fc => fc.EndsWith(projectFileNameWithExtension)))
             {
                 continue;
@@ -113,4 +117,4 @@ public class AzureInfo : IInfo
 
         return deductionsPerPR;
     }
-};
+}

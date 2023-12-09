@@ -5,7 +5,7 @@ public static class InfoGenerator
     public static IInfo FromURL(string url)
     {
         // find all private classes deriving from IInfo and call FromURL on them; return the first non-null result
-        var types = typeof(IInfo).Assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.GetInterfaces().Contains(typeof(IInfo)));
+        var types = typeof(IInfo).Assembly.GetTypes().Where(t => t is { IsClass: true, IsAbstract: false } && t.GetInterfaces().Contains(typeof(IInfo)));
         foreach (var type in types)
         {
             var method = type.GetMethod("FromURL");

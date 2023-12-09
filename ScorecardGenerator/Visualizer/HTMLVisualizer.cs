@@ -37,10 +37,6 @@ public partial class HTMLVisualizer : IVisualizer
         
         const string HEADER_ELEMENT = "th";
         const string COLUMN_ELEMENT = "td";
-        string ToElement(string element, IEnumerable<TableContent> columns)
-        {
-            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.Title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
-        }
 
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
         
@@ -77,7 +73,12 @@ public partial class HTMLVisualizer : IVisualizer
         
         WriteGeneratedOutput($"{FILE_NAME}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
 
-        return Path.GetFullPath(Path.Join(_outputPath, $"{FILE_NAME}.html")); 
+        return Path.GetFullPath(Path.Join(_outputPath, $"{FILE_NAME}.html"));
+
+        string ToElement(string element, IEnumerable<TableContent> columns)
+        {
+            return $"<tr>{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.Title}\" colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
+        }
     }
     
     private void WriteGeneratedOutput(string path, string content)
@@ -85,7 +86,7 @@ public partial class HTMLVisualizer : IVisualizer
         File.WriteAllText(Path.Join(_outputPath, path), $"{content}");
     }
 
-    private string GenerateCheckHTML(RunInfo runInfo)
+    private static string GenerateCheckHTML(RunInfo runInfo)
     {
         var htmlContent = "";
         foreach (var (checkName, infoPageContent) in runInfo.Checks.Values.SelectMany(checks => checks))
@@ -145,7 +146,7 @@ public partial class HTMLVisualizer : IVisualizer
             
         var arguments = $"show {commitToUse.Item2}:./{Path.GetFileName(path)} ";
         _logger.Information("running: git {Arguments}", arguments);
-        var sevenDaysAgoContent = "";
+        string sevenDaysAgoContent;
         {
             var process = new Process
             {
@@ -173,8 +174,7 @@ public partial class HTMLVisualizer : IVisualizer
         _logger.Information("sevenDaysAgoContent: {SevenDaysAgoContent}", sevenDaysAgoContent);
 
         var lastLineOfFile = sevenDaysAgoContent.Replace("\r", Environment.NewLine).Replace("\n", Environment.NewLine).Split(Environment.NewLine).Last(line => !string.IsNullOrEmpty(line));
-        var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
-        var match = regex.Match(lastLineOfFile);
+        var match = HTMLCommentRegex().Match(lastLineOfFile);
         if (!match.Success)
         {
             _logger.Information("No last line matched; content: {Content}", sevenDaysAgoContent);
@@ -244,4 +244,6 @@ public partial class HTMLVisualizer : IVisualizer
 
     [GeneratedRegex("<noscript>.*</noscript>")]
     private static partial Regex NoScriptFilter();
+    [GeneratedRegex("<!--(.*?)-->", RegexOptions.Singleline)]
+    private static partial Regex HTMLCommentRegex();
 }

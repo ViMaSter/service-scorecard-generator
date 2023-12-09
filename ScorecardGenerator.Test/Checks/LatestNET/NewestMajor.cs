@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.LatestNET;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class NewestMajor : TestWithNeighboringCsprojFixture
     public void Returns100Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.LatestNET.Check(logger);
+        var check = new Check(logger);
         File.WriteAllText(AbsolutePathToProjectFile, File.ReadAllText(AbsolutePathToProjectFile).Replace("__NEWEST_MAJOR__", $"{check.NewestMajor}.0"));        
         
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);

@@ -2,10 +2,10 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using Serilog;
 using Polly;
 using Polly.Retry;
 using ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
+using Serilog;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 
@@ -54,12 +54,12 @@ public class Check : BaseCheck
 
     private readonly RetryPolicy<HttpResponseMessage> _retryPolicy = Policy
         .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode && r.StatusCode is < HttpStatusCode.BadRequest or >= HttpStatusCode.InternalServerError)
-        .WaitAndRetry(new List<TimeSpan>()
+        .WaitAndRetry(new List<TimeSpan>
         {
             TimeSpan.FromSeconds(1),
             TimeSpan.FromSeconds(1),
             TimeSpan.FromSeconds(3),
-            TimeSpan.FromSeconds(10),
+            TimeSpan.FromSeconds(10)
         });
 
     private HttpResponseMessage GetHTTPRequest(string url)
@@ -94,7 +94,7 @@ public class Check : BaseCheck
             StartInfo = new ProcessStartInfo
             {
                 FileName = "git",
-                Arguments = $"remote -v",
+                Arguments = "remote -v",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true,

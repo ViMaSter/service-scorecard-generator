@@ -7,7 +7,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Visualizer;
 
-public class AzureWikiTableVisualizer : IVisualizer
+public partial class AzureWikiTableVisualizer : IVisualizer
 {
     private readonly ILogger _logger;
     private readonly string _outputPath;
@@ -99,7 +99,7 @@ public class AzureWikiTableVisualizer : IVisualizer
             
         var arguments = $"show {commitToUse.Item2}:./{Path.GetFileName(path)} ";
         _logger.Information("running: git {Arguments}", arguments);
-        var sevenDaysAgoContent = "";
+        string sevenDaysAgoContent;
         {
             var process = new Process
             {
@@ -127,8 +127,7 @@ public class AzureWikiTableVisualizer : IVisualizer
         _logger.Information("sevenDaysAgoContent: {SevenDaysAgoContent}", sevenDaysAgoContent);
 
         var lastLineOfFile = sevenDaysAgoContent.Replace("\r", Environment.NewLine).Replace("\n", Environment.NewLine).Split(Environment.NewLine).Last(line => !string.IsNullOrEmpty(line));
-        var regex = new Regex(@"<!--(.*?)-->", RegexOptions.Singleline);
-        var match = regex.Match(lastLineOfFile);
+        var match = HTMLCommentRegex().Match(lastLineOfFile);
         if (!match.Success)
         {
             _logger.Information("No last line matched; content: {Content}", sevenDaysAgoContent);
@@ -149,32 +148,6 @@ public class AzureWikiTableVisualizer : IVisualizer
         const string HEADER_ELEMENT = "th";
         const string COLUMN_ELEMENT = "td";
         var alternateColorIndex = 1;
-        string ToBackgroundColor()
-        {
-            ++alternateColorIndex;
-
-            if (alternateColorIndex % 2 == 0)
-            {
-                return "background-color: rgba(0, 0, 0, 0.05);";
-            }
-
-            return "";
-        }
-
-        string StyleForElement(int colorIndex)
-        {
-            var style = "";
-            if (colorIndex <= 3)
-            {
-                style += "background-color: rgba(var(--palette-neutral-2),1);";
-            }
-
-            return $"style=\"{style}\"";
-        }
-        string ToElement(string element, IEnumerable<TableContent> columns)
-        {
-            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.Title}\" {StyleForElement(alternateColorIndex)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
-        }
 
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
         
@@ -192,6 +165,35 @@ public class AzureWikiTableVisualizer : IVisualizer
 
         var headline = $"# Service Scorecard for {_dayOfGeneration}";
         WriteGeneratedOutput($"{FILE_NAME}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}<table id=\"service-scorecard\">{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
+        return;
+
+        string StyleForElement(int colorIndex)
+        {
+            var style = "";
+            if (colorIndex <= 3)
+            {
+                style += "background-color: rgba(var(--palette-neutral-2),1);";
+            }
+
+            return $"style=\"{style}\"";
+        }
+
+        string ToElement(string element, IEnumerable<TableContent> columns)
+        {
+            return $"<tr style=\"{ToBackgroundColor()}\">{string.Join("", columns.Select(entry => $"<{element} title=\"{entry.Title}\" {StyleForElement(alternateColorIndex)} colspan=\"{entry.Colspan}\">{entry.Content}</{element}>"))}</tr>";
+        }
+
+        string ToBackgroundColor()
+        {
+            ++alternateColorIndex;
+
+            if (alternateColorIndex % 2 == 0)
+            {
+                return "background-color: rgba(0, 0, 0, 0.05);";
+            }
+
+            return "";
+        }
     }
 
     private static IList<BaseCheck.Deduction>? GetDeductions(ILogger logger, RunInfo? infoFromSevenDaysAgo, string fullPathToService, KeyValuePair<string, IList<BaseCheck.Deduction>> check)
@@ -251,4 +253,7 @@ public class AzureWikiTableVisualizer : IVisualizer
     { 
         public static implicit operator TableContent(string content) => new(content, "");
     }
+
+    [GeneratedRegex("<!--(.*?)-->", RegexOptions.Singleline)]
+    private static partial Regex HTMLCommentRegex();
 }

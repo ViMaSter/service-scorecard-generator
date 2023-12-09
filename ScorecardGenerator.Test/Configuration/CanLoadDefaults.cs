@@ -1,7 +1,7 @@
 using ScorecardGenerator.Checks;
 using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Configuration;
-using Logger = Serilog.Core.Logger;
+using Serilog.Core;
 
 namespace ScorecardGenerator.Test.Configuration;
 
@@ -10,7 +10,7 @@ public class CanLoadDefaults
     [Test]
     public void CanLoadDefaultChecks()
     {
-        var parser = new ConfigurationParser(Logger.None, new List<object>(){ Logger.None, new Check.AzurePAT("")});
+        var parser = new ConfigurationParser(Logger.None, new List<object> { Logger.None, new Check.AzurePAT("")});
         var tempDirectory = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDirectory);
         Directory.SetCurrentDirectory(tempDirectory);
@@ -22,7 +22,7 @@ public class CanLoadDefaults
     [Test]
     public void FailsWithListOfAvailableChecksIfDefaultIsWrong()
     {
-        var parser = new ConfigurationParser(Logger.None, new List<object>(){ Logger.None, new Check.AzurePAT("")});
+        var parser = new ConfigurationParser(Logger.None, new List<object> { Logger.None, new Check.AzurePAT("")});
         var tempDirectory = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(tempDirectory);
         Directory.SetCurrentDirectory(tempDirectory);

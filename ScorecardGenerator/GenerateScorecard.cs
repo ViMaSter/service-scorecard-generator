@@ -75,12 +75,12 @@ internal class GenerateScorecard
         }
     }
 
-    private bool ThatDontHaveDisqualification(KeyValuePair<string, IList<BaseCheck.Deduction>> arg)
+    private static bool ThatDontHaveDisqualification(KeyValuePair<string, IList<BaseCheck.Deduction>> arg)
     {
         return !arg.Value.Any(deduction => deduction.IsDisqualification);
     }
 
-    private Func<string, bool> DoesntMatchExcludePath(string? excludePath)
+    private static Func<string, bool> DoesntMatchExcludePath(string? excludePath)
     {
         if (string.IsNullOrEmpty(excludePath))
         {

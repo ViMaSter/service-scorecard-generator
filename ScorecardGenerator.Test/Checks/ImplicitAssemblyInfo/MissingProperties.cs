@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.ImplicitAssemblyInfo;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class MissingProperties : TestWithNeighboringCsprojFixture
     public void Returns60Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.ImplicitAssemblyInfo.Check(logger);
+        var check = new Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         Assert.Multiple(() =>
         {

@@ -1,5 +1,7 @@
+using ScorecardGenerator.Checks.BuiltForAKS;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
+
 namespace ScorecardGenerator.Test.Checks.BuiltForAKS;
 
 public class HandlesAllScenarios
@@ -8,7 +10,7 @@ public class HandlesAllScenarios
     private static void CreateFilesAndExpectResult(Action<string> createFiles, int expectedDeductionCount, int? expectedFinalScore)
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.BuiltForAKS.Check(logger);
+        var check = new Check(logger);
         
         var randomDirectoryName = Guid.NewGuid().ToString();
         try

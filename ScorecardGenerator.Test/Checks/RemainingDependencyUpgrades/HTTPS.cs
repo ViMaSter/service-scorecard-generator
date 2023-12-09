@@ -31,7 +31,7 @@ public class HTTPS
     public void Deducts20PointsIfOnePRIsOpen(string gitRepo)
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.RemainingDependencyUpgrades.Check(logger, new Check.AzurePAT(""),  new Check.GitHubPAT(""), new NeighboringDirectoryStub());
+        var check = new Check(logger, new Check.AzurePAT(""),  new Check.GitHubPAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
         var source = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(RemainingDependencyUpgrades), nameof(HTTPS), "_git");
         var target = Path.Join(Path.GetTempPath(), subdirectory, ".git");
@@ -52,7 +52,7 @@ public class HTTPS
     public void Deducts0PointsIfNoGitPathIsFound()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.RemainingDependencyUpgrades.Check(logger, new Check.AzurePAT(""), new Check.GitHubPAT(""), new NeighboringDirectoryStub());
+        var check = new Check(logger, new Check.AzurePAT(""), new Check.GitHubPAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
         var target = Path.Join(Path.GetTempPath(), subdirectory);
         Directory.CreateDirectory(target);

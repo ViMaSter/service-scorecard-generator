@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Web;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
@@ -16,6 +17,7 @@ public class GitHubInfo : IInfo
         _repo = repo;
     }
 
+    // ReSharper disable once UnusedMember.Global - Used via InfoGenerator.FromURL
     public static IInfo? FromURL(string url)
     {
         if (!url.Contains("github"))
@@ -77,7 +79,7 @@ public class GitHubInfo : IInfo
             deductionsPerPR.Add(BaseCheck.Deduction.Create(logger, 100, "Failed to get pull requests from {ProjectPullRequestsUrl}{Newline}{Status}{Newline2}{Body}", projectPullRequestsURL, "&#013;", (int)request.StatusCode, "&#013;", HttpUtility.HtmlEncode(requestBody)));
             return deductionsPerPR;
         }
-        var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GitHubPullRequest>>(requestBody)!;
+        var pullRequests = JsonConvert.DeserializeObject<List<GitHubPullRequest>>(requestBody)!;
 
         var renovatePullRequests = pullRequests.Where(pr => pr.head.@ref.Contains("renovate")).ToList();
 
@@ -90,10 +92,10 @@ public class GitHubInfo : IInfo
             var filesChanged = getHTTPRequest(path);
 
             var filesChangedJSON = filesChanged.Content.ReadAsStringAsync().Result;
-            var filesChangedList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<FilesChanged>>(filesChangedJSON)!;
+            var filesChangedList = JsonConvert.DeserializeObject<List<FilesChanged>>(filesChangedJSON)!;
             allFilesChanged.AddRange(filesChangedList.Select(fc => fc.filename));
 
-            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile)!;
+            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile);
             if (!allFilesChanged.Any(fc => fc.EndsWith(projectFileNameWithExtension)))
             {
                 continue;
