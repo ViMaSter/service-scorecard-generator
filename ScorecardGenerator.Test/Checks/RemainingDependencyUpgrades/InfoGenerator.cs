@@ -25,4 +25,10 @@ public class InfoGeneratorTests
         var actual = InfoGenerator.FromURL(gitRepo);
         Assert.That(actual.ToString(), Is.EqualTo(EXPECTED));
     }
+
+    [Test]
+    public void ThrowsWhenUnsupported()
+    {
+        Assert.Throws<Exception>(() => InfoGenerator.FromURL("https://google.com"));
+    }
 }

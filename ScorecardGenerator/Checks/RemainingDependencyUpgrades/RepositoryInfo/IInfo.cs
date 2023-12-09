@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using System.Diagnostics.CodeAnalysis;
+using Serilog;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
 
@@ -7,6 +8,7 @@ public interface IInfo
     public const int DEDUCTION_PER_ACTIVE_PULL_REQUEST = 20;
     
     // ReSharper disable once UnusedMember.Global - Used via InfoGenerator.FromURL
+    [ExcludeFromCodeCoverage]
     public static IInfo? FromURL(string url)
     {
         return null;

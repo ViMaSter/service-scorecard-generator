@@ -33,7 +33,7 @@ public class GitHubInfo : IInfo
                 pathSplit[1].Split('.')[0]
             );
         }
-            
+        
         return new GitHubInfo
         (
             pathSplit[3],

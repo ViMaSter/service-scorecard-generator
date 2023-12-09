@@ -8,11 +8,7 @@ public static class InfoGenerator
         var types = typeof(IInfo).Assembly.GetTypes().Where(t => t is { IsClass: true, IsAbstract: false } && t.GetInterfaces().Contains(typeof(IInfo)));
         foreach (var type in types)
         {
-            var method = type.GetMethod("FromURL");
-            if (method == null)
-            {
-                continue;
-            }
+            var method = type.GetMethod("FromURL")!;
             var result = method.Invoke(null, new object[] {url});
             if (result != null)
             {
