@@ -1,10 +1,10 @@
 using System.Net;
 using System.Text.RegularExpressions;
-using ScorecardGenerator.Checks.PendingRenovateAzurePRs;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
-namespace ScorecardGenerator.Test.Checks.PendingRenovateAzurePRs;
+namespace ScorecardGenerator.Test.Checks.RemainingDependencyUpgrades;
 
 public class HTTPS
 {
@@ -15,7 +15,7 @@ public class HTTPS
             var directory = request.RequestUri != null && request.RequestUri.Host.Contains("dev.azure") ? "azure" : "visualstudio";
             var fileName = request.RequestUri?.AbsolutePath.Split("/").Last();
             
-            var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), directory, fileName);
+            var file = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(RemainingDependencyUpgrades), nameof(HTTPS), directory, fileName);
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(File.ReadAllText(file))
@@ -32,9 +32,9 @@ public class HTTPS
     public void Deducts20PointsIfOnePRIsOpen(string gitRepo)
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, new Check.AzurePAT(""), new NeighboringDirectoryStub());
+        var check = new ScorecardGenerator.Checks.RemainingDependencyUpgrades.Check(logger, new Check.AzurePAT(""),  new Check.GitHubPAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
-        var source = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(PendingRenovateAzurePRs), nameof(HTTPS), "_git");
+        var source = Path.Join(Directory.GetCurrentDirectory(), nameof(Checks), nameof(RemainingDependencyUpgrades), nameof(HTTPS), "_git");
         var target = Path.Join(Path.GetTempPath(), subdirectory, ".git");
         foreach (var sourceFilePath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
         {
@@ -53,7 +53,7 @@ public class HTTPS
     public void Deducts0PointsIfNoGitPathIsFound()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.PendingRenovateAzurePRs.Check(logger, new Check.AzurePAT(""), new NeighboringDirectoryStub());
+        var check = new ScorecardGenerator.Checks.RemainingDependencyUpgrades.Check(logger, new Check.AzurePAT(""), new Check.GitHubPAT(""), new NeighboringDirectoryStub());
         var subdirectory = Guid.NewGuid().ToString();
         var target = Path.Join(Path.GetTempPath(), subdirectory);
         Directory.CreateDirectory(target);

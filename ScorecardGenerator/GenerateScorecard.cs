@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
-using ScorecardGenerator.Checks.PendingRenovateAzurePRs;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Configuration;
 using ScorecardGenerator.Visualizer;
 using Serilog;

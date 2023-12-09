@@ -1,10 +1,10 @@
 using System.Net;
 using System.Web;
-using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
-using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models.GitHub;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.GitHub;
 using Serilog;
 
-namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
+namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 
 public class InfoGenerator
 {
@@ -36,31 +36,36 @@ public class InfoGenerator
 
         public static IInfo? FromURL(string url)
         {
-            if (url.Contains("visualstudio"))
+            var pathSplit = url.Split('/');
+            var isHTTPS = url.StartsWith("https://");
+            var isVisualStudio = url.Contains("visualstudio");
+            return (isHTTPS, isVisualStudio) switch
             {
-                var pathSplit = url.Split('/');
-                var gitIndex = Array.IndexOf(pathSplit, "_git");
-                return new AzureInfo
+                (false, true) => new AzureInfo
                 (
-                    pathSplit[gitIndex - 2], 
-                    pathSplit[gitIndex - 1], 
-                    pathSplit[gitIndex + 1]
-                );
-            }
-            
-            if (url.Contains("dev.azure"))
-            {
-                var pathSplit = url.Split('/');
-                var gitIndex = Array.IndexOf(pathSplit, "_git");
-                return new AzureInfo
+                    pathSplit[1], 
+                    pathSplit[2], 
+                    pathSplit[3].Split(" ")[0]
+                ),
+                (false, false) => new AzureInfo
                 (
-                    pathSplit[gitIndex - 2], 
-                    pathSplit[gitIndex - 1], 
-                    pathSplit[gitIndex + 1]
-                );
-            }
-            
-            return null;
+                    pathSplit[1], 
+                    pathSplit[2], 
+                    pathSplit[3].Split(" ")[0]
+                ),
+                (true, true) => new AzureInfo
+                (
+                    pathSplit[2].Split(".")[0], 
+                    pathSplit[3], 
+                    pathSplit[5].Split(" ")[0]
+                ),
+                (true, false) => new AzureInfo
+                (
+                    pathSplit[3], 
+                    pathSplit[4], 
+                    pathSplit[6].Split(" ")[0]
+                )
+            };
         }
 
         public override string ToString()
@@ -74,7 +79,7 @@ public class InfoGenerator
             var projectPullRequestsURL = $"https://dev.azure.com/{_organization}/{_project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
             var allProjectPullRequests = getHTTPRequest(projectPullRequestsURL);
             var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
-            var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models.Azure.PullRequest>(pullRequestJSON)!.value;
+            var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models.Azure.PullRequest>(pullRequestJSON)!.value;
             var renovatePullRequests = pullRequests.Where(pr => pr.repository.name == _repo && pr.sourceRefName.Contains("renovate")).ToList();
 
             foreach (var pr in renovatePullRequests)

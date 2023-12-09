@@ -1,6 +1,6 @@
 using NUnit.Framework.Internal;
 using ScorecardGenerator.Checks;
-using ScorecardGenerator.Checks.PendingRenovateAzurePRs;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Configuration;
 using Logger = Serilog.Core.Logger;
 
