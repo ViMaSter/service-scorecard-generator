@@ -104,7 +104,7 @@ public class Check : BaseCheck
         };
         process.Start();
         process.WaitForExit();
-        var allLines = process.StandardOutput.ReadToEnd();
+        var allLines = process.StandardOutput.ReadToEnd().ReplaceLineEndings();
         var azureInfoFromGit = allLines.Split(Environment.NewLine).Where(a=>!string.IsNullOrWhiteSpace(a)).Select(a=>a.Split("\t")[1]).Select(InfoGenerator.FromURL).ToList();
 
         if (!azureInfoFromGit.Any())

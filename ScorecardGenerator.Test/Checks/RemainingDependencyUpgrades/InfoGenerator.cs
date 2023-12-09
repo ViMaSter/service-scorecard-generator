@@ -15,4 +15,14 @@ public class InfoGeneratorTests
         var actual = InfoGenerator.FromURL(gitRepo);
         Assert.That(actual.ToString(), Is.EqualTo(EXPECTED));
     }
+    
+    [Test]
+    [TestCase("git@github.com:ViMaSter/service-scorecard-generator.git (fetch)")]
+    [TestCase("https://github.com/ViMaSter/service-scorecard-generator.git (fetch)")]
+    public void ReturnsNullWhenUnsupported(string gitRepo)
+    {
+        const string EXPECTED = "GitHubInfo: ViMaSter/service-scorecard-generator";
+        var actual = InfoGenerator.FromURL(gitRepo);
+        Assert.That(actual.ToString(), Is.EqualTo(EXPECTED));
+    }
 }

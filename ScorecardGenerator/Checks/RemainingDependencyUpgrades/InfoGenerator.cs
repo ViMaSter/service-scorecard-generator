@@ -12,10 +12,9 @@ public class InfoGenerator
 
     public interface IInfo
     {
-        public static bool FromURL(string url, out IInfo? info)
+        public static IInfo? FromURL(string url)
         {
-            info = null;
-            return false;
+            return null;
         }
 
         IList<BaseCheck.Deduction> GetDeductions(ILogger logger, Func<string, HttpResponseMessage> getHTTPRequest, string absolutePathToProjectFile);
@@ -33,38 +32,57 @@ public class InfoGenerator
             _project = project;
             _repo = repo;
         }
+        
+        private enum Domain
+        {
+            Azure,
+            VisualStudio,
+            NEITHER
+        }
+        
+        private enum Protocol
+        {
+            HTTPS,
+            SSH,
+            NEITHER
+        }
 
         public static IInfo? FromURL(string url)
         {
             var pathSplit = url.Split('/');
-            var isHTTPS = url.StartsWith("https://");
-            var isVisualStudio = url.Contains("visualstudio");
-            return (isHTTPS, isVisualStudio) switch
+            var protocol = url.Contains("ssh") ? Protocol.SSH : url.Contains("https") ? Protocol.HTTPS : Protocol.NEITHER;
+            var domain = url.Contains("dev.azure") ? Domain.Azure : url.Contains("visualstudio") ? Domain.VisualStudio : Domain.NEITHER;
+            if (protocol == Protocol.NEITHER || domain == Domain.NEITHER)
             {
-                (false, true) => new AzureInfo
+                return null;
+            }
+            return (protocol, domain) switch
+            {
+                (Protocol.SSH, Domain.VisualStudio) => new AzureInfo
                 (
                     pathSplit[1], 
                     pathSplit[2], 
                     pathSplit[3].Split(" ")[0]
                 ),
-                (false, false) => new AzureInfo
+                (Protocol.SSH, Domain.Azure) => new AzureInfo
                 (
                     pathSplit[1], 
                     pathSplit[2], 
                     pathSplit[3].Split(" ")[0]
                 ),
-                (true, true) => new AzureInfo
+                (Protocol.HTTPS, Domain.VisualStudio) => new AzureInfo
                 (
                     pathSplit[2].Split(".")[0], 
                     pathSplit[3], 
                     pathSplit[5].Split(" ")[0]
                 ),
-                (true, false) => new AzureInfo
+                (Protocol.HTTPS, Domain.Azure) => new AzureInfo
                 (
                     pathSplit[3], 
                     pathSplit[4], 
                     pathSplit[6].Split(" ")[0]
-                )
+                ),
+                _ => throw new Exception("Unknown URL format: " + url) 
             };
         }
 
@@ -131,11 +149,19 @@ public class InfoGenerator
                 return null;
             }
             var pathSplit = url.Split('/');
-            var gitIndex = Array.IndexOf(pathSplit, "github.com");
+            if (url.Contains('@'))
+            {
+                return new GitHubInfo
+                (
+                    pathSplit[0].Split(':')[1],
+                    pathSplit[1].Split('.')[0]
+                );
+            }
+            
             return new GitHubInfo
             (
-                pathSplit[gitIndex + 1],
-                pathSplit[gitIndex + 2].Split('.').First()
+                pathSplit[3],
+                pathSplit[4].Split(".")[0]
             );
         }
 
@@ -205,7 +231,7 @@ public class InfoGenerator
         }
     }
 
-    public static IInfo FromURL(string url)
+    public static IInfo? FromURL(string url)
     {
         // find all private classes deriving from IInfo and call FromURL on them; return the first non-null result
         var types = typeof(IInfo).Assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.GetInterfaces().Contains(typeof(IInfo)));
