@@ -1,4 +1,5 @@
 using System.Net;
+using System.Web;
 using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models.GitHub;
 using Serilog;
@@ -164,15 +165,14 @@ public class InfoGenerator
         {
             var deductionsPerPR = new List<BaseCheck.Deduction>();
             var projectPullRequestsURL = $"https://api.github.com/repos/{_organization}/{_repo}/pulls?state=open";
-            var allProjectPullRequests = getHTTPRequest(projectPullRequestsURL);
-            var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
-            if (allProjectPullRequests.StatusCode != HttpStatusCode.OK)
+            var request = getHTTPRequest(projectPullRequestsURL);
+            var requestBody = request.Content.ReadAsStringAsync().Result;
+            if (request.StatusCode != HttpStatusCode.OK)
             {
-                logger.Error("Failed to get pull requests from {ProjectPullRequestsUrl}", projectPullRequestsURL);
-                deductionsPerPR.Add(BaseCheck.Deduction.Create(logger, 100, "Failed to get pull requests from {ProjectPullRequestsUrl}", projectPullRequestsURL));
+                deductionsPerPR.Add(BaseCheck.Deduction.Create(logger, 100, "Failed to get pull requests from {ProjectPullRequestsUrl}{Newline}{Status}{Newline2}{Body}", projectPullRequestsURL, "&#013;", (int)request.StatusCode, "&#013;", HttpUtility.HtmlEncode(requestBody)));
                 return deductionsPerPR;
             }
-            var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GitHubPullRequest>>(pullRequestJSON)!;
+            var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GitHubPullRequest>>(requestBody)!;
 
             var renovatePullRequests = pullRequests.Where(pr => pr.head.@ref.Contains("renovate")).ToList();
 

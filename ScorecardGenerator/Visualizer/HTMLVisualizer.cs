@@ -29,7 +29,7 @@ public partial class HTMLVisualizer : IVisualizer
         }
     }
     
-    public void Visualize(RunInfo runInfo)
+    public string Visualize(RunInfo runInfo)
     {
         var infoFromSevenDaysAgo = Get7DaysAgo();
 
@@ -76,6 +76,8 @@ public partial class HTMLVisualizer : IVisualizer
         };
         
         WriteGeneratedOutput($"{FILE_NAME}.html", parameters.Aggregate(html, (current, parameter)=> current.Replace($"@{parameter.Key}", parameter.Value.ToString())));
+
+        return Path.GetFullPath(Path.Join(_outputPath, $"{FILE_NAME}.html")); 
     }
     
     private void WriteGeneratedOutput(string path, string content)

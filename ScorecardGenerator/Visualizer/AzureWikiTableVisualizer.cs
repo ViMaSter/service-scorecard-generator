@@ -24,11 +24,12 @@ public class AzureWikiTableVisualizer : IVisualizer
         _dayOfGeneration = $"{DateTime.Now:yyyy-MM-dd}";
     }
     
-    public void Visualize(RunInfo runInfo)
+    public string Visualize(RunInfo runInfo)
     {
         CreateDirectoryForDay();
         GenerateCheckPages(runInfo);
         GenerateServiceOverview(runInfo);
+        return Path.GetFullPath(Path.Join(_outputPath, $"{FILE_NAME}.md"));
     }
 
     private void CreateDirectoryForDay()

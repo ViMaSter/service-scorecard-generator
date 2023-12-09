@@ -2,5 +2,5 @@ namespace ScorecardGenerator.Visualizer;
 
 internal interface IVisualizer
 {
-    void Visualize(Calculation.RunInfo runInfo);
+    string Visualize(Calculation.RunInfo runInfo);
 }

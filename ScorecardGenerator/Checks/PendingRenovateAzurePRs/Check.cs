@@ -12,6 +12,9 @@ namespace ScorecardGenerator.Checks.PendingRenovateAzurePRs;
 
 public class Check : BaseCheck
 {
+    private readonly AzurePAT _azurePAT;
+    private readonly GitHubPAT _githubPAT;
+
     // ReSharper disable once ClassNeverInstantiated.Global instantiated via DI
     public class AzurePAT
     {
@@ -22,15 +25,24 @@ public class Check : BaseCheck
             Value = value;
         }
     }
-
-    public Check(ILogger logger, AzurePAT azurePAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
+    public class GitHubPAT
     {
+        public string Value { get; }
+
+        public GitHubPAT(string value)
+        {
+            Value = value;
+        }
+    }
+
+    public Check(ILogger logger, AzurePAT azurePAT, GitHubPAT githubPAT, HttpMessageHandler? overrideMessageHandler = null) : base(logger)
+    {
+        _azurePAT = azurePAT;
+        _githubPAT = githubPAT;
         _client = new HttpClient(overrideMessageHandler ?? new HttpClientHandler())
         {
-            // add Accept: application/vnd.github+json
             DefaultRequestHeaders =
             {
-                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT.Value}"))),
                 UserAgent = { ProductInfoHeaderValue.Parse("ScorecardGenerator/" + typeof(Check).Assembly.GetName().Version!.ToString(3)) },
                 Accept = { MediaTypeWithQualityHeaderValue.Parse("application/json") }
             }
@@ -56,6 +68,15 @@ public class Check : BaseCheck
         if (Data.TryGetValue(url, out var value))
         {
             return value;
+        }
+
+        if (url.ToLower().Contains("github"))
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _githubPAT.Value);
+        }
+        else
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{_azurePAT.Value}")));
         }
 
         Data[url] = _retryPolicy.Execute(() => _client.GetAsync(url).Result);
