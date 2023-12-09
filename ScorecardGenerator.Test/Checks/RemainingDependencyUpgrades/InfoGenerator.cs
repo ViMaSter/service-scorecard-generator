@@ -1,4 +1,5 @@
 ﻿using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
 
 namespace ScorecardGenerator.Test.Checks.RemainingDependencyUpgrades;
 

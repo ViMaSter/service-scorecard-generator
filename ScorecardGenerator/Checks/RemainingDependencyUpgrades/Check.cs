@@ -7,6 +7,7 @@ using ScorecardGenerator.Checks.RemainingDependencyUpgrades.Models;
 using Serilog;
 using Polly;
 using Polly.Retry;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 
