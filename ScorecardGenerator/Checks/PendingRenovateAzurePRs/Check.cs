@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using Markdig.Helpers;
 using ScorecardGenerator.Checks.PendingRenovateAzurePRs.Models;
 using Serilog;
 using Polly;
@@ -25,20 +27,22 @@ public class Check : BaseCheck
     {
         _client = new HttpClient(overrideMessageHandler ?? new HttpClientHandler())
         {
+            // add Accept: application/vnd.github+json
             DefaultRequestHeaders =
             {
-                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT.Value}")))
+                Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($":{azurePAT.Value}"))),
+                UserAgent = { ProductInfoHeaderValue.Parse("ScorecardGenerator/" + typeof(Check).Assembly.GetName().Version!.ToString(3)) },
+                Accept = { MediaTypeWithQualityHeaderValue.Parse("application/json") }
             }
         };
+        _client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
     }
-
-    private const int DEDUCTION_PER_ACTIVE_PULL_REQUEST = 20;
-
+    
     private static readonly Dictionary<string, HttpResponseMessage> Data = new();
     private readonly HttpClient _client;
 
     private readonly RetryPolicy<HttpResponseMessage> _retryPolicy = Policy
-        .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+        .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode && r.StatusCode is < HttpStatusCode.BadRequest or >= HttpStatusCode.InternalServerError)
         .WaitAndRetry(new List<TimeSpan>()
         {
             TimeSpan.FromSeconds(1),
@@ -80,7 +84,7 @@ public class Check : BaseCheck
         process.Start();
         process.WaitForExit();
         var allLines = process.StandardOutput.ReadToEnd();
-        var azureInfoFromGit = allLines.Split(Environment.NewLine).Select(InfoGenerator.FromURL).ToList();
+        var azureInfoFromGit = allLines.Split(Environment.NewLine).Where(a=>!string.IsNullOrWhiteSpace(a)).Select(a=>a.Split("\t")[1]).Select(InfoGenerator.FromURL).ToList();
 
         if (!azureInfoFromGit.Any())
         {
@@ -89,44 +93,12 @@ public class Check : BaseCheck
 
         if (azureInfoFromGit.Count > 1)
         {
-            Logger.Warning("Multiple Azure DevOps remotes found for {ServiceRootDirectory}; using {Organization}/{Project}/{Repo}", serviceRootDirectory, azureInfoFromGit.First().organization, azureInfoFromGit.First().project, azureInfoFromGit.First().repo);
+            Logger.Warning("Multiple Azure DevOps remotes found for {ServiceRootDirectory}; using {Info}", serviceRootDirectory, azureInfoFromGit.First());
         }
 
         var azureInfo = azureInfoFromGit.First();
 
-        var projectPullRequestsURL = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active";
-        var allProjectPullRequests = GetHTTPRequest(projectPullRequestsURL);
-        var pullRequestJSON = allProjectPullRequests.Content.ReadAsStringAsync().Result;
-        var pullRequests = Newtonsoft.Json.JsonConvert.DeserializeObject<PullRequest>(pullRequestJSON)!.value;
-        var renovatePullRequests = pullRequests.Where(pr => pr.repository.name == azureInfo.repo && pr.sourceRefName.Contains("renovate")).ToList();
-
-        var deductionsPerPR = new List<Deduction>();
-        foreach (var pr in renovatePullRequests)
-        {
-            var allFilesChanged = new List<string>();
-
-            var path = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations?api-version=7.0";
-
-            var iterations = GetHTTPRequest(path);
-
-            var iterationsJSON = iterations.Content.ReadAsStringAsync().Result;
-            var iterationsList = Newtonsoft.Json.JsonConvert.DeserializeObject<Iteration>(iterationsJSON)!.value;
-            foreach (var iteration in iterationsList)
-            {
-                var url = $"https://dev.azure.com/{azureInfo.organization}/{azureInfo.project}/_apis/git/repositories/{pr.repository.id}/pullRequests/{pr.pullRequestId}/iterations/{iteration.id}/changes?api-version=7.0";
-                var filesChanged = GetHTTPRequest(url);
-                var filesChangedJSON = filesChanged.Content.ReadAsStringAsync().Result;
-                var filesChangedList = Newtonsoft.Json.JsonConvert.DeserializeObject<Changes>(filesChangedJSON)!.changeEntries;
-                allFilesChanged.AddRange(filesChangedList.Select(fc => fc.item.path));
-            }
-
-            var projectFileNameWithExtension = Path.GetFileName(absolutePathToProjectFile)!;
-            if (!allFilesChanged.Any(fc => fc.EndsWith(projectFileNameWithExtension)))
-            {
-                continue;
-            }
-            deductionsPerPR.Add(Deduction.Create(Logger, DEDUCTION_PER_ACTIVE_PULL_REQUEST, "PR {PRNumber} - {Title}", pr.pullRequestId, pr.title));
-        }
+        var deductionsPerPR = azureInfo.GetDeductions(Logger, GetHTTPRequest, absolutePathToProjectFile);
 
         return deductionsPerPR;
     }
