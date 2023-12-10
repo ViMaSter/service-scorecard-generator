@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.1.1"></a>
+## [2.1.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.1) (2023-12-10)
+
+### Bug Fixes
+
+* Codecov reports skip `app/` directory prefix ([390ef59](https://www.github.com/ViMaSter/service-scorecard-generator/commit/390ef5927e67240c93256a1f06cf4a2c5804421f))
+
+### Other
+
+* **deps:** bump NUnit from 3.14.0 to 4.0.1 in /ScorecardGenerator.Test ([99c21d4](https://www.github.com/ViMaSter/service-scorecard-generator/commit/99c21d4b0e4b5e9feee5297310c8a437f175ed82))
+
 <a name="2.1.0"></a>
 ## [2.1.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.0) (2023-12-05)
 
