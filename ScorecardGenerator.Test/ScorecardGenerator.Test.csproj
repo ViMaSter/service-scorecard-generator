@@ -110,6 +110,12 @@
       <None Update="Checks\RemainingDependencyUpgrades\HTTPS\visualstudio\iterations">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\github\pulls">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\github\files">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

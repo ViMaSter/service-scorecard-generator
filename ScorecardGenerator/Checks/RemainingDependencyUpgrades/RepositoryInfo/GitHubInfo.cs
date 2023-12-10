@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web;
 using Newtonsoft.Json;
+using ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo.GitHub.Models;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.RemainingDependencyUpgrades.RepositoryInfo;
@@ -45,29 +46,7 @@ public class GitHubInfo : IInfo
     {
         return $"{GetType().Name}: {_organization}/{_repo}";
     }
-
-    // ReSharper disable InconsistentNaming
-    // ReSharper disable ClassNeverInstantiated.Local
-    // ReSharper disable UnassignedGetOnlyAutoProperty
-    private class GitHubPullRequest
-    {
-        public int number { get; }
-        public GitHubPullRequestHead head { get; } = new();
-
-        internal class GitHubPullRequestHead
-        {
-            public string @ref => "";
-        }
-    }
-
-    private class FilesChanged
-    {
-        public string filename => "";
-    }
-    // ReSharper restore UnassignedGetOnlyAutoProperty
-    // ReSharper restore ClassNeverInstantiated.Local
-    // ReSharper restore InconsistentNaming
-
+    
     public IList<BaseCheck.Deduction> GetDeductions(ILogger logger, Func<string, HttpResponseMessage> getHTTPRequest, string absolutePathToProjectFile)
     {
         var deductionsPerPR = new List<BaseCheck.Deduction>();
@@ -81,9 +60,9 @@ public class GitHubInfo : IInfo
         }
         var pullRequests = JsonConvert.DeserializeObject<List<GitHubPullRequest>>(requestBody)!;
 
-        var renovatePullRequests = pullRequests.Where(pr => pr.head.@ref.Contains("renovate")).ToList();
+        var dependabotPullRequests = pullRequests.Where(pr => pr.head.@ref.Contains("dependabot")).ToList();
 
-        foreach (var pr in renovatePullRequests)
+        foreach (var pr in dependabotPullRequests)
         {
             var allFilesChanged = new List<string>();
 

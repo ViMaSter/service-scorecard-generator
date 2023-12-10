@@ -5,6 +5,7 @@ using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
 using ScorecardGenerator.Checks.RemainingDependencyUpgrades;
 using ScorecardGenerator.Configuration;
+using ScorecardGenerator.Models;
 using ScorecardGenerator.Visualizer;
 using Serilog;
 
@@ -41,12 +42,12 @@ internal class GenerateScorecard
             var bronzeDeductionsByCheck = checks.Bronze.ToDictionary(Utilities.GetNameFromCheckClass, check => check.SetupLoggerAndRun(Path.Join(Directory.GetCurrentDirectory(), serviceRootDirectory.Replace(Directory.GetCurrentDirectory(), ""))));
             var totalScore = new[]
             {
-                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Configuration.Checks.GOLD_WEIGHT,
-                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Checks.SILVER_WEIGHT,
-                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Checks.BRONZE_WEIGHT
+                (decimal?)goldDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore())   * Configuration.Models.Checks.GOLD_WEIGHT,
+                (decimal?)silverDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Models.Checks.SILVER_WEIGHT,
+                (decimal?)bronzeDeductionsByCheck.Values.Sum(deductions=>deductions.CalculateFinalScore()) * Configuration.Models.Checks.BRONZE_WEIGHT
             }.Sum();
 
-            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.GOLD_WEIGHT + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.SILVER_WEIGHT + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Checks.BRONZE_WEIGHT;
+            var totalChecks = goldDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Models.Checks.GOLD_WEIGHT + silverDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Models.Checks.SILVER_WEIGHT + bronzeDeductionsByCheck.Count(ThatDontHaveDisqualification) * Configuration.Models.Checks.BRONZE_WEIGHT;
             var average = totalScore == null ? 0 : (int)Math.Round((decimal)totalScore / totalChecks);
             var deductionsByCheck = goldDeductionsByCheck
                                                     .Concat(silverDeductionsByCheck)
@@ -100,5 +101,3 @@ internal class GenerateScorecard
         _logger.Information("Available checks:{AvailableChecks}", string.Join("", availableChecks));
     }
 }
-
-public record CheckInfo(string Name, string InfoPageContent);

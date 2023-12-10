@@ -1,6 +1,6 @@
 using ScorecardGenerator.Checks;
 
-namespace ScorecardGenerator.Configuration;
+namespace ScorecardGenerator.Configuration.Models;
 
 public record Checks    
 (

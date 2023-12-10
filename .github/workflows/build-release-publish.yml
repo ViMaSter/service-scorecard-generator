@@ -27,8 +27,8 @@ jobs:
         dotnet build --configuration Release
         dotnet-dotCover dotnet \
         --output coverage.cobertura.xml \
-        --filters=-:type=*.Models.* \
         --reportType "Xml" \
+        --Filters="-:type=*.Models.*" \
         -- \
         test \
         --no-restore \

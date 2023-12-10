@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Models;
 using Serilog;
 
 namespace ScorecardGenerator.Test.Visualizer.AzureWikiTableVisualizer;

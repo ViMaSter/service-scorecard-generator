@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Configuration.Models;
 using Serilog;
 
 namespace ScorecardGenerator.Configuration;
@@ -8,11 +9,7 @@ public class ConfigurationParser
 {
     private readonly ILogger _logger;
     private readonly IEnumerable<object> _services;
-
-    public record CheckData
-    (
-        Dictionary<string, string[]> Checks
-    );
+    
 
     public ConfigurationParser(ILogger logger, IEnumerable<object> services)
     {
@@ -20,6 +17,20 @@ public class ConfigurationParser
         _services = services;
     }
 
+    /// <summary>
+    /// Constructs an instances of a check based on the name
+    /// </summary>
+    /// <remarks>
+    /// This method uses reflection to find a class with the name of the check.
+    /// Check classes must be in the namespace `ScorecardGenerator.Checks.{checkName}` and must inherit from `BaseCheck`.
+    /// Check classes also must have a constructor that takes an `ILogger` as its first parameter.
+    /// Remaining parameters must fulfill one of the following requirements:
+    ///  - services that are registered in the dependency injection container `_services`
+    ///  - optional parameters with default values
+    /// </remarks>
+    /// <param name="checkName"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     private BaseCheck CheckFromName(string checkName)
     {
         var assembly = typeof(BaseCheck).Assembly;
@@ -30,11 +41,18 @@ public class ConfigurationParser
         }
         var constructor = type.GetConstructors().First(c => c.GetParameters().First().ParameterType == typeof(ILogger));
         var types = constructor.GetParameters().Skip(1).ToArray();
-        object?[] parameters = types.Where(t=> !t.IsOptional).Select(t => _services.First(s => s.GetType() == t.ParameterType)).ToArray().Prepend(_logger).ToArray();
-        parameters = parameters.Concat(types.Where(t => t.IsOptional).Select(t => t.DefaultValue)).ToArray();
+        var parameters = types
+            .Where(t=> !t.IsOptional)
+            .Select(t => _services.First(s => s.GetType() == t.ParameterType))
+            .ToArray()
+            .Prepend(_logger)
+            .ToArray()
+            .Concat(types.Where(t => t.IsOptional)
+            .Select(t => t.DefaultValue))
+            .ToArray();
         return (BaseCheck) Activator.CreateInstance(type, parameters)!;
     }
-    public Checks LoadChecks()
+    public Models.Checks LoadChecks()
     {
         const string defaultJSON = "default.json";
         const string scorecardConfigJSON = "scorecard.config.json";
@@ -54,7 +72,7 @@ public class ConfigurationParser
         try
         {
             var data = JsonConvert.DeserializeObject<CheckData>(json)!.Checks;
-            return new Checks(
+            return new Models.Checks(
                 data["Gold"].Select(CheckFromName).ToList(),
                 data["Silver"].Select(CheckFromName).ToList(),
                 data["Bronze"].Select(CheckFromName).ToList()
