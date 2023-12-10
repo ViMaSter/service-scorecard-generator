@@ -2,6 +2,7 @@ name: Build, Release, Publish
 
 on:
   push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
  
@@ -40,8 +41,9 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: app/test-results/coverage.cobertura.xml
+        files: test-results/coverage.cobertura.xml
         fail_ci_if_error: true
+        working-directory: app
       if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload dotnet test results
