@@ -18,32 +18,34 @@ jobs:
         
     steps:
     - uses: actions/checkout@v4
-      with:
+      with: 
         path: app
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4
-      
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-      working-directory: app
 
     - name: Generate coverage report
-      run: dotnet test --collect:"XPlat Code Coverage" --results-directory "test-results"
+      run: |
+        dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2023.3.0
+        dotnet build --configuration Release
+        dotnet-dotCover dotnet \
+        --output coverage.cobertura.xml \
+        --filters=-:type=*.Models.* \
+        --reportType "Xml" \
+        -- \
+        test \
+        --no-restore \
+        --no-build \
+        --configuration Release \
+        --collect:"XPlat Code Coverage"
       working-directory: app
-
-    - name: Move coverage report from GUID folder to test-results
-      run: find test-results -name "coverage.cobertura.xml" -exec mv {} test-results \;
-      shell: bash
-      working-directory: app
-      if: ${{ always() }}
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: test-results/coverage.cobertura.xml
+        files: coverage.cobertura.xml
         fail_ci_if_error: true
+        # use codecov.yml to configure the codecov action
         working-directory: app
+
       if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload dotnet test results
@@ -51,7 +53,7 @@ jobs:
       with:
         name: testresults-unit
         path: app/test-results
-      if: ${{ always() }}
+      if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload binaries as ${platform}-artifact
       uses: actions/upload-artifact@v3
