@@ -26,7 +26,16 @@ jobs:
         dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2023.3.0
         # build release configuration
         dotnet build --configuration Release
-        dotnet-dotCover dotnet --output coverage.cobertura.xml --reportType "Xml" -- test --no-restore --no-build --configuration Release --collect:"XPlat Code Coverage"
+        dotnet-dotCover dotnet \
+        --output coverage.cobertura.xml \
+        --filters=-:type=*.Models.* \
+        --reportType "Xml" \
+        -- \
+        test \
+        --no-restore \
+        --no-build \
+        --configuration Release \
+        --collect:"XPlat Code Coverage"
       working-directory: app
 
     - name: Upload coverage to Codecov
@@ -43,7 +52,7 @@ jobs:
       with:
         name: testresults-unit
         path: app/test-results
-      if: ${{ always() }}
+      if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload binaries as ${platform}-artifact
       uses: actions/upload-artifact@v3
