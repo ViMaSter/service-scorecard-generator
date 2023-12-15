@@ -142,21 +142,21 @@ jobs:
         
     - name: Download ubuntu artifacts
       if: steps.versionize.outcome == 'success'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: binaries-ubuntu-latest
         path: ubuntu-artifacts
 
     - name: Download windows artifacts
       if: steps.versionize.outcome == 'success'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: binaries-windows-latest
         path: windows-artifacts
 
     - name: Download macos artifacts
       if: steps.versionize.outcome == 'success'
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: binaries-macos-latest
         path: macos-artifacts
