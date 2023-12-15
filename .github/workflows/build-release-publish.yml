@@ -47,14 +47,14 @@ jobs:
       if: ${{ always() && matrix.os == 'ubuntu-latest' }}
 
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: testresults-unit
         path: app/test-results
       if: ${{ always() }}
 
     - name: Upload binaries as ${platform}-artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: binaries-${{ matrix.os }}
         path: app/ScorecardGenerator/bin/Release/net7.0/*
@@ -91,7 +91,7 @@ jobs:
       run: ../app/ScorecardGenerator/bin/Release/net7.0/ScorecardGenerator --azure-pat ${{ secrets.AZURE_PAT }} --output-path wiki --visualizer azurewiki
       working-directory: test-data
       
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: testresults-integration-${{ matrix.data.suffix }}
         path: test-data/wiki/*
