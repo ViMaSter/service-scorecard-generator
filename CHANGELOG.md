@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.1.2"></a>
+## [2.1.2](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.2) (2023-12-15)
+
+### Bug Fixes
+
+* Changes test result artifact name to be unique ([b6c4e26](https://www.github.com/ViMaSter/service-scorecard-generator/commit/b6c4e264e8c3a89376981801865d298985106ccb))
+
+### Other
+
+* Codecov treats partials as hits ([84b5682](https://www.github.com/ViMaSter/service-scorecard-generator/commit/84b56821a1f4995a255ac3d32936cb9d5f19756b))
+* **deps:** bump actions/download-artifact from 3 to 4 ([493c7ce](https://www.github.com/ViMaSter/service-scorecard-generator/commit/493c7ce8c73f8c54ba3ec498aad92b86bdb0780e))
+* **deps:** bump actions/upload-artifact from 3 to 4 ([b371220](https://www.github.com/ViMaSter/service-scorecard-generator/commit/b371220ad255a2e90500703bd1d6f71476b77c4f))
+* **deps:** bump Markdig from 0.33.0 to 0.34.0 in /ScorecardGenerator ([bc2db06](https://www.github.com/ViMaSter/service-scorecard-generator/commit/bc2db06eb09a6dad627ddf2c9bc32f8a21e8fdb4))
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.1) (2023-12-10)
 
