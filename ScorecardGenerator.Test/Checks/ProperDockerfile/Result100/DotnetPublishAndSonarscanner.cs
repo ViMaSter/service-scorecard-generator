@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.ProperDockerfile;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class DotnetPublishAndSonarscanner : TestWithNeighboringCsprojAndDockerfi
     public void Returns100Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.ProperDockerfile.Check(logger);
+        var check = new Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(0, 100);
     }

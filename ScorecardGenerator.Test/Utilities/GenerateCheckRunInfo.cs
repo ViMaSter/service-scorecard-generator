@@ -1,11 +1,12 @@
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Checks.LatestNET;
 using Serilog;
 
 namespace ScorecardGenerator.Test.Utilities;
 
 public class GenerateCheckRunInfo
 {
-    public class CheckWithoutMarkdownPage : BaseCheck
+    private class CheckWithoutMarkdownPage : BaseCheck
     {
         public CheckWithoutMarkdownPage(ILogger logger) : base(logger)
         {
@@ -20,7 +21,7 @@ public class GenerateCheckRunInfo
     public void WorksForLatestNET()
     {
         var emptyLogger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.LatestNET.Check(emptyLogger);
+        var check = new Check(emptyLogger);
         var checkInfo = ScorecardGenerator.Utilities.GenerateCheckRunInfo(check);
         Assert.Multiple(() =>
         {

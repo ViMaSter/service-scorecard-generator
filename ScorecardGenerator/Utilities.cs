@@ -1,4 +1,5 @@
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Models;
 
 namespace ScorecardGenerator;
 

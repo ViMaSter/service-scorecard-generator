@@ -77,37 +77,43 @@
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\index.html" />
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\index.html" />
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\index.html" />
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\refs\EMPTY">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\_git\refs\EMPTY">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\objects\EMPTY">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\_git\objects\EMPTY">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\HEAD.HEAD">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\_git\HEAD.HEAD">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\config">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\_git\config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\HEAD">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\_git\HEAD">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\pullrequests">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\azure\pullrequests">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\changes">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\azure\changes">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\azure\iterations">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\azure\iterations">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\pullrequests">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\visualstudio\pullrequests">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\changes">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\visualstudio\changes">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Checks\PendingRenovateAzurePRs\HTTPS\visualstudio\iterations">
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\visualstudio\iterations">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\github\pulls">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Checks\RemainingDependencyUpgrades\HTTPS\github\files">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

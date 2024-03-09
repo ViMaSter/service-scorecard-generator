@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Models;
 
 namespace ScorecardGenerator.Calculation;
 

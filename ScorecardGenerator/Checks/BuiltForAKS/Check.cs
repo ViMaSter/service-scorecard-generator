@@ -1,5 +1,4 @@
 using System.Xml.Linq;
-using System.Xml.XPath;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.BuiltForAKS;

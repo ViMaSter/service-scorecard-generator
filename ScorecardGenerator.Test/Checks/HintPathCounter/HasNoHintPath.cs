@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.HintPathCounter;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class HasNoHintPath : TestWithNeighboringCsprojFixture
     public void Returns100Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.HintPathCounter.Check(logger);
+        var check = new Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(0, 100);
     }
