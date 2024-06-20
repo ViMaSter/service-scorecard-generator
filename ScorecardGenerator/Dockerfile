@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0.302 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.302-1 AS build
 WORKDIR /src
 COPY ["ScorecardGenerator.csproj", "./"]
 RUN dotnet restore "ScorecardGenerator.csproj"
