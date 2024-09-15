@@ -2,40 +2,13 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Newtonsoft.Json;
+using ScorecardGenerator.Checks.LatestNET.Models;
 using Serilog;
 
 namespace ScorecardGenerator.Checks.LatestNET;
 
 public partial class Check : BaseCheck
 {
-    private record ReleaseData(
-        [JsonProperty("releases-index")]
-        Release[] ReleasesIndex
-    );
-
-    private record Release(
-        [JsonProperty("channel-version")]
-        string ChannelVersion,
-        [JsonProperty("latest-release")]
-        string LatestRelease,
-        [JsonProperty("latest-release-date")]
-        string LatestReleaseDate,
-        bool Security,
-        [JsonProperty("latest-runtime")]
-        string LatestRuntime,
-        [JsonProperty("latest-sdk")]
-        string LatestSdk,
-        string Product,
-        [JsonProperty("release-type")]
-        string ReleaseType,
-        [JsonProperty("support-phase")]
-        string SupportPhase,
-        [JsonProperty("eol-date")]
-        string EOLDate,
-        [JsonProperty("releases-json")]
-        string ReleasesJSON
-    );
-    
     internal class ReleaseComparer : IComparer<Release>
     {
         int IComparer<Release>.Compare(Release? x, Release? y)
