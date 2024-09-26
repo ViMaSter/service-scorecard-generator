@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.LatestNET;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class NoTargetFramework : TestWithNeighboringCsprojFixture
     public void Returns0Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.LatestNET.Check(logger);
+        var check = new Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(1, 0);
     }

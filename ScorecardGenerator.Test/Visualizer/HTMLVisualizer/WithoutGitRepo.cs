@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using ScorecardGenerator.Calculation;
 using ScorecardGenerator.Checks;
+using ScorecardGenerator.Models;
 using Serilog;
 
 namespace ScorecardGenerator.Test.Visualizer.HTMLVisualizer;
@@ -17,8 +18,8 @@ public class WithoutGitRepo : TestWithNeighboringDirectoryFixture
         var checks = new Dictionary<string, IList<CheckInfo>>
         {
             { "Gold", new List<CheckInfo> { new("Check", "PageContent"), new("DisqualifiedCheck", "Disqualified PageContent") } },
-            { "Silver", new List<CheckInfo>() { new("Check2", "PageContent"), new("DisqualifiedCheck2", "Disqualified PageContent") } },
-            { "Bronze", new List<CheckInfo>() { new("Check3", "PageContent"), new("DisqualifiedCheck3", "Disqualified PageContent") } }
+            { "Silver", new List<CheckInfo> { new("Check2", "PageContent"), new("DisqualifiedCheck2", "Disqualified PageContent") } },
+            { "Bronze", new List<CheckInfo> { new("Check3", "PageContent"), new("DisqualifiedCheck3", "Disqualified PageContent") } }
         };
 
         var serviceInfo = new Dictionary<string, RunInfo.ServiceScorecard>

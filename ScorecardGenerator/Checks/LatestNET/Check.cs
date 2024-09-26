@@ -95,7 +95,7 @@ public partial class Check : BaseCheck
             return new List<Deduction>();
         }
         
-        var offset = 100-(int)Math.Round(((double)currentMajor / NewestMajor) * 100);
+        var offset = 100-(int)Math.Round((double)currentMajor / NewestMajor * 100);
         return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {CurrentText}, latest available is {LatestText} ({CurrentMajor}/{LatestMajor}={Offset}%)", targetFramework, _newestText, currentMajor, NewestMajor, 100-offset) };
     }
 

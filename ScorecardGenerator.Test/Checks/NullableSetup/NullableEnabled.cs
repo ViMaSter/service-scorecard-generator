@@ -1,3 +1,4 @@
+using ScorecardGenerator.Checks.NullableSetup;
 using ScorecardGenerator.Test.Helper;
 using Serilog;
 
@@ -9,7 +10,7 @@ public class NullableEnabled : TestWithNeighboringCsprojFixture
     public void Returns100Points()
     {
         var logger = new LoggerConfiguration().CreateLogger();
-        var check = new ScorecardGenerator.Checks.NullableSetup.Check(logger);
+        var check = new Check(logger);
         var deductions = check.SetupLoggerAndRun(AbsolutePathToProjectFile);
         deductions.CountAndFinalScore(0, 100);
     }

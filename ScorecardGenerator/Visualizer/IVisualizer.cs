@@ -1,6 +1,8 @@
+using ScorecardGenerator.Calculation;
+
 namespace ScorecardGenerator.Visualizer;
 
 internal interface IVisualizer
 {
-    void Visualize(Calculation.RunInfo runInfo);
+    string Visualize(RunInfo runInfo);
 }
