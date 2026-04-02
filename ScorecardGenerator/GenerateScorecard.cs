@@ -61,6 +61,7 @@ internal class GenerateScorecard
             "html" => new HTMLVisualizer(_logger, outputPath),
             "azurewiki" => new AzureWikiTableVisualizer(_logger, outputPath),
             "gitlabmarkdown" => new GitLabMarkdownVisualizer(_logger, outputPath),
+            "mkdocsmarkdown" => new MkDocsMarkdownVisualizer(_logger, outputPath),
             _ => throw new ArgumentException($"Unknown visualizer {visualizer}")
         };
         visualizerToUse.Visualize(runInfo);

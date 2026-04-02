@@ -7,7 +7,7 @@ using Serilog;
 
 namespace ScorecardGenerator.Visualizer;
 
-public class GitLabMarkdownVisualizer : IVisualizer
+public class MkDocsMarkdownVisualizer : IVisualizer
 {
     private readonly ILogger _logger;
     private readonly string _outputPath;
@@ -17,9 +17,9 @@ public class GitLabMarkdownVisualizer : IVisualizer
     private static readonly string AutoGenerationHeader = $"{AUTO_GENERATION_INFO}{Environment.NewLine}{AUTO_GENERATION_INFO}{Environment.NewLine}{AUTO_GENERATION_INFO}{Environment.NewLine}{Environment.NewLine}";
     private const string FILE_NAME = "Service-Scorecard";
 
-    public GitLabMarkdownVisualizer(ILogger logger, string outputPath)
+    public MkDocsMarkdownVisualizer(ILogger logger, string outputPath)
     {
-        _logger = logger.ForContext<GitLabMarkdownVisualizer>();
+        _logger = logger.ForContext<MkDocsMarkdownVisualizer>();
         _outputPath = outputPath;
         _dayOfGeneration = $"{DateTime.Now:yyyy-MM-dd}";
     }
@@ -141,8 +141,6 @@ public class GitLabMarkdownVisualizer : IVisualizer
     private void GenerateServiceOverview(RunInfo runInfo)
     {
         var infoFromSevenDaysAgo = Get7DaysAgo();
-        var usageGuide = $"Information on how to reach 100 points for each check can be found in the child pages:{Environment.NewLine}[[_TOSP_]]";
-        var headline = $"# Service Scorecard for {_dayOfGeneration}";
         var runInfoJSON = JsonConvert.SerializeObject(runInfo);
 
         const string HEADER_ELEMENT = "th";
@@ -155,17 +153,34 @@ public class GitLabMarkdownVisualizer : IVisualizer
         var headers = ToElement(HEADER_ELEMENT, runInfo.Checks.Values.SelectMany(checksInGroup => checksInGroup).Select(check => new TableContent(check.Name, "")).Prepend("ServiceName").Append("Average"));
         var groupData = ToElement(HEADER_ELEMENT, runInfo.Checks.Where(group => group.Value.Any()).Select(group => new TableContent(group.Key, "", group.Value.Count)).Prepend("   ").Append("   "));
 
-        var rows = runInfo.ServiceScores.Select(pair =>
+        var output = runInfo.ServiceScores.Select(pair =>
         {
             var (fullPathToService, (scoreByCheckName, average)) = pair;
-            var serviceName = $"<span title=\"{EscapeTitle(fullPathToService)}\">{Path.GetFileNameWithoutExtension(fullPathToService)}{QUESTION_MARK}</span>";
-            var checkCells = scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Select(score => score.Content);
-            return ToElement(COLUMN_ELEMENT, checkCells.Prepend(serviceName).Append(ColorizeAverageScore(average)).Select(content => new TableContent(content, "")));
+            var serviceName = $"<span>{Path.GetFileNameWithoutExtension(fullPathToService)}{QUESTION_MARK}</span>";
+            return ToElement(COLUMN_ELEMENT, scoreByCheckName.Select(check => FormatJustifiedScore(check.Value, GetDeductions(_logger, infoFromSevenDaysAgo, fullPathToService, check))).Prepend(new TableContent(serviceName, fullPathToService)).Append(ColorizeAverageScore(average)));
         });
 
-        var table = $"<table id=\"service-scorecard\">{string.Join(Environment.NewLine, rows.Prepend(headers).Prepend(groupData).Prepend(""))}</table>";
+        var table = $"<table id=\"service-scorecard\">{string.Join(Environment.NewLine, output.Prepend(headers).Prepend(groupData).Prepend(""))}</table>";
 
-        WriteGeneratedOutput($"{FILE_NAME}.md", $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}{table}{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
+        var checkGuides = string.Join(Environment.NewLine + Environment.NewLine, runInfo.Checks.Values
+            .SelectMany(group => group)
+            .Select(entry => $"??? info \"{entry.Name}\"{Environment.NewLine}{IndentBlock(RemoveFirstHeading(entry.InfoPageContent))}"));
+
+        var headline = $"# Service Scorecard for {_dayOfGeneration}";
+        var usageGuide = $"!!! info \"Usage\"{Environment.NewLine}    Information on how to reach 100 points for each check can be found in the child pages: [[_TOSP_]]{Environment.NewLine}    Hover over cells for detailed deductions.";
+
+        WriteGeneratedOutput($"{FILE_NAME}.md",
+            $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}## Service Overview{Environment.NewLine}{Environment.NewLine}{table}{Environment.NewLine}{Environment.NewLine}## Check Details{Environment.NewLine}{Environment.NewLine}{checkGuides}{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
+    }
+
+    private static string RemoveFirstHeading(string content)
+    {
+        return string.Join(Environment.NewLine, content.ReplaceLineEndings().Split(Environment.NewLine).Where(line => !line.StartsWith("# "))).Trim();
+    }
+
+    private static string IndentBlock(string content)
+    {
+        return string.Join(Environment.NewLine, content.ReplaceLineEndings().Split(Environment.NewLine).Select(line => $"    {line}"));
     }
 
     private static IList<BaseCheck.Deduction>? GetDeductions(ILogger logger, RunInfo? infoFromSevenDaysAgo, string fullPathToService, KeyValuePair<string, IList<BaseCheck.Deduction>> check)
@@ -187,6 +202,23 @@ public class GitLabMarkdownVisualizer : IVisualizer
         return deductionsByCheck[check.Key];
     }
 
+    private static string StyleOfNumber(int? score)
+    {
+        return $"color:{score switch
+        {
+            null => "#6b7280",
+            >= 90 => "#15803d",
+            >= 80 => "#b45309",
+            >= 70 => "#c2410c",
+            _ => "#b91c1c"
+        }}";
+    }
+
+    private static TableContent ColorizeAverageScore(int score)
+    {
+        return new TableContent($"<span title style=\"{StyleOfNumber(score)}\">{score}</span>", "");
+    }
+
     private static TableContent FormatJustifiedScore(IList<BaseCheck.Deduction> checkValue, IList<BaseCheck.Deduction>? sevenDaysAgo)
     {
         var finalScore = checkValue.CalculateFinalScore();
@@ -196,46 +228,12 @@ public class GitLabMarkdownVisualizer : IVisualizer
         {
             null => "",
             0 => "",
-            > 0 => $" <sub><span title=\"compared to 7 days ago\">↑+{delta}%</span></sub>",
-            < 0 => $" <sub><span title=\"compared to 7 days ago\">↓{delta}%</span></sub>"
+            > 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: #15803d\"> ↑+{delta}%</span></sub>",
+            < 0 => $"<sub><span title=\"compared to 7 days ago\" style=\"color: #b91c1c\"> ↓{delta}%</span></sub>"
         };
 
         var justifications = string.Join("&#10;", checkValue.Select(deduction => deduction.ToString()));
-        var scoreContent = finalScore switch
-        {
-            null => "n/a",
-            _ => finalScore.Value.ToString()
-        };
-        return new TableContent($"<span title=\"{EscapeTitle(justifications)}\">{ToLatexScore(scoreContent, finalScore)}{deltaString}</span>", justifications);
-    }
-
-    private static string ColorizeAverageScore(int score)
-    {
-        return ToLatexScore(score.ToString(), score);
-    }
-
-    private static string ToLatexScore(string display, int? score)
-    {
-        var color = score switch
-        {
-            null => "Gray",
-            >= 90 => "ForestGreen",
-            >= 80 => "Goldenrod",
-            >= 70 => "Orange",
-            _ => "Red"
-        };
-
-        var safeDisplay = display.Replace("\\", "\\\\").Replace("{", "\\{").Replace("}", "\\}");
-        return $"$\\textcolor{{{color}}}{{\\mathsf{{{safeDisplay}}}}}$";
-    }
-
-    private static string EscapeTitle(string title)
-    {
-        return title
-            .Replace("&", "&amp;")
-            .Replace("\"", "&quot;")
-            .Replace("<", "&lt;")
-            .Replace(">", "&gt;");
+        return new TableContent($"<span style=\"{StyleOfNumber(finalScore)}\">{(finalScore == null ? "n/a" : finalScore)}{deltaString}</span>", justifications);
     }
 
     public static string RemoveDates(string content) => content.Replace("YYYY-MM-DD", DateTime.Now.ToString("yyyy-MM-dd")).ReplaceLineEndings();

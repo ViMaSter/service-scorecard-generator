@@ -4,13 +4,36 @@
 
 # Service Scorecard for YYYY-MM-DD
 
-Information on how to reach 100 points for each check can be found in the child pages:
-[[_TOSP_]]
+!!! info "Usage"
+    Information on how to reach 100 points for each check can be found in the child pages: [[_TOSP_]]
+    Hover over cells for detailed deductions.
+
+## Service Overview
 
 <table id="service-scorecard">
 <tr><th title="" colspan="1">   </th><th title="" colspan="2">Gold</th><th title="" colspan="2">Silver</th><th title="" colspan="2">Bronze</th><th title="" colspan="1">   </th></tr>
 <tr><th title="" colspan="1">ServiceName</th><th title="" colspan="1">Check</th><th title="" colspan="1">DisqualifiedCheck</th><th title="" colspan="1">Check2</th><th title="" colspan="1">DisqualifiedCheck2</th><th title="" colspan="1">Check3</th><th title="" colspan="1">DisqualifiedCheck3</th><th title="" colspan="1">Average</th></tr>
-<tr><td title="" colspan="1"><span title="service">service<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="" colspan="1"><span title="-10 points: justification: value">$\textcolor{ForestGreen}{\mathsf{90}}$</span></td><td title="" colspan="1"><span title="-10 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1"><span title="-20 points: justification: value">$\textcolor{Goldenrod}{\mathsf{80}}$</span></td><td title="" colspan="1"><span title="-20 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1"><span title="-30 points: justification: value">$\textcolor{Orange}{\mathsf{70}}$</span></td><td title="" colspan="1"><span title="-30 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1">$\textcolor{Red}{\mathsf{10}}$</td></tr>
-<tr><td title="" colspan="1"><span title="service2">service2<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="" colspan="1"><span title="-10 points: justification: value">$\textcolor{ForestGreen}{\mathsf{90}}$</span></td><td title="" colspan="1"><span title="-10 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1"><span title="-20 points: justification: value">$\textcolor{Goldenrod}{\mathsf{80}}$</span></td><td title="" colspan="1"><span title="-20 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1"><span title="-30 points: justification: value">$\textcolor{Orange}{\mathsf{70}}$</span></td><td title="" colspan="1"><span title="-30 points: justification: value&amp;#10;disqualified: disqualify: disqualification">$\textcolor{Gray}{\mathsf{n/a}}$</span></td><td title="" colspan="1">$\textcolor{Red}{\mathsf{10}}$</td></tr></table>
+<tr><td title="service" colspan="1"><span>service<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="-10 points: justification: value" colspan="1"><span style="color:#15803d">90</span></td><td title="-10 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-20 points: justification: value" colspan="1"><span style="color:#b45309">80</span></td><td title="-20 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-30 points: justification: value" colspan="1"><span style="color:#c2410c">70</span></td><td title="-30 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="" colspan="1"><span title style="color:#b91c1c">10</span></td></tr>
+<tr><td title="service2" colspan="1"><span>service2<sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="-10 points: justification: value" colspan="1"><span style="color:#15803d">90</span></td><td title="-10 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-20 points: justification: value" colspan="1"><span style="color:#b45309">80</span></td><td title="-20 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-30 points: justification: value" colspan="1"><span style="color:#c2410c">70</span></td><td title="-30 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="" colspan="1"><span title style="color:#b91c1c">10</span></td></tr></table>
+
+## Check Details
+
+??? info "Check"
+    PageContent
+
+??? info "DisqualifiedCheck"
+    Disqualified PageContent
+
+??? info "Check2"
+    PageContent
+
+??? info "DisqualifiedCheck2"
+    Disqualified PageContent
+
+??? info "Check3"
+    PageContent
+
+??? info "DisqualifiedCheck3"
+    Disqualified PageContent
 
 <!-- {"Checks":{"Gold":[{"Name":"Check","InfoPageContent":"PageContent"},{"Name":"DisqualifiedCheck","InfoPageContent":"Disqualified PageContent"}],"Silver":[{"Name":"Check2","InfoPageContent":"PageContent"},{"Name":"DisqualifiedCheck2","InfoPageContent":"Disqualified PageContent"}],"Bronze":[{"Name":"Check3","InfoPageContent":"PageContent"},{"Name":"DisqualifiedCheck3","InfoPageContent":"Disqualified PageContent"}]},"ServiceScores":{"service":{"DeductionsByCheck":{"Check":[{"Justification":"justification: value","Score":10,"IsDisqualification":false}],"DisqualifiedCheck":[{"Justification":"justification: value","Score":10,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}],"Check2":[{"Justification":"justification: value","Score":20,"IsDisqualification":false}],"DisqualifiedCheck2":[{"Justification":"justification: value","Score":20,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}],"Check3":[{"Justification":"justification: value","Score":30,"IsDisqualification":false}],"DisqualifiedCheck3":[{"Justification":"justification: value","Score":30,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}]},"Average":10},"service2":{"DeductionsByCheck":{"Check":[{"Justification":"justification: value","Score":10,"IsDisqualification":false}],"DisqualifiedCheck":[{"Justification":"justification: value","Score":10,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}],"Check2":[{"Justification":"justification: value","Score":20,"IsDisqualification":false}],"DisqualifiedCheck2":[{"Justification":"justification: value","Score":20,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}],"Check3":[{"Justification":"justification: value","Score":30,"IsDisqualification":false}],"DisqualifiedCheck3":[{"Justification":"justification: value","Score":30,"IsDisqualification":false},{"Justification":"disqualify: disqualification","Score":null,"IsDisqualification":true}]},"Average":10}}} -->

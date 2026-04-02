@@ -21,9 +21,34 @@ ScorecardGenerator --output-path /wiki --visualizer azurewiki
 
 # for GitLab-flavored markdown
 ScorecardGenerator --output-path /wiki --visualizer gitlabmarkdown
+
+# for MkDocs markdown
+ScorecardGenerator --output-path /wiki --visualizer mkdocsmarkdown
 ```
 
-Available visualizers are `azurewiki`, `gitlabmarkdown`, and `html`.
+Available visualizers are `azurewiki`, `gitlabmarkdown`, `mkdocsmarkdown`, and `html`.
+
+### MkDocs configuration
+
+The `mkdocsmarkdown` visualizer uses markdown features that are best rendered with these `markdown_extensions`:
+
+```yaml
+markdown_extensions:
+	- admonition
+	- attr_list
+	- tables
+	- md_in_html
+	- pymdownx.details
+	- pymdownx.superfences
+	- pymdownx.tilde
+```
+
+Notes:
+
+- `tables`: table rendering.
+- `pymdownx.tilde`: superscript/subscript support.
+- `admonition` and `pymdownx.details`: callout and collapsible sections.
+- `attr_list` and `md_in_html`: better compatibility for inline HTML styling used by the score table.
 
 ## Configuration
 The Service Scorecard Generator stores and loads configuration from a `scorecard.config.json` file in the working directory.  
