@@ -1,5 +1,5 @@
 hermit = "0.50.2"
 
 binaries = [
-  "dotnet@latest",
+  "dotnet@8.0.0",
 ]
