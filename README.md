@@ -4,7 +4,7 @@
 
 ---
 
-Service Scorecard Generator is a dotnet app that generates Azure Wiki-friendly markdown files with scores for dotnet projects.  
+Service Scorecard Generator is a dotnet app that generates markdown or html scorecards with scores for dotnet projects.  
 ![image](https://user-images.githubusercontent.com/1689033/218286805-7acdd1c5-e2be-4d69-92fb-8081f9e1d0a2.png)  
 For more details on individual checks and their scoring, take a look at the `README.md` files inside the subdirectories of `/Checks`.
 
@@ -18,7 +18,12 @@ cd /sources
 
 # this assumes you want to output the markdown files to `/wiki` and use the default configuration
 ScorecardGenerator --output-path /wiki --visualizer azurewiki
+
+# for GitLab-flavored markdown
+ScorecardGenerator --output-path /wiki --visualizer gitlabmarkdown
 ```
+
+Available visualizers are `azurewiki`, `gitlabmarkdown`, and `html`.
 
 ## Configuration
 The Service Scorecard Generator stores and loads configuration from a `scorecard.config.json` file in the working directory.  

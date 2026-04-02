@@ -77,6 +77,13 @@
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutFile\index.html" />
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithGitRepoWithoutLine\index.html" />
       <EmbeddedResource Include="Visualizer\HTMLVisualizer\WithoutGitRepo\index.html" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\Check.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\Check2.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\Check3.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck2.md" />
+      <EmbeddedResource Include="Visualizer\GitLabMarkdownVisualizer\WithoutGitRepo\Service-Scorecard\DisqualifiedCheck3.md" />
       <None Update="Checks\PendingRenovateAzurePRs\HTTPS\_git\refs\EMPTY">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
