@@ -47,12 +47,12 @@ public partial class Check : BaseCheck
             var xFull = xMajor * 10000 + xMinor * 100 + xPatch;
 
             var ySplit = y!.ChannelVersion.Split(".");
-            var yMajor = ySplit.Length > 0 ? int.Parse(xSplit[0]) : 0;
-            var yMinor = ySplit.Length > 1 ? int.Parse(xSplit[1]) : 0;
-            var yPatch = ySplit.Length > 2 ? int.Parse(xSplit[2]) : 0;
+            var yMajor = ySplit.Length > 0 ? int.Parse(ySplit[0]) : 0;
+            var yMinor = ySplit.Length > 1 ? int.Parse(ySplit[1]) : 0;
+            var yPatch = ySplit.Length > 2 ? int.Parse(ySplit[2]) : 0;
             var yFull = yMajor * 10000 + yMinor * 100 + yPatch;
 
-            return yFull.CompareTo(xFull);
+            return xFull.CompareTo(yFull);
         }
     }
 
@@ -99,6 +99,6 @@ public partial class Check : BaseCheck
         return new List<Deduction> { Deduction.Create(Logger, offset, "Service uses {CurrentText}, latest available is {LatestText} ({CurrentMajor}/{LatestMajor}={Offset}%)", targetFramework, _newestText, currentMajor, NewestMajor, 100-offset) };
     }
 
-    [GeneratedRegex("\\d")]
+    [GeneratedRegex("\\d+")]
     private static partial Regex FirstNumber();
 }
