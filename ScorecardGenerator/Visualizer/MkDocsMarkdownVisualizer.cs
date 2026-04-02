@@ -27,7 +27,6 @@ public class MkDocsMarkdownVisualizer : IVisualizer
     public void Visualize(RunInfo runInfo)
     {
         CreateDirectoryForDay();
-        GenerateCheckPages(runInfo);
         GenerateServiceOverview(runInfo);
     }
 
@@ -167,7 +166,7 @@ public class MkDocsMarkdownVisualizer : IVisualizer
             .Select(entry => $"??? info \"{entry.Name}\"{Environment.NewLine}{IndentBlock(RemoveFirstHeading(entry.InfoPageContent))}"));
 
         var headline = $"# Service Scorecard for {_dayOfGeneration}";
-        var usageGuide = $"!!! info \"Usage\"{Environment.NewLine}    Information on how to reach 100 points for each check can be found in the child pages: [[_TOSP_]]{Environment.NewLine}    Hover over cells for detailed deductions.";
+        var usageGuide = $"!!! info \"Usage\"{Environment.NewLine}    Information on how to reach 100 points for each check can be found below the table.{Environment.NewLine}    Hover over cells for detailed deductions.";
 
         WriteGeneratedOutput($"{FILE_NAME}.md",
             $"{headline}{Environment.NewLine}{Environment.NewLine}{usageGuide}{Environment.NewLine}{Environment.NewLine}## Service Overview{Environment.NewLine}{Environment.NewLine}{table}{Environment.NewLine}{Environment.NewLine}## Check Details{Environment.NewLine}{Environment.NewLine}{checkGuides}{Environment.NewLine}{Environment.NewLine}<!-- {runInfoJSON} -->");
