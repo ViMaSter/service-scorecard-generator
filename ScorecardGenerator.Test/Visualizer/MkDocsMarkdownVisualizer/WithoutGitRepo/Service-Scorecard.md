@@ -5,7 +5,7 @@
 # Service Scorecard for YYYY-MM-DD
 
 !!! info "Usage"
-    Information on how to reach 100 points for each check can be found in the child pages: [[_TOSP_]]
+    Information on how to reach 100 points for each check can be found below the table.
     Hover over cells for detailed deductions.
 
 ## Service Overview
