@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="2.2.0"></a>
+## [2.2.0](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.2.0) (2026-04-03)
+
+### Features
+
+* Adds dotnet binaries via hermit ([96e6730](https://www.github.com/ViMaSter/service-scorecard-generator/commit/96e67309dcd3e1a89daa49394e7ac62b1cbf5c90))
+* Adds support for GitLab Flavored Markdown ([8cfbaf8](https://www.github.com/ViMaSter/service-scorecard-generator/commit/8cfbaf8656d6c692727a720c50a718eeb790cdf4))
+* Adds support for MkDocs markdown ([4eff24c](https://www.github.com/ViMaSter/service-scorecard-generator/commit/4eff24cc66ba8727785dd5db3eed0f50a11f5033))
+
+### Bug Fixes
+
+* Removes outdated parameter ([20e1995](https://www.github.com/ViMaSter/service-scorecard-generator/commit/20e1995fafe088aa5c36ab5e324a34e2904fffbc))
+* Resolves issue with `ScorecardGenerator.Test.Checks.LatestNET.NewestMajor.Returns100Points` test ([f0c1f90](https://www.github.com/ViMaSter/service-scorecard-generator/commit/f0c1f90cd15216863b645cb7bad7224ea452b0e1))
+* **mkdocs:** Updates hint about how to find resolution steps ([f00ffbc](https://www.github.com/ViMaSter/service-scorecard-generator/commit/f00ffbc4a9ee199eaedbcc8b02f7e86b0ee2a18f))
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://www.github.com/ViMaSter/service-scorecard-generator/releases/tag/v2.1.2) (2023-12-15)
 
