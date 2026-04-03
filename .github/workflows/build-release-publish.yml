@@ -121,7 +121,7 @@ jobs:
 
     - name: Run Versionize
       id: versionize
-      run: 'versionize --changelog-all --exit-insignificant-commits --commit-suffix " [skip ci]"'
+      run: 'versionize --exit-insignificant-commits --commit-suffix " [skip ci]"'
       continue-on-error: true
 
     - name: No release required
