@@ -1,0 +1,57 @@
+{
+  "value": [
+    {
+      "repository": {
+        "id": "b3eebcf1-3f4b-4e8a-b1bd-965403046f0d",
+        "name": "TestService1",
+        "url": "https://dev.azure.com/vimaster/1682ee9a-f02d-4cce-869a-d9ddf329885a/_apis/git/repositories/b3eebcf1-3f4b-4e8a-b1bd-965403046f0d",
+        "project": {
+          "id": "1682ee9a-f02d-4cce-869a-d9ddf329885a",
+          "name": "ScorecardGenerator",
+          "state": "unchanged",
+          "visibility": "unchanged",
+          "lastUpdateTime": "0001-01-01T00:00:00"
+        }
+      },
+      "pullRequestId": 1,
+      "codeReviewId": 1,
+      "status": "active",
+      "createdBy": {
+        "displayName": "Vincent Mahnke",
+        "url": "https://spsprodeus24.vssps.visualstudio.com/Ab36d7d08-9c9d-4eee-8ed0-a6e18b7778f0/_apis/Identities/b33a647d-b54b-469d-95e8-5303eed614ba",
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/vimaster/_apis/GraphProfile/MemberAvatars/msa.YTYwMWUzNzEtNjg2OS03Zjc4LWI4ZGUtOWFhNGY0MjUxMzM4"
+          }
+        },
+        "id": "b33a647d-b54b-469d-95e8-5303eed614ba",
+        "uniqueName": "accounts@vimaster.de",
+        "imageUrl": "https://dev.azure.com/vimaster/_api/_common/identityImage?id=b33a647d-b54b-469d-95e8-5303eed614ba",
+        "descriptor": "msa.YTYwMWUzNzEtNjg2OS03Zjc4LWI4ZGUtOWFhNGY0MjUxMzM4"
+      },
+      "creationDate": "2023-02-07T21:57:00.4470131Z",
+      "title": "chore(deps): Increase Akka to 2.1.3",
+      "sourceRefName": "refs/heads/renovate/test",
+      "targetRefName": "refs/heads/master",
+      "mergeStatus": "succeeded",
+      "isDraft": false,
+      "mergeId": "7ded69b1-a50f-4218-89a4-d9195cd41a60",
+      "lastMergeSourceCommit": {
+        "commitId": "9737f08525fd10ee187840e4a956b689638540b8",
+        "url": "https://dev.azure.com/vimaster/1682ee9a-f02d-4cce-869a-d9ddf329885a/_apis/git/repositories/b3eebcf1-3f4b-4e8a-b1bd-965403046f0d/commits/9737f08525fd10ee187840e4a956b689638540b8"
+      },
+      "lastMergeTargetCommit": {
+        "commitId": "c88042fa27b051982f81a73b40646cbb0b9be917",
+        "url": "https://dev.azure.com/vimaster/1682ee9a-f02d-4cce-869a-d9ddf329885a/_apis/git/repositories/b3eebcf1-3f4b-4e8a-b1bd-965403046f0d/commits/c88042fa27b051982f81a73b40646cbb0b9be917"
+      },
+      "lastMergeCommit": {
+        "commitId": "f67806e64f4d9dbd389e48f07c70f3d0e908abe4",
+        "url": "https://dev.azure.com/vimaster/1682ee9a-f02d-4cce-869a-d9ddf329885a/_apis/git/repositories/b3eebcf1-3f4b-4e8a-b1bd-965403046f0d/commits/f67806e64f4d9dbd389e48f07c70f3d0e908abe4"
+      },
+      "reviewers": [],
+      "url": "https://dev.azure.com/vimaster/1682ee9a-f02d-4cce-869a-d9ddf329885a/_apis/git/repositories/b3eebcf1-3f4b-4e8a-b1bd-965403046f0d/pullRequests/1",
+      "supportsIterations": true
+    }
+  ],
+  "count": 1
+}

@@ -4,7 +4,7 @@ set -euo pipefail
 # Defaults requested by user.
 GITLAB_GROUP="scorecardgenerator"
 GITLAB_PAT="${GITLAB_PAT:-glpat-wg62IWtSAkHgNx7IV7UaDmM6MQpvOjEKdTpscDE5NA8.01.170wyckfz}"
-SCORECARD_BIN="/Users/vincent.mahnke/service-scorecard-generator/ScorecardGenerator/bin/Debug/net7.0/ScorecardGenerator"
+SCORECARD_BIN="${SCORECARD_BIN:-/Users/vincent.mahnke/service-scorecard-generator/csharp/ScorecardGenerator/bin/Debug/net10.0/ScorecardGenerator}"
 VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
 timestamp="$(date +"%Y%m%d-%H%M%S")"
