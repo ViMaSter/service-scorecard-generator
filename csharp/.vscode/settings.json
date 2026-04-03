@@ -1,0 +1,20 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^zsh -i -c 'source bin/activate-hermit && dotnet test'$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^zsh -i -c 'source bin/activate-hermit && dotnet test --no-restore'$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "dotnet clean": true,
+        "hermit": true,
+        ".": true,
+        "bin/hermit": true,
+        "/^dotnet --version$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
