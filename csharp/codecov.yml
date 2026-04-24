@@ -1,3 +1,0 @@
-parsers:
-  cobertura:
-    partials_as_hits: true
