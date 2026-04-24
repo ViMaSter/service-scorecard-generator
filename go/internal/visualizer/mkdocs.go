@@ -42,8 +42,8 @@ func (v *MkDocsMarkdownVisualizer) Visualize(runInfo scorecard.RunInfo) error {
 		}
 		return "<tr>" + strings.Join(parts, "") + "</tr>"
 	}
-	groupHeader := []tableContent{{Content: "   ", Colspan: 1}}
-	columnHeader := []tableContent{{Content: "ServiceName", Colspan: 1}}
+	groupHeader := []tableContent{{Content: "   ", Colspan: 1}, {Content: "   ", Colspan: 1}}
+	columnHeader := []tableContent{{Content: "Customer", Colspan: 1}, {Content: "ServiceName", Colspan: 1}}
 	for _, groupName := range scorecard.GroupOrder {
 		group := runInfo.GroupByName(groupName)
 		if len(group.Checks) == 0 {
@@ -58,9 +58,13 @@ func (v *MkDocsMarkdownVisualizer) Visualize(runInfo scorecard.RunInfo) error {
 	columnHeader = append(columnHeader, tableContent{Content: "Average", Colspan: 1})
 	rows := []string{toElement("th", groupHeader), toElement("th", columnHeader)}
 	for _, service := range runInfo.Services {
+		customerName := filepathCustomer(service.Path)
 		serviceName := strings.TrimSuffix(filepathBase(service.Path), ".csproj")
 		serviceURL := gitLabHost + "/" + strings.TrimPrefix(strings.ReplaceAll(service.Path, "\\", "/"), "/")
-		columns := []tableContent{{Content: fmt.Sprintf(`<span><a href="%s">%s</a>%s</span>`, escapeTitle(serviceURL), serviceName, questionMark), Title: service.Path, Colspan: 1}}
+		columns := []tableContent{
+			{Content: fmt.Sprintf(`<span>%s</span>`, customerName), Colspan: 1},
+			{Content: fmt.Sprintf(`<span><a href="%s">%s</a>%s</span>`, escapeTitle(serviceURL), serviceName, questionMark), Title: service.Path, Colspan: 1},
+		}
 		for _, check := range service.Score.Checks {
 			columns = append(columns, formatMkDocsScore(check.Deductions, getHistoricDeductions(historicRunInfo, service.Path, check.Name)))
 		}
@@ -82,4 +86,14 @@ func (v *MkDocsMarkdownVisualizer) Visualize(runInfo scorecard.RunInfo) error {
 func filepathBase(path string) string {
 	parts := strings.Split(strings.ReplaceAll(path, "\\", "/"), "/")
 	return parts[len(parts)-1]
+}
+
+func filepathCustomer(path string) string {
+	parts := strings.Split(strings.ReplaceAll(path, "\\", "/"), "/")
+	for _, p := range parts {
+		if p != "" {
+			return p
+		}
+	}
+	return ""
 }
