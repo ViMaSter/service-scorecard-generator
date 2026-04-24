@@ -1,0 +1,11 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+directories:
+  - path: vendir
+    contents:
+      - path: justlib
+        git:
+          ref: 4.16.1
+          url: https://gitlab.kloudease.tech/support/justlib.git
+        includePaths:
+          - just/**

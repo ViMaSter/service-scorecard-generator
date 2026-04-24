@@ -2,9 +2,9 @@
 set -euo pipefail
 
 GITLAB_GROUP="customers"
-GITLAB_PAT="${GITLAB_PAT:-glpat-mv4iLshBwC5lHnhVDAPJw286MQp1OjEzCA.01.0y0vnpo2v}"
-SCORECARD_BIN="${SCORECARD_BIN:-/Users/aoe/vimaster/service-scorecard-generator/go/bin/ScorecardGenerator}"
-VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
+GITLAB_PAT="${GITLAB_PAT:?PAT is required}"
+SCORECARD_BIN="./go/bin/ScorecardGenerator"
+VISUALIZER="mkdocsmarkdown"
 
 timestamp="$(date +"%Y%m%d-%H%M%S")"
 run_dir="$PWD/run-$timestamp"

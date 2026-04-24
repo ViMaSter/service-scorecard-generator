@@ -1,10 +1,11 @@
 {
   "Checks": {
     "Gold": [
-      "Justfile",
+      "Justfile"
     ],
+    "Silver": [],
     "Bronze": [
-      "CodeOwners",
+      "CodeOwners"
     ]
   }
 }

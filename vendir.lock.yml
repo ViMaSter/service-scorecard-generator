@@ -1,0 +1,11 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - git:
+      commitTitle: 'fix: Removes template comment inside repository specific CI file'
+      sha: 8ec242f7113de97ae16c7d37e168f073381d7e0f
+      tags:
+      - 4.16.1
+    path: justlib
+  path: vendir
+kind: LockConfig

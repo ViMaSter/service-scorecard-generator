@@ -17,7 +17,7 @@ func TestListChecksMatchesExpectedOrder(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	expected := "Available checks:\n  - BuiltForAKS\n  - HintPathCounter\n  - ImplicitAssemblyInfo\n  - LatestNET\n  - NullableSetup\n  - PendingRenovateAzurePRs\n  - ProperDockerfile"
+	expected := "Available checks:\n  - BuiltForAKS\n  - CodeOwners\n  - HintPathCounter\n  - ImplicitAssemblyInfo\n  - Justfile\n  - LatestNET\n  - NullableSetup\n  - PendingRenovateAzurePRs\n  - ProperDockerfile"
 	if output != expected {
 		t.Fatalf("unexpected list-checks output\nexpected:\n%s\nactual:\n%s", expected, output)
 	}
@@ -26,7 +26,7 @@ func TestListChecksMatchesExpectedOrder(t *testing.T) {
 func TestExecuteCreatesConfigAndMkDocsOutput(t *testing.T) {
 	root := t.TempDir()
 	projectDirectory := filepath.Join(root, "service")
-	testsupport.WriteFile(t, filepath.Join(projectDirectory, "service.csproj"), `<Project Sdk="Microsoft.NET.Sdk.Web"><PropertyGroup><TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><GenerateAssemblyInfo>true</GenerateAssemblyInfo><Company>x</Company><Copyright>x</Copyright><Description>x</Description><FileVersion>x</FileVersion><InformalVersion>x</InformalVersion><Product>x</Product><UserSecretsId>x</UserSecretsId></PropertyGroup></Project>`)
+	testsupport.WriteFile(t, filepath.Join(projectDirectory, ".git"), "")
 	testsupport.WriteFile(t, filepath.Join(projectDirectory, "azure-pipelines.yml"), "")
 	testsupport.WriteFile(t, filepath.Join(projectDirectory, "Dockerfile"), "dotnet build\ndotnet sonarscanner")
 	generator := app.Generator{WorkingDir: root, Now: func() time.Time { return time.Date(2026, time.April, 3, 12, 0, 0, 0, time.UTC) }}
