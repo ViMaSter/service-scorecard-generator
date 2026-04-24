@@ -21,9 +21,6 @@ func NewMkDocsMarkdownVisualizer(outputPath string, now func() time.Time) *MkDoc
 }
 
 func (v *MkDocsMarkdownVisualizer) Visualize(runInfo scorecard.RunInfo) error {
-	if err := ensureScorecardDirectory(v.outputPath); err != nil {
-		return err
-	}
 	historicRunInfo, _ := getHistoricRunInfo(v.outputPath, v.now(), fileName+".md")
 	runInfoJSON, err := runInfo.ToJSON()
 	if err != nil {

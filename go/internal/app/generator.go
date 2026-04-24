@@ -157,19 +157,16 @@ func findProjects(workingDir string, excludePath string) ([]string, error) {
 		if err != nil {
 			return err
 		}
-		if entry.IsDir() {
-			if entry.Name() == ".git" {
-				return filepath.SkipDir
+		if !entry.IsDir() {
+			return nil
+		}
+		if entry.Name() == ".git" {
+			repoRoot := filepath.Dir(path)
+			if excludePath == "" || !strings.Contains(repoRoot, excludePath) {
+				projects = append(projects, repoRoot)
 			}
-			return nil
+			return filepath.SkipDir
 		}
-		if filepath.Ext(path) != ".csproj" {
-			return nil
-		}
-		if excludePath != "" && strings.Contains(path, excludePath) {
-			return nil
-		}
-		projects = append(projects, path)
 		return nil
 	})
 	if err != nil {

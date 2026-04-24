@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GITLAB_GROUP="scorecardgenerator"
-GITLAB_PAT="${GITLAB_PAT:-glpat-wg62IWtSAkHgNx7IV7UaDmM6MQpvOjEKdTpscDE5NA8.01.170wyckfz}"
-SCORECARD_BIN="${SCORECARD_BIN:-/Users/vincent.mahnke/service-scorecard-generator/go/bin/ScorecardGenerator}"
+GITLAB_GROUP="customers"
+GITLAB_PAT="${GITLAB_PAT:-glpat-mv4iLshBwC5lHnhVDAPJw286MQp1OjEzCA.01.0y0vnpo2v}"
+SCORECARD_BIN="${SCORECARD_BIN:-/Users/aoe/vimaster/service-scorecard-generator/go/bin/ScorecardGenerator}"
 VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
 timestamp="$(date +"%Y%m%d-%H%M%S")"
@@ -22,22 +22,9 @@ fi
 mkdir -p "$run_dir"
 echo "Created run directory: $run_dir"
 
-echo "Cloning GitLab group repositories..."
-ghorg clone "$GITLAB_GROUP" \
-  --scm gitlab \
-  --token "$GITLAB_PAT" \
-  --path "$run_dir" \
-  --output-dir "$GITLAB_GROUP" \
-  --preserve-scm-hostname \
-  --preserve-dir
-
-sources_dir=""
-if [[ -d "$run_dir/gitlab.com/$GITLAB_GROUP" ]]; then
-  sources_dir="$run_dir/gitlab.com/$GITLAB_GROUP"
-elif [[ -d "$run_dir/$GITLAB_GROUP" ]]; then
-  sources_dir="$run_dir/$GITLAB_GROUP"
-else
-  echo "Error: could not find cloned source directory under $run_dir" >&2
+sources_dir="$HOME/ghorg/$GITLAB_GROUP"
+if [[ ! -d "$sources_dir" ]]; then
+  echo "Error: source directory not found at: $sources_dir" >&2
   exit 1
 fi
 
