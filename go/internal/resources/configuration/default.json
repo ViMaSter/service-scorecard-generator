@@ -1,16 +1,10 @@
 {
   "Checks": {
     "Gold": [
-      "BuiltForAKS",
-      "LatestNET",
-      "ProperDockerfile"
-    ],
-    "Silver": [
-      "NullableSetup",
-      "ImplicitAssemblyInfo"
+      "Justfile",
     ],
     "Bronze": [
-      "HintPathCounter"
+      "CodeOwners",
     ]
   }
 }
