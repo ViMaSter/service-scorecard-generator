@@ -9,7 +9,7 @@ SCORECARD_BIN="$SCRIPT_DIR/../go/bin/ScorecardGenerator"
 VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
 timestamp="$(date +"%Y%m%d-%H%M%S")"
-run_dir="$PWD/run-$timestamp"
+run_dir="$PWD/run"
 
 # Keep both variable names for tooling compatibility.
 export GITLAB_PAT

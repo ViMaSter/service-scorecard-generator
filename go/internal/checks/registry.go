@@ -15,6 +15,7 @@ func Registry(config RegistryConfig) map[string]func() Check {
 		"ImplicitAssemblyInfo":    func() Check { return NewImplicitAssemblyInfo() },
 		"Justfile":                func() Check { return NewJustfile() },
 		"LatestNET":               func() Check { return NewLatestNET(config.Client) },
+		"NoDSStore":               func() Check { return NewNoDSStore() },
 		"NullableSetup":           func() Check { return NewNullableSetup() },
 		"PendingRenovateAzurePRs": func() Check { return NewPendingRenovateAzurePRs(config.AzurePAT, config.Client) },
 		"ProperDockerfile":        func() Check { return NewProperDockerfile() },

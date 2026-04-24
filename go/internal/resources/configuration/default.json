@@ -5,7 +5,8 @@
     ],
     "Silver": [],
     "Bronze": [
-      "CodeOwners"
+      "CodeOwners",
+      "NoDSStore"
     ]
   }
 }
