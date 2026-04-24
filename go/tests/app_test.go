@@ -27,8 +27,6 @@ func TestExecuteCreatesConfigAndMkDocsOutput(t *testing.T) {
 	root := t.TempDir()
 	projectDirectory := filepath.Join(root, "service")
 	testsupport.WriteFile(t, filepath.Join(projectDirectory, ".git"), "")
-	testsupport.WriteFile(t, filepath.Join(projectDirectory, "azure-pipelines.yml"), "")
-	testsupport.WriteFile(t, filepath.Join(projectDirectory, "Dockerfile"), "dotnet build\ndotnet sonarscanner")
 	generator := app.Generator{WorkingDir: root, Now: func() time.Time { return time.Date(2026, time.April, 3, 12, 0, 0, 0, time.UTC) }}
 	outputDirectory := filepath.Join(root, "out")
 	if err := generator.Execute(outputDirectory, "mkdocsmarkdown", "", ""); err != nil {

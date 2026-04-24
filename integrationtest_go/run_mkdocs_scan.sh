@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GITLAB_GROUP="customers"
-GITLAB_PAT="${GITLAB_PAT:?PAT is required}"
-SCORECARD_BIN="./go/bin/ScorecardGenerator"
-VISUALIZER="mkdocsmarkdown"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+GITLAB_GROUP="${GITLAB_GROUP:?Error: GITLAB_GROUP env var is required}"
+GITLAB_PAT="${GITLAB_PAT:?Error: GITLAB_PAT env var is required}"
+SCORECARD_BIN="$SCRIPT_DIR/../go/bin/ScorecardGenerator"
+VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
 timestamp="$(date +"%Y%m%d-%H%M%S")"
 run_dir="$PWD/run-$timestamp"
+
+# Keep both variable names for tooling compatibility.
+export GITLAB_PAT
+export GITLAB_TOKEN="$GITLAB_PAT"
 
 if ! command -v ghorg >/dev/null 2>&1; then
   echo "Error: ghorg is not installed or not in PATH." >&2
