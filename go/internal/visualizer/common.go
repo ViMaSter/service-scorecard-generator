@@ -119,6 +119,9 @@ func removeFirstHeading(content string) string {
 		if strings.HasPrefix(line, "# ") {
 			continue
 		}
+		if strings.HasPrefix(line, "## ") {
+			line = fmt.Sprintf("<h2>%s</h2>", strings.TrimPrefix(line, "## "))
+		}
 		filtered = append(filtered, line)
 	}
 	return strings.TrimSpace(strings.Join(filtered, "\n"))
