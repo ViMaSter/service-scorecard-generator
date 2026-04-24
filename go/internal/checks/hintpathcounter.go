@@ -13,7 +13,7 @@ func NewHintPathCounter() *HintPathCounter {
 func (c *HintPathCounter) Run(absolutePathToProjectFile string) []scorecard.Deduction {
 	project := loadProjectXML(absolutePathToProjectFile)
 	if project.decodeErr != nil {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "Couldn't parse %v: %v", absolutePathToProjectFile, project.decodeErr)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "Couldn't parse %v: %v", relPath(absolutePathToProjectFile), project.decodeErr)}
 	}
 	hintPaths := project.allElements("HintPath")
 	deductions := make([]scorecard.Deduction, 0, len(hintPaths))

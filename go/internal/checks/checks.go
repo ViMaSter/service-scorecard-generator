@@ -3,6 +3,7 @@ package checks
 import (
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/resources"
@@ -34,4 +35,16 @@ func (b baseCheck) Name() string {
 
 func (b baseCheck) InfoPageContent() string {
 	return b.infoPageContent
+}
+
+func relPath(absolutePath string) string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return absolutePath
+	}
+	rel, err := filepath.Rel(cwd, absolutePath)
+	if err != nil {
+		return absolutePath
+	}
+	return rel
 }

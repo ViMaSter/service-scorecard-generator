@@ -32,12 +32,12 @@ func (c *BuiltForAKS) Run(absolutePathToProjectFile string) []scorecard.Deductio
 	entries, _ := filepath.Glob(filepath.Join(absolutePathToProjectDirectory, "*.yml"))
 	sort.Strings(entries)
 	if len(entries) == 0 {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No .yml file found inside %v", absolutePathToProjectDirectory)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No .yml file found inside %v", relPath(absolutePathToProjectDirectory))}
 	}
 	if len(entries) > 1 {
 		deductions := make([]scorecard.Deduction, 0, len(entries))
 		for _, entry := range entries {
-			deductions = append(deductions, scorecard.NewDeduction(5, "More than one pipeline file: %v", entry))
+			deductions = append(deductions, scorecard.NewDeduction(5, "More than one pipeline file: %v", relPath(entry)))
 		}
 		return deductions
 	}
@@ -46,9 +46,9 @@ func (c *BuiltForAKS) Run(absolutePathToProjectFile string) []scorecard.Deductio
 		return nil
 	}
 	if strings.Contains(firstPath, "onprem-") {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "Service pipeline file doesn't start with 'azure-'; actual: %v", firstPath)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "Service pipeline file doesn't start with 'azure-'; actual: %v", relPath(firstPath))}
 	}
-	return []scorecard.Deduction{scorecard.NewDeduction(5, ".yml needs to start with either 'azure-' for services or 'build-' for libraries; actual: '%v'", firstPath)}
+	return []scorecard.Deduction{scorecard.NewDeduction(5, ".yml needs to start with either 'azure-' for services or 'build-' for libraries; actual: '%v'", relPath(firstPath))}
 }
 
 var _ Check = (*BuiltForAKS)(nil)

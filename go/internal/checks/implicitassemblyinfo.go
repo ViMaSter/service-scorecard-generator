@@ -20,12 +20,12 @@ func (c *ImplicitAssemblyInfo) Run(absolutePathToProjectFile string) []scorecard
 	deductions := make([]scorecard.Deduction, 0)
 	for _, propertyName := range requiredProperties {
 		if project.firstElement(propertyName) == "" {
-			deductions = append(deductions, scorecard.NewDeduction(20, "No <%v> element found in %v", propertyName, absolutePathToProjectFile))
+			deductions = append(deductions, scorecard.NewDeduction(20, "No <%v> element found in %v", propertyName, relPath(absolutePathToProjectFile)))
 		}
 	}
 	generateAssemblyInfo := project.firstElement("GenerateAssemblyInfo")
 	if generateAssemblyInfo == "" {
-		return append(deductions, scorecard.NewDeduction(100, "No <GenerateAssemblyInfo> element found in %v", absolutePathToProjectFile))
+		return append(deductions, scorecard.NewDeduction(100, "No <GenerateAssemblyInfo> element found in %v", relPath(absolutePathToProjectFile)))
 	}
 	if strings.ToLower(generateAssemblyInfo) != "true" {
 		return append(deductions, scorecard.NewDeduction(100, "Expected: <GenerateAssemblyInfo> should contain '%v'. Actual: '%v'", "true", generateAssemblyInfo))

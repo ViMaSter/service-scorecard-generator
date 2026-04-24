@@ -116,7 +116,7 @@ func (c *LatestNET) Run(absolutePathToProjectFile string) []scorecard.Deduction 
 	project := loadProjectXML(absolutePathToProjectFile)
 	targetFramework := project.firstElement("TargetFramework")
 	if targetFramework == "" {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <TargetFramework> element found in %v", absolutePathToProjectFile)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <TargetFramework> element found in %v", relPath(absolutePathToProjectFile))}
 	}
 	if !strings.Contains(targetFramework, ".") {
 		return []scorecard.Deduction{scorecard.NewDeduction(100, "Service uses %v, latest available is %v; using .NET Framework deducts all points", targetFramework, c.newestText)}

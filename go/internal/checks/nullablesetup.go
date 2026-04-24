@@ -18,7 +18,7 @@ func (c *NullableSetup) Run(absolutePathToProjectFile string) []scorecard.Deduct
 	project := loadProjectXML(absolutePathToProjectFile)
 	nullable := project.firstElement("Nullable")
 	if nullable == "" {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <Nullable> element found in %v", absolutePathToProjectFile)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <Nullable> element found in %v", relPath(absolutePathToProjectFile))}
 	}
 	if strings.ToLower(nullable) != "enable" {
 		return []scorecard.Deduction{scorecard.NewDeduction(100, "Expected: <Nullable> should contain '%v'. Actual: '%v'", "enable", nullable)}

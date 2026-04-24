@@ -63,13 +63,13 @@ func (c *PendingRenovateAzurePRs) Run(absolutePathToProjectFile string) []scorec
 	stdout, _ := command.Output()
 	azureInfo := parseAzureRemoteInfo(string(stdout))
 	if len(azureInfo) == 0 {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", serviceRootDirectory)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", relPath(serviceRootDirectory))}
 	}
 	selected := azureInfo[0]
 	projectPullRequestsURL := fmt.Sprintf("https://dev.azure.com/%s/%s/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active", selected.organization, selected.project)
 	var pullRequests pullRequestsResponse
 	if err := c.getJSON(projectPullRequestsURL, &pullRequests); err != nil {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", serviceRootDirectory)}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", relPath(serviceRootDirectory))}
 	}
 	projectFileNameWithExtension := filepath.Base(absolutePathToProjectFile)
 	deductions := make([]scorecard.Deduction, 0)

@@ -34,16 +34,11 @@ if [[ ! -d "$sources_dir" ]]; then
   exit 1
 fi
 
-wiki_dir="$run_dir/wiki"
-mkdir -p "$wiki_dir"
-echo "Created wiki output directory: $wiki_dir"
-
 echo "Running ScorecardGenerator from: $sources_dir"
 (
   cd "$sources_dir"
-  "$SCORECARD_BIN" --output-path "$wiki_dir" --visualizer "$VISUALIZER"
+  "$SCORECARD_BIN" --output-path "$run_dir" --visualizer "$VISUALIZER"
 )
 
-echo "Done."
-echo "Run directory: $run_dir"
-echo "Wiki output:   $wiki_dir"
+echo "Done. Generated files at"
+echo "$run_dir"
