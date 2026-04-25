@@ -16,4 +16,4 @@ test:
 
 # Run the mkdocs scan. Usage: just run <group> <PAT>
 run group pat:
-    GITLAB_GROUP={{group}} GITLAB_PAT={{pat}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh
+    GITLAB_GROUP={{group}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh

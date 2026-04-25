@@ -1,19 +1,21 @@
 # Service Scorecard Generator
-Go project which generates a scorecard for each repository in a GitLab group. Hardcoded to gitlab.kloudease.tech.
+Go project which generates a scorecard for each repository in a GitLab group.
 
 ## Usage
 ```
 just build
 just test
 
-just run <GITLAB_GROUP> <PAT>
+just run <GITLAB_GROUP> <PAT> [GITLAB_DOMAIN]
 ```
 
-Replace `<GITLAB_GROUP>` with the name of the GitLab group you want to generate scorecards for, and `<PAT>` with a Personal Access Token with these scopes:
+Replace `<GITLAB_GROUP>` with the name of the GitLab group you want to generate scorecards for and `<PAT>` with a Personal Access Token with these scopes:
 - `read_repository`
 - `write_repository`
 - `api`
 - `read_api`
+
+Optionally pass `[GITLAB_DOMAIN]` to override the GitLab base URL used in generated links. If omitted, the default is `https://gitlab.kloudease.tech`.
 
 Generates an mkdocs-compatible Markdown file by default inside `./run-$DATE-$TIME`. You can change the output format by changing the `VISUALIZER` environment variable:
 - `html`
