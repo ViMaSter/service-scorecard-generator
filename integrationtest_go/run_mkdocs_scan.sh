@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-GITLAB_GROUP="${GITLAB_GROUP:?Error: GITLAB_GROUP env var is required}"
+REPOSITORY_ROOT="${REPOSITORY_ROOT:?Error: REPOSITORY_ROOT env var is required}"
 SCORECARD_BIN="$SCRIPT_DIR/../go/bin/ScorecardGenerator"
 VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
@@ -23,7 +23,7 @@ fi
 mkdir -p "$run_dir"
 echo "Created run directory: $run_dir"
 
-sources_dir="$HOME/ghorg/$GITLAB_GROUP"
+sources_dir="$REPOSITORY_ROOT"
 if [[ ! -d "$sources_dir" ]]; then
   echo "Error: source directory not found at: $sources_dir" >&2
   exit 1

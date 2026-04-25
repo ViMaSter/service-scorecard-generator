@@ -14,6 +14,6 @@ build:
 test:
     cd {{justfile_directory()}}/go && go test ./... -v
 
-# Run the mkdocs scan. Usage: just run <group> <PAT>
-run group pat:
-    GITLAB_GROUP={{group}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh
+# Generate a mkdocs compatible report
+run path:
+    REPOSITORY_ROOT={{path}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh
