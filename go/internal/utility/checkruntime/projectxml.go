@@ -1,4 +1,4 @@
-package checks
+package checkruntime
 
 import (
 	"encoding/xml"
@@ -8,21 +8,21 @@ import (
 	"strings"
 )
 
-type projectXML struct {
+type ProjectXML struct {
 	rootAttributes map[string]string
 	elements       map[string][]string
 	decodeErr      error
 }
 
-func loadProjectXML(path string) projectXML {
+func LoadProjectXML(path string) ProjectXML {
 	file, err := os.Open(path)
 	if err != nil {
-		return projectXML{decodeErr: err}
+		return ProjectXML{decodeErr: err}
 	}
 	defer file.Close()
 
 	decoder := xml.NewDecoder(file)
-	result := projectXML{rootAttributes: map[string]string{}, elements: map[string][]string{}}
+	result := ProjectXML{rootAttributes: map[string]string{}, elements: map[string][]string{}}
 	var stack []string
 	var current strings.Builder
 	var sawRoot bool
@@ -65,11 +65,15 @@ func loadProjectXML(path string) projectXML {
 	return result
 }
 
-func (p projectXML) rootAttribute(name string) string {
+func (p ProjectXML) DecodeErr() error {
+	return p.decodeErr
+}
+
+func (p ProjectXML) RootAttribute(name string) string {
 	return p.rootAttributes[name]
 }
 
-func (p projectXML) firstElement(name string) string {
+func (p ProjectXML) FirstElement(name string) string {
 	values := p.elements[name]
 	if len(values) == 0 {
 		return ""
@@ -77,6 +81,6 @@ func (p projectXML) firstElement(name string) string {
 	return values[0]
 }
 
-func (p projectXML) allElements(name string) []string {
+func (p ProjectXML) AllElements(name string) []string {
 	return p.elements[name]
 }

@@ -6,6 +6,7 @@ import (
 	"regexp"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
 const justfileBaseImport = "import 'vendir/justlib/just/base.just'"
@@ -13,11 +14,11 @@ const justfileBaseImport = "import 'vendir/justlib/just/base.just'"
 var justRecipePattern = regexp.MustCompile(`(?m)^\s*([a-zA-Z0-9_-]+):\s*(?:#.*)?$`)
 
 type Justfile struct {
-	baseCheck
+	checkruntime.BaseCheck
 }
 
 func NewJustfile() *Justfile {
-	return &Justfile{baseCheck: newBaseCheck("Justfile")}
+	return &Justfile{BaseCheck: checkruntime.NewBaseCheck("Justfile")}
 }
 
 func hasJustRecipe(content string, recipeName string) bool {
@@ -37,28 +38,28 @@ func (c *Justfile) Run(absolutePathToProjectFile string) []scorecard.Deduction {
 	contentBytes, err := os.ReadFile(justfilePath)
 	if err != nil {
 		return []scorecard.Deduction{
-			scorecard.NewDeduction(50, "justfile not found at %v: missing 'build:' recipe", relPath(justfilePath)),
-			scorecard.NewDeduction(50, "justfile not found at %v: missing 'test:' recipe", relPath(justfilePath)),
-			scorecard.NewDeduction(50, "justfile not found at %v: missing either 'run:' or 'serve:' recipe", relPath(justfilePath)),
-			scorecard.NewDeduction(20, "justfile not found at %v: missing %q", relPath(justfilePath), justfileBaseImport),
+			scorecard.NewDeduction(50, "justfile not found at %v: missing 'build:' recipe", checkruntime.RelPath(justfilePath)),
+			scorecard.NewDeduction(50, "justfile not found at %v: missing 'test:' recipe", checkruntime.RelPath(justfilePath)),
+			scorecard.NewDeduction(50, "justfile not found at %v: missing either 'run:' or 'serve:' recipe", checkruntime.RelPath(justfilePath)),
+			scorecard.NewDeduction(20, "justfile not found at %v: missing %q", checkruntime.RelPath(justfilePath), justfileBaseImport),
 		}
 	}
 
 	content := string(contentBytes)
 	deductions := make([]scorecard.Deduction, 0, 4)
 	if !hasJustRecipe(content, "build") {
-		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing 'build:' recipe", relPath(justfilePath)))
+		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing 'build:' recipe", checkruntime.RelPath(justfilePath)))
 	}
 	if !hasJustRecipe(content, "test") {
-		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing 'test:' recipe", relPath(justfilePath)))
+		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing 'test:' recipe", checkruntime.RelPath(justfilePath)))
 	}
 	if !hasJustRecipe(content, "run") && !hasJustRecipe(content, "serve") {
-		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing either 'run:' or 'serve:' recipe", relPath(justfilePath)))
+		deductions = append(deductions, scorecard.NewDeduction(50, "%v is missing either 'run:' or 'serve:' recipe", checkruntime.RelPath(justfilePath)))
 	}
 	if !regexp.MustCompile(regexp.QuoteMeta(justfileBaseImport)).MatchString(content) {
-		deductions = append(deductions, scorecard.NewDeduction(20, "%v is missing %q", relPath(justfilePath), justfileBaseImport))
+		deductions = append(deductions, scorecard.NewDeduction(20, "%v is missing %q", checkruntime.RelPath(justfilePath), justfileBaseImport))
 	}
 	return deductions
 }
 
-var _ Check = (*Justfile)(nil)
+var _ checkruntime.Check = (*Justfile)(nil)

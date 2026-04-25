@@ -1,4 +1,4 @@
-package checks
+package checkruntime
 
 import (
 	"fmt"
@@ -16,28 +16,28 @@ type Check interface {
 	Run(absolutePathToProjectFile string) []scorecard.Deduction
 }
 
-type baseCheck struct {
+type BaseCheck struct {
 	name            string
 	infoPageContent string
 }
 
-func newBaseCheck(name string) baseCheck {
+func NewBaseCheck(name string) BaseCheck {
 	content, err := fs.ReadFile(resources.CheckReadmes, filepath.ToSlash(filepath.Join("checks", name+".md")))
 	if err != nil {
 		panic(fmt.Sprintf("check %s must have README.md content: %v", name, err))
 	}
-	return baseCheck{name: name, infoPageContent: string(content)}
+	return BaseCheck{name: name, infoPageContent: string(content)}
 }
 
-func (b baseCheck) Name() string {
+func (b BaseCheck) Name() string {
 	return b.name
 }
 
-func (b baseCheck) InfoPageContent() string {
+func (b BaseCheck) InfoPageContent() string {
 	return b.infoPageContent
 }
 
-func relPath(absolutePath string) string {
+func RelPath(absolutePath string) string {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return absolutePath

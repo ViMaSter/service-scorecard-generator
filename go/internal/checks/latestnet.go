@@ -11,10 +11,11 @@ import (
 	"sync"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
 type LatestNET struct {
-	baseCheck
+	checkruntime.BaseCheck
 	NewestMajor int
 	newestText  string
 }
@@ -43,7 +44,7 @@ func NewLatestNET(client *http.Client) *LatestNET {
 	if err != nil {
 		panic(err)
 	}
-	return &LatestNET{baseCheck: newBaseCheck("LatestNET"), NewestMajor: newestMajor, newestText: newestText}
+	return &LatestNET{BaseCheck: checkruntime.NewBaseCheck("LatestNET"), NewestMajor: newestMajor, newestText: newestText}
 }
 
 func loadLatestNETMetadata(client *http.Client) (int, string, error) {
@@ -113,10 +114,10 @@ func numericVersionValue(channel string) int {
 }
 
 func (c *LatestNET) Run(absolutePathToProjectFile string) []scorecard.Deduction {
-	project := loadProjectXML(absolutePathToProjectFile)
-	targetFramework := project.firstElement("TargetFramework")
+	project := checkruntime.LoadProjectXML(absolutePathToProjectFile)
+	targetFramework := project.FirstElement("TargetFramework")
 	if targetFramework == "" {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <TargetFramework> element found in %v", relPath(absolutePathToProjectFile))}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No <TargetFramework> element found in %v", checkruntime.RelPath(absolutePathToProjectFile))}
 	}
 	if !strings.Contains(targetFramework, ".") {
 		return []scorecard.Deduction{scorecard.NewDeduction(100, "Service uses %v, latest available is %v; using .NET Framework deducts all points", targetFramework, c.newestText)}
@@ -140,4 +141,4 @@ func mathRound(value float64) float64 {
 	return float64(int(value + 0.5))
 }
 
-var _ Check = (*LatestNET)(nil)
+var _ checkruntime.Check = (*LatestNET)(nil)

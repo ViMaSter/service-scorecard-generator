@@ -8,14 +8,15 @@ import (
 	"strings"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
 type NoDSStore struct {
-	baseCheck
+	checkruntime.BaseCheck
 }
 
 func NewNoDSStore() *NoDSStore {
-	return &NoDSStore{baseCheck: newBaseCheck("NoDSStore")}
+	return &NoDSStore{BaseCheck: checkruntime.NewBaseCheck("NoDSStore")}
 }
 
 func (c *NoDSStore) Run(absolutePathToProjectFile string) []scorecard.Deduction {
@@ -23,12 +24,12 @@ func (c *NoDSStore) Run(absolutePathToProjectFile string) []scorecard.Deduction 
 	deductions := make([]scorecard.Deduction, 0, 2)
 
 	if foundPath := findFirstTrackedDSStore(repoRoot); foundPath != "" {
-		deductions = append(deductions, scorecard.NewDeduction(100, "Found tracked %v; .DS_Store files must not be tracked in repositories", relPath(foundPath)))
+		deductions = append(deductions, scorecard.NewDeduction(100, "Found tracked %v; .DS_Store files must not be tracked in repositories", checkruntime.RelPath(foundPath)))
 	}
 
 	gitIgnorePath := filepath.Join(repoRoot, ".gitignore")
 	if !gitignoreGloballyIgnoresDSStore(gitIgnorePath) {
-		deductions = append(deductions, scorecard.NewDeduction(50, "%v does not globally ignore .DS_Store", relPath(gitIgnorePath)))
+		deductions = append(deductions, scorecard.NewDeduction(50, "%v does not globally ignore .DS_Store", checkruntime.RelPath(gitIgnorePath)))
 	}
 
 	return deductions
@@ -66,4 +67,4 @@ func gitignoreGloballyIgnoresDSStore(path string) bool {
 	return false
 }
 
-var _ Check = (*NoDSStore)(nil)
+var _ checkruntime.Check = (*NoDSStore)(nil)

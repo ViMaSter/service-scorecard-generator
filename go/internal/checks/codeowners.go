@@ -7,14 +7,15 @@ import (
 	"strings"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
 type CodeOwners struct {
-	baseCheck
+	checkruntime.BaseCheck
 }
 
 func NewCodeOwners() *CodeOwners {
-	return &CodeOwners{baseCheck: newBaseCheck("CodeOwners")}
+	return &CodeOwners{BaseCheck: checkruntime.NewBaseCheck("CodeOwners")}
 }
 
 func findRepoRoot(start string) string {
@@ -61,17 +62,17 @@ func (c *CodeOwners) Run(absolutePathToProjectFile string) []scorecard.Deduction
 	codeOwnersPath := filepath.Join(repoRoot, "CODEOWNERS")
 
 	if _, err := os.Stat(codeOwnersPath); os.IsNotExist(err) {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No CODEOWNERS file found at %v", relPath(codeOwnersPath))}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No CODEOWNERS file found at %v", checkruntime.RelPath(codeOwnersPath))}
 	}
 
 	ownerCount := countCodeOwners(codeOwnersPath)
 	if ownerCount == 0 {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, " %v has no owners defined", relPath(codeOwnersPath))}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, " %v has no owners defined", checkruntime.RelPath(codeOwnersPath))}
 	}
 	if ownerCount == 1 {
-		return []scorecard.Deduction{scorecard.NewDeduction(50, " %v has only 1 owner defined", relPath(codeOwnersPath))}
+		return []scorecard.Deduction{scorecard.NewDeduction(50, " %v has only 1 owner defined", checkruntime.RelPath(codeOwnersPath))}
 	}
 	return nil
 }
 
-var _ Check = (*CodeOwners)(nil)
+var _ checkruntime.Check = (*CodeOwners)(nil)

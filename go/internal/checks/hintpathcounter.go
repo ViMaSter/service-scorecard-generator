@@ -1,21 +1,24 @@
 package checks
 
-import "github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+import (
+	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
+)
 
 type HintPathCounter struct {
-	baseCheck
+	checkruntime.BaseCheck
 }
 
 func NewHintPathCounter() *HintPathCounter {
-	return &HintPathCounter{baseCheck: newBaseCheck("HintPathCounter")}
+	return &HintPathCounter{BaseCheck: checkruntime.NewBaseCheck("HintPathCounter")}
 }
 
 func (c *HintPathCounter) Run(absolutePathToProjectFile string) []scorecard.Deduction {
-	project := loadProjectXML(absolutePathToProjectFile)
-	if project.decodeErr != nil {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "Couldn't parse %v: %v", relPath(absolutePathToProjectFile), project.decodeErr)}
+	project := checkruntime.LoadProjectXML(absolutePathToProjectFile)
+	if project.DecodeErr() != nil {
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "Couldn't parse %v: %v", checkruntime.RelPath(absolutePathToProjectFile), project.DecodeErr())}
 	}
-	hintPaths := project.allElements("HintPath")
+	hintPaths := project.AllElements("HintPath")
 	deductions := make([]scorecard.Deduction, 0, len(hintPaths))
 	for _, hintPath := range hintPaths {
 		deductions = append(deductions, scorecard.NewDeduction(10, "HintPath: %v", hintPath))
@@ -23,4 +26,4 @@ func (c *HintPathCounter) Run(absolutePathToProjectFile string) []scorecard.Dedu
 	return deductions
 }
 
-var _ Check = (*HintPathCounter)(nil)
+var _ checkruntime.Check = (*HintPathCounter)(nil)

@@ -10,9 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/vimaster/service-scorecard-generator/go/internal/checks"
 	"github.com/vimaster/service-scorecard-generator/go/internal/resources"
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkregistry"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 	"github.com/vimaster/service-scorecard-generator/go/internal/visualizer"
 )
 
@@ -39,7 +40,7 @@ func (g Generator) Execute(outputPath string, visualizerName string, excludePath
 		}
 		workingDir = currentDirectory
 	}
-	registry := checks.Registry(checks.RegistryConfig{AzurePAT: azurePAT, Client: g.HTTPClient})
+	registry := checkregistry.Registry(checkregistry.Config{AzurePAT: azurePAT, Client: g.HTTPClient})
 	groups, err := loadConfiguredChecks(workingDir, registry)
 	if err != nil {
 		return err
@@ -75,7 +76,7 @@ func runChecks(checkInfos []runtimeCheckInfo, project string) []scorecard.CheckR
 
 type runtimeCheckInfo struct {
 	scorecard.CheckInfo
-	Runtime checks.Check
+	Runtime checkruntime.Check
 }
 
 type runtimeGroup struct {
@@ -108,7 +109,7 @@ func (r runtimeRunInfo) GroupByName(name string) runtimeGroup {
 	return runtimeGroup{Name: name}
 }
 
-func loadConfiguredChecks(workingDir string, registry map[string]func() checks.Check) (runtimeRunInfo, error) {
+func loadConfiguredChecks(workingDir string, registry map[string]func() checkruntime.Check) (runtimeRunInfo, error) {
 	configPath := filepath.Join(workingDir, "scorecard.config.json")
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		if err := os.WriteFile(configPath, []byte(resources.DefaultConfigJSON), 0o644); err != nil {
@@ -192,7 +193,7 @@ func selectVisualizer(name string, outputPath string, now func() time.Time) (vis
 }
 
 func (g Generator) ListChecks(azurePAT string) (string, error) {
-	registry := checks.Registry(checks.RegistryConfig{AzurePAT: azurePAT, Client: g.HTTPClient})
+	registry := checkregistry.Registry(checkregistry.Config{AzurePAT: azurePAT, Client: g.HTTPClient})
 	availableChecks := make([]string, 0, len(registry))
 	for name := range registry {
 		availableChecks = append(availableChecks, name)

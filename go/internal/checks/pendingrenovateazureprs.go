@@ -13,10 +13,11 @@ import (
 	"time"
 
 	"github.com/vimaster/service-scorecard-generator/go/internal/scorecard"
+	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
 type PendingRenovateAzurePRs struct {
-	baseCheck
+	checkruntime.BaseCheck
 	client *http.Client
 	pat    string
 }
@@ -53,7 +54,7 @@ func NewPendingRenovateAzurePRs(azurePAT string, client *http.Client) *PendingRe
 	if client == nil {
 		client = &http.Client{Timeout: 30 * time.Second}
 	}
-	return &PendingRenovateAzurePRs{baseCheck: newBaseCheck("PendingRenovateAzurePRs"), client: client, pat: azurePAT}
+	return &PendingRenovateAzurePRs{BaseCheck: checkruntime.NewBaseCheck("PendingRenovateAzurePRs"), client: client, pat: azurePAT}
 }
 
 func (c *PendingRenovateAzurePRs) Run(absolutePathToProjectFile string) []scorecard.Deduction {
@@ -63,13 +64,13 @@ func (c *PendingRenovateAzurePRs) Run(absolutePathToProjectFile string) []scorec
 	stdout, _ := command.Output()
 	azureInfo := parseAzureRemoteInfo(string(stdout))
 	if len(azureInfo) == 0 {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", relPath(serviceRootDirectory))}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", checkruntime.RelPath(serviceRootDirectory))}
 	}
 	selected := azureInfo[0]
 	projectPullRequestsURL := fmt.Sprintf("https://dev.azure.com/%s/%s/_apis/git/pullrequests?api-version=7.0&searchCriteria.status=active", selected.organization, selected.project)
 	var pullRequests pullRequestsResponse
 	if err := c.getJSON(projectPullRequestsURL, &pullRequests); err != nil {
-		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", relPath(serviceRootDirectory))}
+		return []scorecard.Deduction{scorecard.NewDeduction(100, "No Azure DevOps remotes found for %v; can't check for open pull requests", checkruntime.RelPath(serviceRootDirectory))}
 	}
 	projectFileNameWithExtension := filepath.Base(absolutePathToProjectFile)
 	deductions := make([]scorecard.Deduction, 0)
@@ -199,4 +200,4 @@ func parseAzureRemoteInfo(allLines string) []azureRemote {
 	return results
 }
 
-var _ Check = (*PendingRenovateAzurePRs)(nil)
+var _ checkruntime.Check = (*PendingRenovateAzurePRs)(nil)

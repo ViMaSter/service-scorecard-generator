@@ -1,0 +1,11 @@
+# Registry keys expected from checks.Registry
+BuiltForAKS
+CodeOwners
+HintPathCounter
+ImplicitAssemblyInfo
+Justfile
+LatestNET
+NoDSStore
+NullableSetup
+PendingRenovateAzurePRs
+ProperDockerfile
