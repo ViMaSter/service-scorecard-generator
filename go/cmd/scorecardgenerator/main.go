@@ -24,13 +24,18 @@ func main() {
 	outputPath := flags.String("output-path", "", "Output directory")
 	visualizerName := flags.String("visualizer", "", "Visualizer name")
 	excludePath := flags.String("exclude-path", "", "Exclude path substring")
-	azurePAT := flags.String("azure-pat", "", "Azure personal access token")
+	pat := flags.String("pat", "", "Personal access token")
+	legacyAzurePAT := flags.String("azure-pat", "", "Deprecated alias for --pat")
 	_ = flags.Parse(os.Args[1:])
+	effectivePAT := *pat
+	if effectivePAT == "" {
+		effectivePAT = *legacyAzurePAT
+	}
 	if *outputPath == "" || *visualizerName == "" {
 		fmt.Fprintln(os.Stderr, "output-path and visualizer are required")
 		os.Exit(1)
 	}
-	if err := generator.Execute(*outputPath, *visualizerName, *excludePath, *azurePAT); err != nil {
+	if err := generator.Execute(*outputPath, *visualizerName, *excludePath, effectivePAT); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

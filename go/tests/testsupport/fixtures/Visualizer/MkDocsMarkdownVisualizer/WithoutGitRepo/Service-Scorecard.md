@@ -16,6 +16,16 @@
 <tr><td title="" colspan="1"><span>service</span></td><td title="service" colspan="1"><span><a href="https://gitlab.kloudease.tech/service">service</a><sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="-10 points: justification: value" colspan="1"><span style="color:#15803d">90</span></td><td title="-10 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-20 points: justification: value" colspan="1"><span style="color:#b45309">80</span></td><td title="-20 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-30 points: justification: value" colspan="1"><span style="color:#c2410c">70</span></td><td title="-30 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="" colspan="1"><span title style="color:#b91c1c">10</span></td></tr>
 <tr><td title="" colspan="1"><span>service2</span></td><td title="service2" colspan="1"><span><a href="https://gitlab.kloudease.tech/service2">service2</a><sup>&nbsp;<b><i><u>?</u></i></b></sup></span></td><td title="-10 points: justification: value" colspan="1"><span style="color:#15803d">90</span></td><td title="-10 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-20 points: justification: value" colspan="1"><span style="color:#b45309">80</span></td><td title="-20 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="-30 points: justification: value" colspan="1"><span style="color:#c2410c">70</span></td><td title="-30 points: justification: value&#10;disqualified: disqualify: disqualification" colspan="1"><span style="color:#6b7280">n/a</span></td><td title="" colspan="1"><span title style="color:#b91c1c">10</span></td></tr></table>
 
+<style>
+table#service-scorecard {
+    table-layout: fixed;
+}
+
+table#service-scorecard td:nth-child(2) {
+    min-width: 280px;
+}
+</style>
+
 ## Check Details
 
 ??? info "Check"

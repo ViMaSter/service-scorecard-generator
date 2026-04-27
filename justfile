@@ -15,5 +15,5 @@ test:
     cd {{justfile_directory()}}/go && go test ./... -v
 
 # Generate a mkdocs compatible report
-run group:
-    REPOSITORY_ROOT=~/ghorg/{{group}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh
+run group pat:
+    REPOSITORY_ROOT=~/ghorg/{{group}} PAT={{pat}} {{justfile_directory()}}/integrationtest_go/run_mkdocs_scan.sh

@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 REPOSITORY_ROOT="${REPOSITORY_ROOT:?Error: REPOSITORY_ROOT env var is required}"
+PAT="${PAT:?Error: PAT env var is required}"
 SCORECARD_BIN="$SCRIPT_DIR/../go/bin/ScorecardGenerator"
 VISUALIZER="${VISUALIZER:-mkdocsmarkdown}"
 
@@ -32,7 +33,7 @@ fi
 echo "Running ScorecardGenerator from: $sources_dir"
 (
   cd "$sources_dir"
-  "$SCORECARD_BIN" --output-path "$run_dir" --visualizer "$VISUALIZER"
+  "$SCORECARD_BIN" --output-path "$run_dir" --visualizer "$VISUALIZER" --pat "$PAT"
 )
 
 echo "Done. Generated files at"

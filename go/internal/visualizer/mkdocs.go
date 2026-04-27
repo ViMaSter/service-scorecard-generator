@@ -79,7 +79,16 @@ func (v *MkDocsMarkdownVisualizer) Visualize(runInfo scorecard.RunInfo) error {
 			checkGuides = append(checkGuides, fmt.Sprintf("??? info \"%s\"\n%s", check.Name, indentBlock(removeFirstHeading(check.InfoPageContent))))
 		}
 	}
-	content := fmt.Sprintf("# Service Scorecard for %s\n\n!!! info \"Usage\"\n    Information on how to reach 100 points for each check can be found below the table.\n    Hover over cells for detailed deductions.\n\n## Service Overview\n\n%s\n\n## Check Details\n\n%s\n\n<!-- %s -->", v.now().Format("2006-01-02"), table, strings.Join(checkGuides, "\n\n"), runInfoJSON)
+	css := `<style>
+table#service-scorecard {
+    table-layout: fixed;
+}
+
+table#service-scorecard td:nth-child(2) {
+    min-width: 280px;
+}
+</style>`
+	content := fmt.Sprintf("# Service Scorecard for %s\n\n!!! info \"Usage\"\n    Information on how to reach 100 points for each check can be found below the table.\n    Hover over cells for detailed deductions.\n\n## Service Overview\n\n%s\n\n%s\n\n## Check Details\n\n%s\n\n<!-- %s -->", v.now().Format("2006-01-02"), table, css, strings.Join(checkGuides, "\n\n"), runInfoJSON)
 	return writeGeneratedOutput(v.outputPath, fileName+".md", content, true)
 }
 

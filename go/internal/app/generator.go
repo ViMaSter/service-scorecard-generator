@@ -31,7 +31,7 @@ type configuredChecks struct {
 	} `json:"Checks"`
 }
 
-func (g Generator) Execute(outputPath string, visualizerName string, excludePath string, azurePAT string) error {
+func (g Generator) Execute(outputPath string, visualizerName string, excludePath string, pat string) error {
 	workingDir := g.WorkingDir
 	if workingDir == "" {
 		currentDirectory, err := os.Getwd()
@@ -40,7 +40,7 @@ func (g Generator) Execute(outputPath string, visualizerName string, excludePath
 		}
 		workingDir = currentDirectory
 	}
-	registry := checkregistry.Registry(checkregistry.Config{AzurePAT: azurePAT, Client: g.HTTPClient})
+	registry := checkregistry.Registry(checkregistry.Config{PAT: pat, Client: g.HTTPClient})
 	groups, err := loadConfiguredChecks(workingDir, registry)
 	if err != nil {
 		return err
@@ -192,8 +192,8 @@ func selectVisualizer(name string, outputPath string, now func() time.Time) (vis
 	}
 }
 
-func (g Generator) ListChecks(azurePAT string) (string, error) {
-	registry := checkregistry.Registry(checkregistry.Config{AzurePAT: azurePAT, Client: g.HTTPClient})
+func (g Generator) ListChecks(pat string) (string, error) {
+	registry := checkregistry.Registry(checkregistry.Config{PAT: pat, Client: g.HTTPClient})
 	availableChecks := make([]string, 0, len(registry))
 	for name := range registry {
 		availableChecks = append(availableChecks, name)
