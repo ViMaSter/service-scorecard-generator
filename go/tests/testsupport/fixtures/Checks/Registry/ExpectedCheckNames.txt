@@ -8,5 +8,6 @@ LatestNET
 NoDSStore
 NullableSetup
 PendingRenovateAzurePRs
-PendingRenovateGitLabPRs
+PendingRenovateGitLabMRs
 ProperDockerfile
+ServiceMaturity

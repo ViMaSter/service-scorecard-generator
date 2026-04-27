@@ -11,7 +11,7 @@ import (
 	"github.com/vimaster/service-scorecard-generator/go/tests/testsupport"
 )
 
-func TestPendingRenovateGitLabPRsReturnsDeductionsForOpenedRenovateMergeRequests(t *testing.T) {
+func TestPendingRenovateGitLabMRsReturnsDeductionsForOpenedRenovateMergeRequests(t *testing.T) {
 	client := &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
 		if got := request.Header.Get("PRIVATE-TOKEN"); got != "test-pat" {
 			t.Fatalf("expected PRIVATE-TOKEN header to be set, got %q", got)
@@ -30,23 +30,23 @@ func TestPendingRenovateGitLabPRsReturnsDeductionsForOpenedRenovateMergeRequests
 		]`
 		return &http.Response{StatusCode: 200, Status: "200 OK", Body: io.NopCloser(strings.NewReader(body)), Header: make(http.Header)}, nil
 	})}
-	check := checks.NewPendingRenovateGitLabPRs("test-pat", client)
+	check := checks.NewPendingRenovateGitLabMRs("test-pat", client)
 	repoRoot := writeGitLabRepo(t, "git@gitlab.example.com:platform/payments/service-a.git")
 	deductions := check.Run(repoRoot)
 	testsupport.AssertFinalScore(t, deductions, 2, testsupport.IntPtr(60))
 }
 
-func TestPendingRenovateGitLabPRsSupportsHTTPSRemotes(t *testing.T) {
+func TestPendingRenovateGitLabMRsSupportsHTTPSRemotes(t *testing.T) {
 	client := &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
 		return &http.Response{StatusCode: 200, Status: "200 OK", Body: io.NopCloser(strings.NewReader("[]")), Header: make(http.Header)}, nil
 	})}
-	check := checks.NewPendingRenovateGitLabPRs("test-pat", client)
+	check := checks.NewPendingRenovateGitLabMRs("test-pat", client)
 	repoRoot := writeGitLabRepo(t, "https://gitlab.example.com/platform/payments/service-a.git")
 	testsupport.AssertFinalScore(t, check.Run(repoRoot), 0, testsupport.IntPtr(100))
 }
 
-func TestPendingRenovateGitLabPRsRequiresPAT(t *testing.T) {
-	check := checks.NewPendingRenovateGitLabPRs("", &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
+func TestPendingRenovateGitLabMRsRequiresPAT(t *testing.T) {
+	check := checks.NewPendingRenovateGitLabMRs("", &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
 		t.Fatal("unexpected HTTP request without PAT")
 		return nil, nil
 	})})
@@ -54,8 +54,8 @@ func TestPendingRenovateGitLabPRsRequiresPAT(t *testing.T) {
 	testsupport.AssertFinalScore(t, check.Run(repoRoot), 1, testsupport.IntPtr(0))
 }
 
-func TestPendingRenovateGitLabPRsRequiresOriginRemote(t *testing.T) {
-	check := checks.NewPendingRenovateGitLabPRs("test-pat", &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
+func TestPendingRenovateGitLabMRsRequiresOriginRemote(t *testing.T) {
+	check := checks.NewPendingRenovateGitLabMRs("test-pat", &http.Client{Transport: roundTripperFunc(func(request *http.Request) (*http.Response, error) {
 		t.Fatal("unexpected HTTP request without origin remote")
 		return nil, nil
 	})})

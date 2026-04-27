@@ -52,7 +52,23 @@ func (c *ServiceMaturity) Run(absolutePathToProjectFile string) []scorecard.Dedu
 	}
 
 	message := "Service maturity for %v: L%v - %v%v"
-	return []scorecard.Deduction{scorecard.NewDeduction(0, message, target, level, title, note)}
+	if level == 0 && !input.IsInfrastructureCluster {
+		return []scorecard.Deduction{scorecard.NewDisqualification(message, target, level, title, note)}
+	}
+	return []scorecard.Deduction{scorecard.NewDeduction(maturityDeduction(level), message, target, level, title, note)}
+}
+
+func maturityDeduction(level int) int {
+	switch level {
+	case 3:
+		return 0
+	case 2:
+		return 33
+	case 1:
+		return 66
+	default:
+		return 100
+	}
 }
 
 func collectServiceMaturityInput(repoRoot string) serviceMaturityInput {
@@ -107,34 +123,19 @@ func hasAnyPath(repoRoot string, relativePaths ...string) bool {
 
 func maturityLevel(input serviceMaturityInput) int {
 	switch {
-	case atLeastLevel3(input):
+	case baseMaturityLevel(input) >= 3:
 		return 3
-	case atLeastLevel2(input):
+	case baseMaturityLevel(input) >= 2:
 		return 2
-	case atLeastLevel1(input):
+	case baseMaturityLevel(input) >= 1:
 		return 1
-	case atLeastLevel0(input):
+	case baseMaturityLevel(input) >= 0:
 		return 0
 	default:
 		return 0
 	}
 }
 
-func atLeastLevel0(input serviceMaturityInput) bool {
-	return baseMaturityLevel(input) >= 0
-}
-
-func atLeastLevel1(input serviceMaturityInput) bool {
-	return baseMaturityLevel(input) >= 1
-}
-
-func atLeastLevel2(input serviceMaturityInput) bool {
-	return baseMaturityLevel(input) >= 2
-}
-
-func atLeastLevel3(input serviceMaturityInput) bool {
-	return baseMaturityLevel(input) >= 3
-}
 
 func baseMaturityLevel(input serviceMaturityInput) int {
 	if !input.IsInfrastructureCluster {

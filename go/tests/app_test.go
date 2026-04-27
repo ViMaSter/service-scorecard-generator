@@ -17,7 +17,7 @@ func TestListChecksMatchesExpectedOrder(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	expected := "Available checks:\n  - BuiltForAKS\n  - CodeOwners\n  - HintPathCounter\n  - ImplicitAssemblyInfo\n  - Justfile\n  - LatestNET\n  - NoDSStore\n  - NullableSetup\n  - PendingRenovateAzurePRs\n  - PendingRenovateGitLabPRs\n  - ProperDockerfile"
+	expected := "Available checks:\n  - BuiltForAKS\n  - CodeOwners\n  - HintPathCounter\n  - ImplicitAssemblyInfo\n  - Justfile\n  - LatestNET\n  - NoDSStore\n  - NullableSetup\n  - PendingRenovateAzurePRs\n  - PendingRenovateGitLabMRs\n  - ProperDockerfile\n  - ServiceMaturity"
 	if output != expected {
 		t.Fatalf("unexpected list-checks output\nexpected:\n%s\nactual:\n%s", expected, output)
 	}

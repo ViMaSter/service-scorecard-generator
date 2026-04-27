@@ -15,7 +15,7 @@ import (
 	"github.com/vimaster/service-scorecard-generator/go/internal/utility/checkruntime"
 )
 
-type PendingRenovateGitLabPRs struct {
+type PendingRenovateGitLabMRs struct {
 	checkruntime.BaseCheck
 	client *http.Client
 	pat    string
@@ -33,14 +33,14 @@ type gitLabMergeRequest struct {
 	WebURL       string `json:"web_url"`
 }
 
-func NewPendingRenovateGitLabPRs(pat string, client *http.Client) *PendingRenovateGitLabPRs {
+func NewPendingRenovateGitLabMRs(pat string, client *http.Client) *PendingRenovateGitLabMRs {
 	if client == nil {
 		client = &http.Client{Timeout: 30 * time.Second}
 	}
-	return &PendingRenovateGitLabPRs{BaseCheck: checkruntime.NewBaseCheck("PendingRenovateGitLabPRs"), client: client, pat: pat}
+	return &PendingRenovateGitLabMRs{BaseCheck: checkruntime.NewBaseCheck("PendingRenovateGitLabMRs"), client: client, pat: pat}
 }
 
-func (c *PendingRenovateGitLabPRs) Run(path string) []scorecard.Deduction {
+func (c *PendingRenovateGitLabMRs) Run(path string) []scorecard.Deduction {
 	repoRoot := findRepoRoot(path)
 	if strings.TrimSpace(c.pat) == "" {
 		return []scorecard.Deduction{scorecard.NewDeduction(100, "No PAT provided for %v; can't check for open GitLab merge requests", checkruntime.RelPath(repoRoot))}
@@ -141,8 +141,9 @@ func isRenovateMergeRequest(mergeRequest gitLabMergeRequest) bool {
 	return strings.Contains(branch, "renovate") || strings.Contains(title, "renovate")
 }
 
-func (c *PendingRenovateGitLabPRs) listOpenMergeRequests(remote gitLabRemote) ([]gitLabMergeRequest, error) {
+func (c *PendingRenovateGitLabMRs) listOpenMergeRequests(remote gitLabRemote) ([]gitLabMergeRequest, error) {
 	endpoint := fmt.Sprintf("%s/api/v4/projects/%s/merge_requests?state=opened&per_page=100", remote.apiBaseURL, url.PathEscape(remote.projectPath))
+	fmt.Printf("[%s INF][] Fetching GitLab merge request data for %s from %s\n", time.Now().Format("15:04:05"), remote.projectPath, remote.apiBaseURL)
 	var mergeRequests []gitLabMergeRequest
 	if err := c.getJSON(endpoint, &mergeRequests); err != nil {
 		return nil, err
@@ -150,7 +151,7 @@ func (c *PendingRenovateGitLabPRs) listOpenMergeRequests(remote gitLabRemote) ([
 	return mergeRequests, nil
 }
 
-func (c *PendingRenovateGitLabPRs) getJSON(url string, target any) error {
+func (c *PendingRenovateGitLabMRs) getJSON(url string, target any) error {
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return err
@@ -175,4 +176,4 @@ func ioReadAllAndCloseGitLab(response *http.Response) ([]byte, error) {
 	return io.ReadAll(response.Body)
 }
 
-var _ checkruntime.Check = (*PendingRenovateGitLabPRs)(nil)
+var _ checkruntime.Check = (*PendingRenovateGitLabMRs)(nil)
