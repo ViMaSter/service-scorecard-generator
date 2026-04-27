@@ -5,6 +5,7 @@
     ],
     "Silver": [],
     "Bronze": [
+      "ServiceMaturity",
       "CodeOwners",
       "NoDSStore"
     ]
